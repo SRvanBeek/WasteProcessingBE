@@ -1,10 +1,11 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
+@Component
 public class OrderDAO {
 
     private final OrderRepository orderRepository;
@@ -24,4 +25,5 @@ public class OrderDAO {
     public Optional<Order> getOrderByID(Long id){
         return this.orderRepository.findById(id);
     }
+
 }
