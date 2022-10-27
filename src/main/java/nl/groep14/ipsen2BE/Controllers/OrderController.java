@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping(value = "/api/Order")
+@RequestMapping(value = "/api/orders")
 public class OrderController {
 
     private final OrderDAO orderDAO;
@@ -30,7 +30,6 @@ public class OrderController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse postOrder(@RequestBody Order order){
-        //seervice
         this.orderDAO.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
@@ -48,9 +47,20 @@ public class OrderController {
         return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse putOneOrder(@PathVariable Long id,@RequestBody Order newOrder){
+        Order currentOrder = orderDAO.getOrderByID(id).get();
+        Long currentID = currentOrder.getId();
+        currentOrder = newOrder;
+        currentOrder.setId(currentID);
+        this.orderDAO.saveToDatabase(currentOrder);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You updated order"+currentID+"!");
+    }
+
     @ExceptionHandler(OrderNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleNoSuchElementFoundException(
+    public ResponseEntity<String> orderNotFound(
             OrderNotFoundException exception
     ) {
         return ResponseEntity
