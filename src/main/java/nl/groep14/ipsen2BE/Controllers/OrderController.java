@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/orders")
@@ -34,16 +35,22 @@ public class OrderController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<ArrayList<Order>> getAllOrders(){
-        ArrayList<Order> orders = this.orderDAO.getAll();
-        return new ApiResponse(HttpStatus.ACCEPTED, orders);
+    public List<Order> getAllOrders(){
+        return this.orderDAO.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getOneOrder(@PathVariable Long id){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id));
+    public Order getOneOrder(@PathVariable Long id){
+        return this.orderDAO.getOrderByID(id).get();
     }
+
+    @RequestMapping(value = "/highestID", method = RequestMethod.GET)
+    @ResponseBody
+    public Order getHighestIdOrder(){
+        return this.orderDAO.getHighestIdOrder();
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody

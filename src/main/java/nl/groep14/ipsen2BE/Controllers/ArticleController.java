@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -33,15 +34,15 @@ public class ArticleController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<ArrayList<Article>> getAllArticles(){
-        ArrayList<Article> articles = this.articleDAO.getAll();
-        return new ApiResponse(HttpStatus.ACCEPTED, articles);
+    public List<Article> getAllArticles(){
+        List<Article> articles = this.articleDAO.getAll();
+        return articles;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getOneArticle(@PathVariable Long id){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.articleDAO.getOrderByID(id));
+    public Article getOneArticle(@PathVariable Long id){
+        return this.articleDAO.getOrderByID(id).get();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

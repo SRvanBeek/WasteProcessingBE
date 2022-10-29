@@ -26,4 +26,8 @@ public class OrderDAO {
         return this.orderRepository.findById(id);
     }
 
+    public Order getHighestIdOrder(){
+        return this.orderRepository.getMaxID();
+    }
+
 }

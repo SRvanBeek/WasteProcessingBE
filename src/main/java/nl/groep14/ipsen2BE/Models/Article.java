@@ -12,12 +12,14 @@ public class Article {
     @Basic
     @Column(name = "user_ID")
     private int userId;
+
+    @Basic
+    @Column(name = "customer_ID")
+    private int customerId;
     @Basic
     @Column(name = "artikelnummer")
     private String artikelnummer;
-    @Basic
-    @Column(name = "leverancier")
-    private String leverancier;
+
     @Basic
     @Column(name = "productgroep")
     private String productgroep;
@@ -82,12 +84,12 @@ public class Article {
         this.artikelnummer = artikelnummer;
     }
 
-    public String getLeverancier() {
-        return leverancier;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setLeverancier(String leverancier) {
-        this.leverancier = leverancier;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getProductgroep() {
@@ -196,11 +198,11 @@ public class Article {
 
     @Override
     public String toString() {
-        return "ArtikelEntity{" +
+        return "Article{" +
                 "artikelId=" + artikelId +
                 ", userId=" + userId +
+                ", customerId=" + customerId +
                 ", artikelnummer='" + artikelnummer + '\'' +
-                ", leverancier='" + leverancier + '\'' +
                 ", productgroep='" + productgroep + '\'' +
                 ", eancode='" + eancode + '\'' +
                 ", omschrijving='" + omschrijving + '\'' +
@@ -216,6 +218,4 @@ public class Article {
                 ", samenstelling='" + samenstelling + '\'' +
                 '}';
     }
-
-
 }
