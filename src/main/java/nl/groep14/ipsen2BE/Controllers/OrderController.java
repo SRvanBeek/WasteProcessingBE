@@ -17,12 +17,10 @@ import java.util.ArrayList;
 public class OrderController {
 
     private final OrderDAO orderDAO;
-    private final OrderService orderService;
 
 
-    public OrderController(OrderDAO orderDAO, OrderService orderService) {
+    public OrderController(OrderDAO orderDAO) {
         this.orderDAO = orderDAO;
-        this.orderService = orderService;
     }
 
 
