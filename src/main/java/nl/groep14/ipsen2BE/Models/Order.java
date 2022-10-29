@@ -16,15 +16,9 @@ public class Order {
     @Column(name = "artikel_ID")
     private int artikelID;
 
-    @Column(name = "customer_name")
-    private String customerName;
-
     @Column(name = "metrage")
     private float metrage;
 
-
-    @Column(name = "address")
-    private String address;
 
     public Long getId() {
         return id;
@@ -50,28 +44,12 @@ public class Order {
         this.artikelID = artikelID;
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     public float getMetrage() {
         return metrage;
     }
 
     public void setMetrage(float metrage) {
         this.metrage = metrage;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
 
@@ -81,9 +59,7 @@ public class Order {
                 "id=" + id +
                 ", customerID=" + customerID +
                 ", artikelID=" + artikelID +
-                ", customerName='" + customerName + '\'' +
                 ", metrage=" + metrage +
-                ", address='" + address + '\'' +
                 '}';
     }
 }
