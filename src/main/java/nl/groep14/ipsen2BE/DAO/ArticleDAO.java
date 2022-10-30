@@ -2,10 +2,13 @@ package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 @Component
 public class ArticleDAO {
@@ -24,7 +27,17 @@ public class ArticleDAO {
         return (ArrayList<Article>) this.articleRepository.findAll();
     }
 
-    public Optional<Article> getOrderByID(Long id){
+    public Optional<Article> getArticleByID(Long id){
         return this.articleRepository.findById(id);
     }
+
+    public Article getRandomArticle() {
+        long qty = articleRepository.count();
+        Random rand = new Random();
+        long id = rand.nextLong(qty);
+        System.out.println(id);
+        return getArticleByID(id).get();
+    }
+
+
 }

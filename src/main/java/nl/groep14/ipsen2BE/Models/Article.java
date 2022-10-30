@@ -3,15 +3,15 @@ package nl.groep14.ipsen2BE.Models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "artikel", schema = "vdl")
+@Table(name = "artikel")
 public class Article {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "artikel_ID")
-    private Long artikelId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "artikel_ID", unique = true, nullable = false)
+    private Long id;
     @Basic
     @Column(name = "user_ID")
-    private int userId;
+    private Integer userId;
 
     @Basic
     @Column(name = "customer_ID")
@@ -60,12 +60,12 @@ public class Article {
     @Column(name = "samenstelling")
     private String samenstelling;
 
-    public Long getArtikelId() {
-        return artikelId;
+    public long getArtikelId() {
+        return id;
     }
 
-    public void setArtikelId(Long artikelId) {
-        this.artikelId = artikelId;
+    public void setArtikelId(long id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -199,7 +199,7 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "artikelId=" + artikelId +
+                "artikelId=" + id +
                 ", userId=" + userId +
                 ", customerId=" + customerId +
                 ", artikelnummer='" + artikelnummer + '\'' +

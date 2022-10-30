@@ -45,10 +45,10 @@ public class OrderController {
         return this.orderDAO.getOrderByID(id).get();
     }
 
-    @RequestMapping(value = "/highestID", method = RequestMethod.GET)
+    @RequestMapping(value = "/highestIDOrder", method = RequestMethod.GET)
     @ResponseBody
     public Order getHighestIdOrder(){
-        return this.orderDAO.getHighestIdOrder();
+        return this.orderDAO.getMaxIdOrder();
     }
 
 

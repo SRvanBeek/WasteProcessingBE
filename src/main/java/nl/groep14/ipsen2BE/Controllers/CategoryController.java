@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/category")
@@ -34,9 +35,8 @@ public class CategoryController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<ArrayList<Category>> categories(){
-        ArrayList<Category> categories = this.categoryDAO.getAll();
-        return new ApiResponse<>(HttpStatus.ACCEPTED, categories);
+    public List<Category> categories(){
+        return this.categoryDAO.getAll();
     }
 
 }
