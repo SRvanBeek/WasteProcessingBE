@@ -1,12 +1,10 @@
 package nl.groep14.ipsen2BE.Controllers;
 
-import nl.groep14.ipsen2BE.DAO.ArticleDAO;
-import nl.groep14.ipsen2BE.DAO.CategoryDAO;
-import nl.groep14.ipsen2BE.DAO.CustomerDAO;
-import nl.groep14.ipsen2BE.DAO.WasteDAO;
+import nl.groep14.ipsen2BE.DAO.*;
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Customer;
+import nl.groep14.ipsen2BE.Models.Order;
 import nl.groep14.ipsen2BE.Services.WasteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +22,16 @@ public class SnijController {
     private final CustomerDAO customerDAO;
     private final WasteService wasteService;
     private final CategoryDAO categoryDAO;
+    private final OrderDAO orderDAO;
 
     private final Random rand = new Random();
 
-    public SnijController(ArticleDAO articleDAO, CustomerDAO customerDAO, WasteDAO wasteDAO, WasteService wasteService, CategoryDAO categoryDAO) {
+    public SnijController(ArticleDAO articleDAO, CustomerDAO customerDAO, WasteDAO wasteDAO, WasteService wasteService, CategoryDAO categoryDAO, OrderDAO orderDAO) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
         this.wasteService = wasteService;
         this.categoryDAO = categoryDAO;
+        this.orderDAO = orderDAO;
     }
 
 
@@ -47,17 +47,16 @@ public class SnijController {
         float maxMeter = customer.getMaxMeter();
         ArrayList<Category> catogories = this.categoryDAO.getAll();
         if (metrage > maxMeter) {
-            //gooi weg
-            System.out.println("VOORAAD");
+            return "Voorraad, " + chosenArticle.getArtikelId();
         } else if (metrage >= minMeter && metrage <= maxMeter) {
             //maak verstuur op label
-            System.out.println("verstuur op");
+            Order order = new Order(customerID,chosenArticle.getArtikelId(),metrage);
+            this.orderDAO.saveToDatabase(order);
+            return "Order, " + chosenArticle.getArtikelId();
         } else {
             wasteService.createWaste(chosenArticle,catogories, metrage);
-            String response = "Waste, " + chosenArticle.getArtikelId();
-            return response;
+            return "Waste, " + chosenArticle.getArtikelId();
         }
-        return "ERROR";
     }
 
 

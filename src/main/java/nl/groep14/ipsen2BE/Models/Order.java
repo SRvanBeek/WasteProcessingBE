@@ -11,14 +11,19 @@ public class Order {
     private Long id;
 
     @Column(name = "customer_ID")
-    private int customerID;
+    private long customerID;
 
     @Column(name = "artikel_ID")
-    private int artikelID;
+    private long artikelID;
 
     @Column(name = "metrage")
     private float metrage;
 
+    public Order(long customerID, long artikelID, float metrage) {
+        this.customerID = customerID;
+        this.artikelID = artikelID;
+        this.metrage = metrage;
+    }
 
     public Long getId() {
         return id;
@@ -28,7 +33,7 @@ public class Order {
         this.id = id;
     }
 
-    public int getCustomerID() {
+    public long getCustomerID() {
         return customerID;
     }
 
@@ -36,7 +41,7 @@ public class Order {
         this.customerID = customerID;
     }
 
-    public int getArtikelID() {
+    public long getArtikelID() {
         return artikelID;
     }
 
