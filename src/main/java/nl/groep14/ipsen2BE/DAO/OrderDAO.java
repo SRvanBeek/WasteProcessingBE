@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Order;
+import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class OrderDAO {
 
     public Optional<Order> getOrderByID(Long id){
         return this.orderRepository.findById(id);
+    }
+
+    public Optional<Order> getOrderByArtikelId(Long id){
+        return this.orderRepository.getOrdersByArtikelID(id);
     }
 
 }

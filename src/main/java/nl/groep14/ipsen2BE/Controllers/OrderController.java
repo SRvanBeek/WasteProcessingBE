@@ -4,6 +4,7 @@ import nl.groep14.ipsen2BE.DAO.OrderDAO;
 import nl.groep14.ipsen2BE.Exceptions.OrderNotFoundException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Order;
+import nl.groep14.ipsen2BE.Models.Waste;
 import nl.groep14.ipsen2BE.Services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,12 @@ public class OrderController {
         currentOrder.setId(currentID);
         this.orderDAO.saveToDatabase(currentOrder);
         return new ApiResponse(HttpStatus.ACCEPTED, "You updated order"+currentID+"!");
+    }
+
+    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Order getOneOrderByArticleId(@PathVariable Long articleId){
+        return this.orderDAO.getOrderByArtikelId(articleId).get();
     }
 
     @ExceptionHandler(OrderNotFoundException.class)

@@ -19,6 +19,10 @@ public class Order {
     @Column(name = "metrage")
     private float metrage;
 
+    public Order(){
+
+    }
+
     public Order(long customerID, long artikelID, float metrage) {
         this.customerID = customerID;
         this.artikelID = artikelID;
