@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
-    @Query("select o from Order o where o.id = (select max(id) from Order )")
-    public Order getMaxID();
+
 }

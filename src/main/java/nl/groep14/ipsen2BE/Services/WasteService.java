@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class WasteService {
 
     private final WasteDAO wasteDAO;
+    private boolean hundredPercent = false;
 
     public WasteService(WasteDAO wasteDAO) {
         this.wasteDAO = wasteDAO;
@@ -26,6 +27,13 @@ public class WasteService {
         for (Category category : catogories) {
             if (checkVoorwaarde(samenstellingMap,category)) {
                 acceptedCategoriesList.add(category.getName());
+                if (hundredPercent){
+                    System.out.println("yes");
+                    String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
+                    acceptedCategoriesList.clear();
+                    acceptedCategoriesList.add(hundred);
+                    break;
+                }
             }
         }
         String categories = String.join(",",acceptedCategoriesList);
@@ -77,7 +85,6 @@ public class WasteService {
         return true;
     }
 
-
     public Boolean voorwaardeFalseOrTrue(String deelVoorwaarde, HashMap<String, Integer> samenstellingMap) {
         if (deelVoorwaarde.contains("%")) {
             String[] deelVoorwaardeSplit = deelVoorwaarde.split(" ");
@@ -99,6 +106,9 @@ public class WasteService {
                         } else {
                             int value = Integer.parseInt(valueString);
                             if (samenstellingMap.get(voorwaardeKey) == value) {
+                                if (value == 100){
+                                    this.hundredPercent = true;
+                                }
                                 return true;
                             }
                         }

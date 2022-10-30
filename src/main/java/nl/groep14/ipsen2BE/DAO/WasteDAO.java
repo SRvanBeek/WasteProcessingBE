@@ -21,7 +21,12 @@ public class WasteDAO {
         return (ArrayList<Waste>) this.wasteRepository.findAll();
     }
 
-    public Optional<Waste> getOrderByID(Long id){
+    public Optional<Waste> getWasteByID(Long id){
         return this.wasteRepository.findById(id);
     }
+
+    public Optional<Waste> getWasteByOrderID(Long id){
+        return this.wasteRepository.getWasteByArtikelId(id);
+    }
+
 }

@@ -25,27 +25,34 @@ public class WasteController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postArticle(@RequestBody Waste waste){
+    public ApiResponse postWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Waste> getAllArticles(){
+    public List<Waste> getAllWaste(){
         return this.wasteDAO.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneArticle(@PathVariable Long id){
-        return this.wasteDAO.getOrderByID(id).get();
+    public Waste getOneWaste(@PathVariable Long id){
+        return this.wasteDAO.getWasteByID(id).get();
     }
+
+    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Waste getOneWasteByArticleId(@PathVariable Long articleId){
+        return this.wasteDAO.getWasteByOrderID(articleId).get();
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putOneWaste(@PathVariable Long id,@RequestBody Waste newWaste){
-        Waste currentWaste = this.wasteDAO.getOrderByID(id).get();
+        Waste currentWaste = this.wasteDAO.getWasteByID(id).get();
         long currentID = currentWaste.getArtikelId();
         currentWaste = newWaste;
         currentWaste.setArtikelId(currentID);

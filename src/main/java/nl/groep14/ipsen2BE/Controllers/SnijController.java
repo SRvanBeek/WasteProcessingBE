@@ -38,7 +38,7 @@ public class SnijController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public String snijApplicatie(){
-        Article chosenArticle = articleDAO.getArticleByID(2968L).get();
+        Article chosenArticle = articleDAO.getRandomArticle();
         int articleBreedte = chosenArticle.getBreedte();
         int metrage = this.rand.nextInt((articleBreedte / 3));
         long customerID = chosenArticle.getCustomerId();
@@ -54,7 +54,8 @@ public class SnijController {
             System.out.println("verstuur op");
         } else {
             wasteService.createWaste(chosenArticle,catogories, metrage);
-            return "Waste";
+            String response = "Waste, " + chosenArticle.getArtikelId();
+            return response;
         }
         return "ERROR";
     }
