@@ -35,7 +35,6 @@ public class ArticleDAO {
         long qty = articleRepository.count();
         Random rand = new Random();
         long id = rand.nextLong(qty);
-        System.out.println(id);
         return getArticleByID(id).get();
     }
 

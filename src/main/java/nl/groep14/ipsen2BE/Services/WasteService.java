@@ -7,6 +7,7 @@ import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 @Service
 public class WasteService {
@@ -17,7 +18,7 @@ public class WasteService {
         this.wasteDAO = wasteDAO;
     }
 
-    public void CreateWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
+    public void createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
         ArrayList<String> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
 
@@ -107,6 +108,9 @@ public class WasteService {
             }
         } else {
             deelVoorwaarde = deelVoorwaarde.replace(" ", "");
+            if (deelVoorwaarde.contains("+Overig")){
+                deelVoorwaarde = deelVoorwaarde.replace("+Overig", "");
+            }
             return samenstellingMap.containsKey(deelVoorwaarde);
         }
         return false;
