@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/api/orders")
@@ -36,15 +37,15 @@ public class OrderController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<ArrayList<Order>> getAllOrders(){
+    public ArrayList<Order> getAllOrders(){
         ArrayList<Order> orders = this.orderDAO.getAll();
-        return new ApiResponse(HttpStatus.ACCEPTED, orders);
+        return orders;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getOneOrder(@PathVariable Long id){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id));
+    public Optional<Order> getOneOrder(@PathVariable Long id){
+        return this.orderDAO.getOrderByID(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
