@@ -34,10 +34,10 @@ public class CustomerController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse addCustomer(@RequestBody Customer customer) {
+    public Customer addCustomer(@RequestBody Customer customer) {
 
         this.customerDAO.saveToDatabase(customer);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "customer added");
+        return customer;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
