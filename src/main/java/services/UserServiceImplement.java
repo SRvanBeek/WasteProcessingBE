@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,13 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     private final UserRepository gebruikerRepository;
     private final RoleRepository rolRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository) {
+    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, PasswordEncoder passwordEncoder) {
         this.gebruikerRepository = gebruikerRepository;
         this.rolRepository = rolRepository;
+
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,6 +44,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public User saveGebruiker(User user) {
         log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return gebruikerRepository.save(user);
     }
 
