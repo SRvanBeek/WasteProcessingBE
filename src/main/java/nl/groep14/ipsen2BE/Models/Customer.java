@@ -1,7 +1,6 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
-
 @Entity
 @Table(name = "customer")
 public class Customer {
@@ -55,7 +54,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "Customer{" +
                 "id=" + id + '\'' +
                 ", name=" + name + '\'' +
                 ", min_meter=" + min_meter + '\'' +

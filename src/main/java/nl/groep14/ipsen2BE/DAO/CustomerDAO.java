@@ -3,7 +3,6 @@ package nl.groep14.ipsen2BE.DAO;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Customer;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -27,3 +26,4 @@ public class CustomerDAO {
         return this.customerRepository.findById(id);
     }
 }
+
