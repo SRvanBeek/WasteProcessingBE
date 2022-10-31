@@ -13,13 +13,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api" )
-
-
 public class UserController {
-   private final UserService userService;
-
-   @GetMapping("/users")
-    public ResponseEntity<List<User>>getUsers(){
-        return ResponseEntity.ok(userService.getGebruikers());
-    }
+//   private final UserService userService;
+//
+//   @GetMapping("/users")
+//    public ResponseEntity<List<User>>getUsers(){
+//        return ResponseEntity.ok(userService.getGebruikers());
+//    }
 }
