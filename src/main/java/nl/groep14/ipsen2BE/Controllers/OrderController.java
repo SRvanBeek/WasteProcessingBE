@@ -44,8 +44,8 @@ public class OrderController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Optional<Order> getOneOrder(@PathVariable Long id){
-        return this.orderDAO.getOrderByID(id);
+    public Order getOneOrder(@PathVariable Long id){
+        return this.orderDAO.getOrderByID(id).get();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
