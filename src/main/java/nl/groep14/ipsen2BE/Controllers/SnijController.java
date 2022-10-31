@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+/**
+ * SnijController is used to check in which Category a certain Article should be placed.
+ * @author Dino Yang
+ */
 @Controller
 @RequestMapping(value = "/api/snij")
 public class SnijController {

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+/**
+ * WasteService is a Service for the entity Waste.
+ * @author Dino Yang
+ */
 @Service
 public class WasteService {
 
@@ -17,15 +22,24 @@ public class WasteService {
     public WasteService(WasteDAO wasteDAO) {
         this.wasteDAO = wasteDAO;
     }
-    //createWaste takes the sammenstelling from an Article and checks if it matches with a category voorwaarde.
+
+    /**
+     * createWaste takes the 'samenstelling' from an Article and checks for every Category if it matches with the 'condition' of the category.
+     * When a condition of a Category contains a hundred percent of a material and the 'samenstelling' matches with that 'condition'.
+     * We only want to send that category back, we do this using the variable 'this.hundredPercent'.
+     * We create a new 'Waste' entity after checking all the Categories, and we also save that entity to the database.
+     * @param chosenArticle The Article that needs to be checked
+     * @param catogories A list of all the categories in the database
+     * @param metrage The 'metrage' of the Waste
+     */
     public void createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
         ArrayList<String> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
         HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
         for (Category category : catogories) {
-            if (checkVoorwaarde(samenstellingMap,category)) {
+            if (checkCondition(samenstellingMap,category)) {
                 acceptedCategoriesList.add(category.getName());
-                if (hundredPercent){
+                if (this.hundredPercent){
                     String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
                     acceptedCategoriesList.clear();
                     acceptedCategoriesList.add(hundred);
@@ -37,40 +51,58 @@ public class WasteService {
         Waste waste = new Waste(chosenArticle.getArtikelId(),metrage,categories);
         wasteDAO.saveToDatabase(waste);
     }
-    //samenstellingSplitter splits the String samenstelling and returns a hashmap with
-    //material name as key and percentage as value.
+
+    /**
+     * samenstellingSplitter splits the String 'samenstelling' and returns a hashmap with material name as key and percentage as value.
+     * @param samenstelling A String of the 'samenstelling' of an Article
+     * @return A hashmap with material as key and percentage as value.
+     */
+    //
     private HashMap<String, Integer> samenstellingSplitter(String samenstelling) {
         HashMap<String, Integer> samenstellingMap = new HashMap<>();
         String[] str = samenstelling.split(" ");
         for (int i = 0; i < str.length; i++) {
             if (str[i].contains("%")) {
-                samenstellingMap.put(str[i + 1], parseInteger(str[i]));
+                samenstellingMap.put(str[i + 1], parseStringToInt(str[i]));
             }
         }
         return samenstellingMap;
     }
 
-    private int parseInteger(String intString) {
+    /**
+     * parseStringToInt changes a String into an int
+     * @param intString String that contains an int
+     * @return int that contains the parsed String
+     */
+    private int parseStringToInt(String intString) {
         intString = intString.substring(0, intString.length() - 1);
         return Integer.parseInt(intString);
     }
-    //checkVoorwaarde splits the voorwaarde into 'deelVoorwaarde' so that we can check them separately.
-    //We first split the voorwaarde by || into 'deelVoorwaarde'. Then we split the voorwaarde again if it contains a &&.
-    //After splitting the voorwaarde we use voorwaardeFalseOrTrue().
-    public Boolean checkVoorwaarde(HashMap<String, Integer> samenstellingMap, Category category) {
-        String[] deelVoorwaarde = category.getVoorwaarde().split("\\|\\|");
-        for (String s : deelVoorwaarde) {
-            if (s.contains("&&")) {
+
+
+    /**
+     * checkCondition splits the 'condition' of a Category into 'conditionParts' so that we can check them separately.
+     * We first split the 'condition' by || into 'conditionParts'. Then we split the 'conditionParts' again if it contains a &&, into 'conditionAND'.
+     * After splitting the 'condition' we use conditionFalseOrTrue() to see if the 'conditionParts' matches with the samenstelling.
+     * @param samenstellingMap A hashmap with String material as key and int percentage as value.
+     * @param category the Category we are checking
+     * @return We return True when the samenstelling matches one of the 'conditionParts'.
+     * If there are any && in the 'conditionParts', every condition in String[]'conditionAND' need to match the samenstelling.
+     */
+    public Boolean checkCondition(HashMap<String, Integer> samenstellingMap, Category category) {
+        String[] conditionParts = category.getVoorwaarde().split("\\|\\|");
+        for (String conditionPart : conditionParts) {
+            if (conditionPart.contains("&&")) {
                 ArrayList<Boolean> reqList = new ArrayList<>();
-                String[] voorwaardeEN = s.split("&&");
-                for (String value : voorwaardeEN) {
-                    reqList.add(voorwaardeFalseOrTrue(value, samenstellingMap));
+                String[] conditionAND = conditionPart.split("&&");
+                for (String value : conditionAND) {
+                    reqList.add(conditionFalseOrTrue(value, samenstellingMap));
                 }
-                if (isAllTrue(reqList)){
+                if (areAllTrue(reqList)){
                     return true;
                 }
             } else {
-                if (voorwaardeFalseOrTrue(s, samenstellingMap)){
+                if (conditionFalseOrTrue(conditionPart, samenstellingMap)){
                     return true;
                 }
             }
@@ -78,36 +110,50 @@ public class WasteService {
         return false;
     }
 
-    public boolean isAllTrue(ArrayList<Boolean> reqList) {
+    /**
+     * areAllTrue checks whether all the booleans in a given arrayList are true or not.
+     * @param reqList The arrayList to check
+     * @return We return true if all the booleans in the arrayList are true
+     */
+    public boolean areAllTrue(ArrayList<Boolean> reqList) {
         for (boolean req : reqList) {
             if (!req) return false;
         }
         return true;
     }
-    //voorwaardeFalseOrTrue does the actual check itself. This method separates the name of the material and
-    //the value of the material in the voorwaarde. With use of the samenstellingMap, we can check whether the voorwaarde
-    //is true or false.
-    public Boolean voorwaardeFalseOrTrue(String deelVoorwaarde, HashMap<String, Integer> samenstellingMap) {
-        if (deelVoorwaarde.contains("%")) {
-            String[] deelVoorwaardeSplit = deelVoorwaarde.split(" ");
-            for (int i = 0; i < deelVoorwaardeSplit.length; i++) {
-                if (deelVoorwaardeSplit[i].contains("%")) {
-                    String voorwaardeKey = deelVoorwaardeSplit[i + 1];
-                    if (samenstellingMap.containsKey(voorwaardeKey)) {
-                        String valueString = deelVoorwaardeSplit[i].substring(0, deelVoorwaardeSplit[i].length() - 1);
+    
+
+    /**
+     * conditionFalseOrTrue does the actual check itself. This method separates the name of the material and
+     * the value of the material in the condition and checks whether the condition is true or false given 
+     * the samenstelling of an Article. When the samenstelling matches a condition which is a hundred percent of a  material
+     * this.hundredPercent becomes true. We do this because when the samenstelling matches a condition of a category
+     * which is a hundred percent of a material, we only want to send that particular category back.
+     * @param conditionPart The condition we are checking
+     * @param samenstellingMap A hashmap with String material as key and int percentage as value.
+     * @return A True is returned when the condition matches with the samenstelling.
+     */
+    public Boolean conditionFalseOrTrue(String conditionPart, HashMap<String, Integer> samenstellingMap) {
+        if (conditionPart.contains("%")) {
+            String[] conditionPartsSplit = conditionPart.split(" ");
+            for (int i = 0; i < conditionPartsSplit.length; i++) {
+                if (conditionPartsSplit[i].contains("%")) {
+                    String conditionKey = conditionPartsSplit[i + 1];
+                    if (samenstellingMap.containsKey(conditionKey)) {
+                        String valueString = conditionPartsSplit[i].substring(0, conditionPartsSplit[i].length() - 1);
                         if (valueString.contains(">")) {
                             int value = Integer.parseInt(valueString.replace(">", ""));
-                            if (samenstellingMap.get(voorwaardeKey) > value) {
+                            if (samenstellingMap.get(conditionKey) > value) {
                                 return true;
                             }
                         } else if (valueString.contains("<")) {
                             int value = Integer.parseInt(valueString.replace("<", ""));
-                            if (samenstellingMap.get(voorwaardeKey) < value) {
+                            if (samenstellingMap.get(conditionKey) < value) {
                                 return true;
                             }
                         } else {
                             int value = Integer.parseInt(valueString);
-                            if (samenstellingMap.get(voorwaardeKey) == value) {
+                            if (samenstellingMap.get(conditionKey) == value) {
                                 if (value == 100){
                                     this.hundredPercent = true;
                                 }
@@ -119,11 +165,11 @@ public class WasteService {
                 }
             }
         } else {
-            deelVoorwaarde = deelVoorwaarde.replace(" ", "");
-            if (deelVoorwaarde.contains("+Overig")){
-                deelVoorwaarde = deelVoorwaarde.replace("+Overig", "");
+            conditionPart = conditionPart.replace(" ", "");
+            if (conditionPart.contains("+Overig")){
+                conditionPart = conditionPart.replace("+Overig", "");
             }
-            return samenstellingMap.containsKey(deelVoorwaarde);
+            return samenstellingMap.containsKey(conditionPart);
         }
         return false;
     }
