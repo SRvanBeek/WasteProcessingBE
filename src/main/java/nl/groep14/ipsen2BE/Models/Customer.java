@@ -1,6 +1,11 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+
+/**
+ * Represents the Customer table in the database
+ * @author Stijn van Beek
+ */
 @Entity
 @Table(name = "customer")
 public class Customer {
