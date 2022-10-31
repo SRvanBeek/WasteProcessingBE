@@ -1,47 +1,56 @@
 package nl.groep14.ipsen2BE.Controllers;
 
+import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
-import nl.groep14.ipsen2BE.Models.Article;
+import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "api/customer")
+@RequestMapping(value = "/api/customers")
 public class CustomerController {
-
     private final CustomerDAO customerDAO;
-
 
     public CustomerController(CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
     }
 
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse updateCustomer(@RequestBody Customer customer) {
+        if(this.customerDAO.getCustomerByID(customer.getId()).isEmpty()){
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "customer does not exist!");
+        }
+
+        this.customerDAO.saveToDatabase(customer);
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "customer updated");
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postCustomer(@RequestBody Customer customer){
+    public Customer addCustomer(@RequestBody Customer customer) {
+
         this.customerDAO.saveToDatabase(customer);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+        return customer;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Customer> getAllCustomers(){
-        List<Customer> customers = this.customerDAO.getAll();
+    public ArrayList<Customer> customers(){
+        ArrayList<Customer> customers = this.customerDAO.getAll();
         return customers;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Customer getOneCustomer(@PathVariable Long id){
-        return this.customerDAO.getCustomerByID(id).get();
+    public Optional<Customer> getCustomerByID(@PathVariable long id){
+        Optional<Customer> customer = this.customerDAO.getCustomerByID(id);
+        return customer;
     }
-
-
-
-
 }

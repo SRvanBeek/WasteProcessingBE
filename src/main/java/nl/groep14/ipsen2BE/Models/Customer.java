@@ -1,58 +1,47 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-
 @Entity
-@Table(name = "customer", schema = "vdl")
+@Table(name = "customer")
 public class Customer {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "customer_ID")
-    private long customerId;
-    @Basic
-    @Column(name = "customer_name")
-    private String customerName;
-    @Basic
-    @Column(name = "min_meter")
-    private float minMeter;
-    @Basic
-    @Column(name = "max_meter")
-    private float maxMeter;
-    @Basic
-    @Column(name = "address")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    private double min_meter;
+    private double max_meter;
     private String address;
 
-    public long getCustomerId() {
-        return customerId;
+    public long getId() {
+        return id;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public float getMinMeter() {
-        return minMeter;
+    public double getMin_meter() {
+        return min_meter;
     }
 
-    public void setMinMeter(float minMeter) {
-        this.minMeter = minMeter;
+    public void setMin_meter(double min_meter) {
+        this.min_meter = min_meter;
     }
 
-    public float getMaxMeter() {
-        return maxMeter;
+    public double getMax_meter() {
+        return max_meter;
     }
 
-    public void setMaxMeter(float maxMeter) {
-        this.maxMeter = maxMeter;
+    public void setMax_meter(double max_meter) {
+        this.max_meter = max_meter;
     }
 
     public String getAddress() {
@@ -66,11 +55,11 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", minMeter=" + minMeter +
-                ", maxMeter=" + maxMeter +
-                ", address='" + address + '\'' +
+                "id=" + id + '\'' +
+                ", name=" + name + '\'' +
+                ", min_meter=" + min_meter + '\'' +
+                ", max_meter=" + max_meter + '\'' +
+                ", address=" + address +
                 '}';
     }
 }
