@@ -6,10 +6,15 @@ import javax.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "Customer_ID")
     private long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "min_meter")
     private double min_meter;
+    @Column(name = "max_meter")
     private double max_meter;
+    @Column(name = "address")
     private String address;
 
     public long getId() {

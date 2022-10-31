@@ -1,8 +1,9 @@
-package services;
+package nl.groep14.ipsen2BE.Services;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
+import nl.groep14.ipsen2BE.Services.UserService;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
