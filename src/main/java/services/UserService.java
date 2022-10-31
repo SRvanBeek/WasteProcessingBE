@@ -2,9 +2,10 @@ package services;
 
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface UserService {
     User saveGebruiker(User user);
     Role saveRol(Role role);
