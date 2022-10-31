@@ -20,7 +20,10 @@ import java.util.List;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 
-
+/**
+ * Deze service maakt 2 verschillende labels: Afvallabel en een orderlabel
+ *
+ */
 
 public class PdfService {
     private Label label;
