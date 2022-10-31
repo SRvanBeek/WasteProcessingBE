@@ -26,7 +26,6 @@ public class WasteService {
             if (checkVoorwaarde(samenstellingMap,category)) {
                 acceptedCategoriesList.add(category.getName());
                 if (hundredPercent){
-                    System.out.println("yes");
                     String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
                     acceptedCategoriesList.clear();
                     acceptedCategoriesList.add(hundred);

@@ -26,7 +26,7 @@ public class SnijController {
 
     private final Random rand = new Random();
 
-    public SnijController(ArticleDAO articleDAO, CustomerDAO customerDAO, WasteDAO wasteDAO, WasteService wasteService, CategoryDAO categoryDAO, OrderDAO orderDAO) {
+    public SnijController(ArticleDAO articleDAO, CustomerDAO customerDAO, WasteService wasteService, CategoryDAO categoryDAO, OrderDAO orderDAO) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
         this.wasteService = wasteService;
@@ -43,8 +43,8 @@ public class SnijController {
         int metrage = this.rand.nextInt((articleBreedte / 3));
         long customerID = chosenArticle.getCustomerId();
         Customer customer = this.customerDAO.getCustomerByID(customerID).get();
-        float minMeter = customer.getMinMeter();
-        float maxMeter = customer.getMaxMeter();
+        double minMeter = customer.getMin_meter();
+        double maxMeter = customer.getMax_meter();
         ArrayList<Category> catogories = this.categoryDAO.getAll();
         if (metrage > maxMeter) {
             return "Voorraad, " + chosenArticle.getArtikelId();

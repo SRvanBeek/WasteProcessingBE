@@ -1,4 +1,4 @@
-package services;
+package nl.groep14.ipsen2BE.Services;
 
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
