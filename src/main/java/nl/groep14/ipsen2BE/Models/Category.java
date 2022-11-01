@@ -2,6 +2,10 @@ package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
 
+/**
+ * Represents the Category table in the database
+ * @author Stijn van Beek
+ */
 @Entity
 @Table(name = "category")
 public class Category {
