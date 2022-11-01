@@ -1,5 +1,6 @@
 package nl.groep14.ipsen2BE.Controllers;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
@@ -41,24 +42,27 @@ public class UserController {
        return ResponseEntity.ok().build();
     }
 
-    class RoleToUserForm{
+
+}
+
+@Data
+class RoleToUserForm{
     private String username;
     private String roleName;
 
-         public String getUsername() {
-             return username;
-         }
+    public String getUsername() {
+        return username;
+    }
 
-         public void setUsername(String username) {
-             this.username = username;
-         }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-         public String getRoleName() {
-             return roleName;
-         }
+    public String getRoleName() {
+        return roleName;
+    }
 
-         public void setRoleName(String roleName) {
-             this.roleName = roleName;
-         }
-     }
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 }
