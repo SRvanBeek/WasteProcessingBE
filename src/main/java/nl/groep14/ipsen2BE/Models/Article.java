@@ -2,6 +2,10 @@ package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
 
+/**
+ * Article is the model of the Article entity.
+ * @author Dino Yang
+ */
 @Entity
 @Table(name = "artikel")
 public class Article {

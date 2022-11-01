@@ -1,15 +1,16 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Article;
-import nl.groep14.ipsen2BE.Models.Order;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * OrderDAO is the DAO of the Order entity
+ * @author Dino Yang
+ */
 @Component
 public class ArticleDAO {
 

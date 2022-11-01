@@ -5,16 +5,17 @@ import nl.groep14.ipsen2BE.DAO.ArticleDAO;
 import nl.groep14.ipsen2BE.Exceptions.OrderNotFoundException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Article;
-import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+
+/**
+ * ArticleController is the controller for the Waste Entity
+ * @author Dino Yang
+ */
 @Controller
 @RequestMapping(value = "api/article")
 public class ArticleController {

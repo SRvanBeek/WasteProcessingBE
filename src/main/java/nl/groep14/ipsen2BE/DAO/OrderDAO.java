@@ -1,11 +1,14 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Order;
-import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Optional;
+
+/**
+ * OrderDAO is the DAO of the Order entity
+ * @author Dino Yang
+ */
 @Component
 public class OrderDAO {
 
