@@ -54,7 +54,7 @@ public class ArticleController {
         currentArticle = newArticle;
         currentArticle.setArtikelId(currentID);
         this.articleDAO.saveToDatabase(currentArticle);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You updated article"+currentID+"!");
+        return new ApiResponse(HttpStatus.ACCEPTED, "You updated article "+currentID+"!");
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
