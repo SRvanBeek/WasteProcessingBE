@@ -71,7 +71,9 @@ public class WasteService {
     //
     private HashMap<String, Integer> samenstellingSplitter(String samenstelling) {
         HashMap<String, Integer> samenstellingMap = new HashMap<>();
+        samenstelling = samenstelling.replace("/", " ");
         String[] str = samenstelling.split(" ");
+
         for (int i = 0; i < str.length; i++) {
             if (str[i].contains("%")) {
                 samenstellingMap.put(str[i + 1], parseStringToInt(str[i]));
@@ -126,7 +128,7 @@ public class WasteService {
      * @param reqList The arrayList to check
      * @return We return true if all the booleans in the arrayList are true
      */
-    public boolean areAllTrue(ArrayList<Boolean> reqList) {
+    private boolean areAllTrue(ArrayList<Boolean> reqList) {
         for (boolean req : reqList) {
             if (!req) return false;
         }

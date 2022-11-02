@@ -19,19 +19,33 @@ public class ArticleDAO {
     public ArticleDAO(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
-
+    /**
+     * Saves a single Article to the database.
+     * @param article the Waste that is to be saved
+     */
     public void saveToDatabase(Article article){
         this.articleRepository.save(article);
     }
-
+    /**
+     * gets all Article in the database.
+     * @return arrayList of Article
+     */
     public ArrayList<Article> getAll(){
         return (ArrayList<Article>) this.articleRepository.findAll();
     }
-
+    /**
+     * Attempts to return a single Article if one exists in the database with the given id.
+     * @param id The id that is used to find a specific Article.
+     * @return an Article if an Article with the id exists.
+     */
     public Optional<Article> getArticleByID(Long id){
         return this.articleRepository.findById(id);
     }
 
+    /**
+     * picks a random Article that has no user ID.
+     * @return Article
+     */
     public Article getRandomArticle() {
         long qty = articleRepository.count();
         Random rand = new Random();
