@@ -1,6 +1,7 @@
-package services;
+package nl.groep14.ipsen2BE.Services;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.groep14.ipsen2BE.DAO.UserDAO;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
@@ -22,12 +23,14 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     private final UserRepository gebruikerRepository;
     private final RoleRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserDAO userDAO;
 
-    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, PasswordEncoder passwordEncoder, UserDAO userDAO) {
         this.gebruikerRepository = gebruikerRepository;
         this.rolRepository = rolRepository;
 
         this.passwordEncoder = passwordEncoder;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -45,13 +48,13 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     public User saveGebruiker(User user) {
         log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return gebruikerRepository.save(user);
+        return userDAO.saveUserToDatabase(user);
     }
 
     @Override
     public Role saveRol(Role role) {
         log.info("Slaat een nieuwe rol  {} op naar de database", role.getName()); //Logs om te checken of de methodes werken naar behoren
-        return rolRepository.save(role);
+        return userDAO.saveRoleToDatabase(role);
     }
 
     @Override
