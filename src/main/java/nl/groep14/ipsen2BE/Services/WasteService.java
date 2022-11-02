@@ -24,15 +24,27 @@ public class WasteService {
     }
 
     /**
-     * createWaste takes the 'samenstelling' from an Article and checks for every Category if it matches with the 'condition' of the category.
-     * When a condition of a Category contains a hundred percent of a material and the 'samenstelling' matches with that 'condition'.
-     * We only want to send that category back, we do this using the variable 'this.hundredPercent'.
-     * We create a new 'Waste' entity after checking all the Categories, and we also save that entity to the database.
+     * createAndSave creates a waste entity using createWaste and saves it to the database.
      * @param chosenArticle The Article that needs to be checked
      * @param catogories A list of all the categories in the database
      * @param metrage The 'metrage' of the Waste
      */
-    public void createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
+    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long metrage){
+        Waste waste = createWaste(chosenArticle,catogories,metrage);
+        this.wasteDAO.saveToDatabase(waste);
+    }
+
+    /**
+     * createWaste takes the 'samenstelling' from an Article and checks for every Category if it matches with the 'condition' of the category.
+     * When a condition of a Category contains a hundred percent of a material and the 'samenstelling' matches with that 'condition'.
+     * We only want to send that category back, we do this using the variable 'this.hundredPercent'.
+     * We create a new 'Waste' entity after checking all the Categories and return it.
+     * @param chosenArticle The Article that needs to be checked
+     * @param catogories A list of all the categories in the database
+     * @param metrage The 'metrage' of the Waste
+     * @return created Waste entity
+     */
+    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
         ArrayList<String> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
         HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
@@ -48,8 +60,7 @@ public class WasteService {
             }
         }
         String categories = String.join(",",acceptedCategoriesList);
-        Waste waste = new Waste(chosenArticle.getArtikelId(),metrage,categories);
-        wasteDAO.saveToDatabase(waste);
+        return new Waste(chosenArticle.getArtikelId(),metrage,categories);
     }
 
     /**
