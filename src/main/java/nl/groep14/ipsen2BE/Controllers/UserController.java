@@ -8,6 +8,11 @@ import nl.groep14.ipsen2BE.Models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import nl.groep14.ipsen2BE.Services.UserService;
 
 import java.net.URI;

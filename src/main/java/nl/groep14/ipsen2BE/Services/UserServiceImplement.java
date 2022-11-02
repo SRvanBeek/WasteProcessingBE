@@ -1,17 +1,21 @@
 package nl.groep14.ipsen2BE.Services;
 
 import lombok.extern.slf4j.Slf4j;
+
 import nl.groep14.ipsen2BE.DAO.UserDAO;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     private final UserRepository gebruikerRepository;
     private final RoleRepository rolRepository;
+
     private final UserDAO userDAO;
 
     @Bean
@@ -36,6 +41,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         this.rolRepository = rolRepository;
 
         this.userDAO = userDAO;
+
     }
 
     @Override
@@ -52,14 +58,17 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public User saveGebruiker(User user) {
         log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
+
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         return userDAO.saveUserToDatabase(user);
+
     }
 
     @Override
     public Role saveRol(Role role) {
         log.info("Slaat een nieuwe rol  {} op naar de database", role.getName()); //Logs om te checken of de methodes werken naar behoren
         return userDAO.saveRoleToDatabase(role);
+
     }
 
     @Override

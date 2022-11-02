@@ -1,15 +1,25 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+
+/**
+ * Represents the Customer table in the database
+ * @author Stijn van Beek
+ */
 @Entity
 @Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "Customer_ID")
     private long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "min_meter")
     private double min_meter;
+    @Column(name = "max_meter")
     private double max_meter;
+    @Column(name = "address")
     private String address;
 
     public long getId() {
