@@ -1,7 +1,5 @@
 package nl.groep14.ipsen2BE.Controllers;
 
-import nl.groep14.ipsen2BE.DAO.*;
-import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Services.SnijService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,7 @@ public class SnijController {
     private final SnijService snijService;
 
 
-    public SnijController(ArticleDAO articleDAO, SnijService snijService) {
+    public SnijController(SnijService snijService) {
         this.snijService = snijService;
     }
 

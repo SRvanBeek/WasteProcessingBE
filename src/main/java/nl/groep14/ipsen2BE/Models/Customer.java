@@ -21,7 +21,7 @@ public class Customer {
     private double max_meter;
     @Column(name = "street")
     private String street;
-    @Column(name = "postalCode")
+    @Column(name = "postal_code")
     private String postalCode;
     @Column(name = "country")
     private String country;
