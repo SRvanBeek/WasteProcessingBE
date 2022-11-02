@@ -29,7 +29,4 @@ public class SnijController {
     public String snijApplicatie(){
         return snijService.snijApplication();
     }
-
-
-
 }
