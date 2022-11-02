@@ -45,6 +45,7 @@ public class SnijController {
         Customer customer = this.customerDAO.getCustomerByID(customerID).get();
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
+
         ArrayList<Category> catogories = this.categoryDAO.getAll();
         if (metrage > maxMeter) {
             return "Voorraad, " + chosenArticle.getArtikelId();
