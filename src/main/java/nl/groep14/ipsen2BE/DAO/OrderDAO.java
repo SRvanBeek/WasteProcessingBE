@@ -48,4 +48,8 @@ public class OrderDAO {
         return this.orderRepository.getOrdersByArtikelID(id);
     }
 
+    public void deleteById(long id){
+        this.orderRepository.deleteById(id);
+    }
+
 }

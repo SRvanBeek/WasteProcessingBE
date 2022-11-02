@@ -70,4 +70,15 @@ public class OrderController {
         return this.orderDAO.getOrderByArtikelId(articleId).get();
     }
 
+    /**
+     * deleteOneOrder deletes one Order from the database.
+     * @param id id of the Order that needs to be deleted
+     * @return ApiResponse with a corresponding message
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ApiResponse deleteOneOrder(@PathVariable Long id){
+        this.orderDAO.deleteById(id);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted order "+id+"!");
+    }
 }
