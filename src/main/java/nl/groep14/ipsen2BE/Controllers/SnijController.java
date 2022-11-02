@@ -43,8 +43,8 @@ public class SnijController {
         int metrage = this.rand.nextInt((articleBreedte / 3));
         long customerID = chosenArticle.getCustomerId();
         Customer customer = this.customerDAO.getCustomerByID(customerID).get();
-        float minMeter = customer.getMinMeter();
-        float maxMeter = customer.getMaxMeter();
+        float minMeter = (float) customer.getMin_meter();
+        float maxMeter = (float) customer.getMax_meter();
         ArrayList<Category> catogories = this.categoryDAO.getAll();
         if (metrage > maxMeter) {
             return "Voorraad, " + chosenArticle.getArtikelId();

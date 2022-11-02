@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,13 +25,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Bean
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 
     }
     @Bean
@@ -50,21 +54,20 @@ public class SecurityConfig {
                 .authenticationManager(authenticationManager)
                 .authorizeRequests().antMatchers("/api/login").permitAll()
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority("ROLE_USER")
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST,  "/api/**").hasAnyAuthority("ROLE_ADMIN ")
+                .authorizeRequests().antMatchers(HttpMethod.POST,  "/api/**").hasAnyAuthority("ROLE_ADMIN")
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET,  "/api/**").hasAnyAuthority("ROLE_ADMIN ")
+                .authorizeRequests().antMatchers(HttpMethod.PUT,  "/api/**").hasAnyAuthority("ROLE_ADMIN")
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.PUT,  "/api/**").hasAnyAuthority("ROLE_ADMIN ")
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.DELETE,  "/api/**").hasAnyAuthority("ROLE_ADMIN ")
+                .authorizeRequests().antMatchers(HttpMethod.DELETE,  "/api/**").hasAnyAuthority("ROLE_ADMIN")
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
 
 
@@ -73,7 +76,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 
         return daoAuthenticationProvider;
     }

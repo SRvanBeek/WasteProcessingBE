@@ -6,10 +6,12 @@ import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +24,17 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     private final UserRepository gebruikerRepository;
     private final RoleRepository rolRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserDAO userDAO;
 
-    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, PasswordEncoder passwordEncoder, UserDAO userDAO) {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, UserDAO userDAO) {
         this.gebruikerRepository = gebruikerRepository;
         this.rolRepository = rolRepository;
 
-        this.passwordEncoder = passwordEncoder;
         this.userDAO = userDAO;
     }
 
@@ -47,7 +52,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public User saveGebruiker(User user) {
         log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         return userDAO.saveUserToDatabase(user);
     }
 

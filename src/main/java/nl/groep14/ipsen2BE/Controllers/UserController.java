@@ -20,7 +20,6 @@ import java.util.List;
 
 public class UserController {
    private final UserService userService;
-   private final UserDAO userDAO;
 
    @GetMapping("/users")
     public ResponseEntity<List<User>>getUsers(){
