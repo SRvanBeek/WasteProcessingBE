@@ -1,8 +1,11 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
+/**
+ * Waste is the model of the Waste entity.
+ * @author Dino Yang
+ */
 @Entity
 @Table(name = "afval", schema = "vdl")
 public class Waste {

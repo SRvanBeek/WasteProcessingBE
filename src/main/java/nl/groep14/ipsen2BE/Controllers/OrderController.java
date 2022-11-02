@@ -4,16 +4,18 @@ import nl.groep14.ipsen2BE.DAO.OrderDAO;
 import nl.groep14.ipsen2BE.Exceptions.OrderNotFoundException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Order;
-import nl.groep14.ipsen2BE.Models.Waste;
-import nl.groep14.ipsen2BE.Services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * OrderController is the controller for the Order Entity
+ * @author Dino Yang
+ */
 @Controller
 @RequestMapping(value = "/api/orders")
 public class OrderController {

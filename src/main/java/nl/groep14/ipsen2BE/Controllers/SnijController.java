@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+/**
+ * SnijController is the controller for the snijApplicatie. SnijController is used to check in which Category a certain Article should be placed.
+ * @author Dino Yang
+ */
 @Controller
 @RequestMapping(value = "/api/snij")
 public class SnijController {
@@ -34,7 +39,13 @@ public class SnijController {
         this.orderDAO = orderDAO;
     }
 
-
+    /**
+     * snijApplicatie is the method called when one consumes the snij application of the api.
+     * First we choose a random Article who's userId is null. Then we randomly generate a 'metrage', we do this to simulate the snijApplicatie.
+     * After generating the 'metrage', we check in which category the article fits. This depends on the min and max meter of the Customer linked to the Article.
+     * @return String containing 'type, articleID' type is here the either an order, voorraad or waste
+     * depending on the min and max settings of the customer and articleID is the id of the article.
+     */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public String snijApplicatie(){
