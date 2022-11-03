@@ -48,6 +48,10 @@ public class OrderDAO {
         return this.orderRepository.getOrdersByArtikelID(id);
     }
 
+    /**
+     * Deletes a specific Order in the database based on the given id.
+     * @param id the target Order to be deleted
+     */
     public void deleteById(long id){
         this.orderRepository.deleteById(id);
     }

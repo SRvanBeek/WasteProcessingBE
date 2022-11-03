@@ -48,4 +48,12 @@ public class CategoryDAO {
     public Optional<Category> getCategoryByID(Long id){
         return this.categoryRepository.findById(id);
     }
+
+    /**
+     * Deletes a specific category in the database based on the given id.
+     * @param id the target Category to be deleted
+     */
+    public void deleteById(long id){
+        this.categoryRepository.deleteById(id);
+    }
 }
