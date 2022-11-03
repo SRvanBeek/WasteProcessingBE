@@ -63,6 +63,9 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public boolean getUsernameDuplicate(String username){
         List<User> users = getGebruikers();
+        for (User user:users){
+            System.out.println(user.getUsername());
+        }
         return containsName(users, username);
     }
 

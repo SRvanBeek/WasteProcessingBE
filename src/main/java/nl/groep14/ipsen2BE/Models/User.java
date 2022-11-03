@@ -1,15 +1,11 @@
 package nl.groep14.ipsen2BE.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
-
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -23,6 +19,7 @@ public class User {
     private String name;
     private String username;
     private String password;
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
     @JoinTable(
             name = "user_roles",
