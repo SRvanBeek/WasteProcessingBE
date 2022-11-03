@@ -4,7 +4,10 @@ import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public interface UserService {
     User saveGebruiker(User user);
@@ -12,4 +15,5 @@ public interface UserService {
     void addRolAanGebruiker(String username, String roleName);
     User getGebruiker(String username);
     List<User> getGebruikers();
+
 }

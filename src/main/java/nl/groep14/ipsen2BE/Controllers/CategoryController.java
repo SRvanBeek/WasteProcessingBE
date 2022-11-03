@@ -83,7 +83,7 @@ public class CategoryController {
      * Attempts to return a single Category that contains the given ID from the database using the getCategoryByID
      * method from the CategoryDAO .
      *
-     * @param id The id acquired from the @RequestMapping annotation
+     * @param id The id used to find the specific Category.
      * @return The requested Category.
      * @see CategoryDAO#getCategoryByID(Long)
      */
@@ -94,11 +94,16 @@ public class CategoryController {
         return category;
     }
 
+    /**
+     * Attempts to delete a Category with the given id if this Category exists.
+     * @param id The id used to find and delete the specific Category.
+     * @return ApiResponse with 200 OK and a message.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ApiResponse deleteCategoryByID(@PathVariable Long id){
         this.categoryDAO.deleteById(id);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted order "+id+"!");
+        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted category "+id+"!");
     }
 
 }

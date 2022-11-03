@@ -2,9 +2,9 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import nl.groep14.ipsen2BE.DAO.UserDAO;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
+import nl.groep14.ipsen2BE.Services.UserServiceImplement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,22 +13,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.groep14.ipsen2BE.Services.UserService;
-
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api" )
 
-
 public class UserController {
-   private final UserService userService;
+   private final UserServiceImplement userService;
 
-   @GetMapping("/users")
+    @GetMapping("/users")
     public ResponseEntity<List<User>>getUsers(){
        return ResponseEntity.ok(userService.getGebruikers());
+    }
+
+    @GetMapping("/users/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        User user = userService.getGebruiker(username);
+        return user;
     }
 
     @PostMapping("/users/save")
@@ -36,6 +40,14 @@ public class UserController {
        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/save").toUriString());
        return ResponseEntity.created(uri).body(userService.saveGebruiker(user));
     }
+
+
+
+    @GetMapping("/users/roles/{username}")
+    public Collection<Role> getRolesByUser(@PathVariable String username) {
+        return userService.getGebruiker(username).getRoles();
+    }
+
 
     @PostMapping("/roles/save")
     public ResponseEntity<Role>saveRole(@RequestBody Role role){
