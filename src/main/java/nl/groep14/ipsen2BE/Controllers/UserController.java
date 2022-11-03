@@ -5,6 +5,12 @@ import lombok.RequiredArgsConstructor;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.Services.UserServiceImplement;
+import nl.groep14.ipsen2BE.DAO.UserDAO;
+import nl.groep14.ipsen2BE.Models.ApiResponse;
+import nl.groep14.ipsen2BE.Models.Role;
+import nl.groep14.ipsen2BE.Models.User;
+import nl.groep14.ipsen2BE.repository.RoleRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,7 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
+import java.net.URI
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +30,8 @@ import java.util.List;
 
 public class UserController {
    private final UserServiceImplement userService;
+   private final UserService userService;
+   private final RoleRepository roleRepository;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>>getUsers(){
@@ -36,10 +45,12 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public ResponseEntity<User>saveUser(@RequestBody User user){
-       URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/save").toUriString());
-       return ResponseEntity.created(uri).body(userService.saveGebruiker(user));
+    public ApiResponse saveUser(@RequestBody User user){
+       this.userService.saveGebruiker(user);
+       this.userService.addRolAanGebruiker(user.getUsername(),"ROLE_USER");
+       return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
+
 
 
 
@@ -53,15 +64,19 @@ public class UserController {
     public ResponseEntity<Role>saveRole(@RequestBody Role role){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
        return ResponseEntity.created(uri).body(userService.saveRol(role));
+       }
+
+    @PostMapping("/admin/save")
+    public ApiResponse saveAdmin(@RequestBody User user){
+        this.userService.saveGebruiker(user);
+        this.userService.addRolAanGebruiker(user.getUsername(),"ROLE_ADMIN");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
 
-    @PostMapping("/role/addToUser")
-    public ResponseEntity<?>addRoleToUser(@RequestBody RoleToUserForm form){
-       userService.addRolAanGebruiker(form.getUsername(), form.getRoleName());
-
-       return ResponseEntity.ok().build();
+    @PostMapping("/checkUsername")
+    public boolean checkUsername(@RequestBody String username){
+        return this.userService.getUsernameDuplicate(username);
     }
-}
 
 @Data
 class RoleToUserForm{

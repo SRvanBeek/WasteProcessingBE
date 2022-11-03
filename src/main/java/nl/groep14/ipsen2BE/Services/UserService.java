@@ -10,7 +10,10 @@ import java.util.Optional;
 
 @Service
 public interface UserService {
-    User saveGebruiker(User user);
+    void saveGebruiker(User user);
+
+    boolean getUsernameDuplicate(String username);
+
     Role saveRol(Role role);
     void addRolAanGebruiker(String username, String roleName);
     User getGebruiker(String username);

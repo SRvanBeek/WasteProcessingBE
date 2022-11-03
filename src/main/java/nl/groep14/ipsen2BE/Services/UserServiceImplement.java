@@ -7,7 +7,7 @@ import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +31,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     private final UserDAO userDAO;
 
-    @Bean
+    @Autowired
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -39,9 +39,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     public UserServiceImplement(UserRepository gebruikerRepository, RoleRepository rolRepository, UserDAO userDAO) {
         this.gebruikerRepository = gebruikerRepository;
         this.rolRepository = rolRepository;
-
         this.userDAO = userDAO;
-
     }
 
     @Override
@@ -56,19 +54,26 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
     @Override
-    public User saveGebruiker(User user) {
+    public void saveGebruiker(User user) {
         log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
-
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        return userDAO.saveUserToDatabase(user);
+        user.setRoles(new ArrayList<>());
+        this.userDAO.saveUserToDatabase(user);
+    }
+    @Override
+    public boolean getUsernameDuplicate(String username){
+        List<User> users = getGebruikers();
+        return containsName(users, username);
+    }
 
+    public boolean containsName(final List<User> list, final String name){
+        return list.stream().anyMatch(o -> o.getUsername().equals(name));
     }
 
     @Override
     public Role saveRol(Role role) {
         log.info("Slaat een nieuwe rol  {} op naar de database", role.getName()); //Logs om te checken of de methodes werken naar behoren
         return userDAO.saveRoleToDatabase(role);
-
     }
 
     @Override
@@ -77,8 +82,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         User user = gebruikerRepository.findByUsername(username);
         Role role = rolRepository.findByName(roleName);
         user.getRoles().add(role);
-
-
     }
 
     @Override
