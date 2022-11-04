@@ -27,10 +27,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
+    /**@author Roy van Delft
+     * Constructor for the custom authentication filter
+     * @param authenticationManager takes the authenticationmanager
+     */
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Tries to authenticate the user on login
+     * @param request takes the request
+     * @param response takes the response
+     * @return the authentication token
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
@@ -39,7 +50,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         return authenticationManager.authenticate(authenticationToken);
     }
 
-
+    /**
+     * Creates a JWT Token for the user, when the user successfully logged in
+     * @param request takes the request
+     * @param response takes the response
+     * @param chain takes the created filterchain
+     * @param authentication takes the authentication from login
+     * @throws IOException when one of the conditions is null
+     * @throws ServletException when one of the conditions is null
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User)authentication.getPrincipal();
