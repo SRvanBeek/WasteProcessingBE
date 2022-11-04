@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 public class SnijServiceTest {
 
     SnijService snijService;
-
     @Mock
     WasteService wasteService;
     @Mock
