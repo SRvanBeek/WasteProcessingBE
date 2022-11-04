@@ -23,10 +23,18 @@ import java.util.Map;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+    /**@author Roy van Delft
+     *
+     * This method will check for a valid bearer token, on every single request
+      * @param request takes the request in
+     * @param response takes the response in
+     * @param filterChain takes the filterchain in
+     * @throws ServletException throws a servlet exception
+     * @throws IOException  throws an IO exception
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().equals("/api/login")) {
