@@ -2,6 +2,10 @@ package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
 
+/**
+ * Order is the model of the Order entity.
+ * @author Dino Yang
+ */
 @Entity
 @Table(name = "orders")
 public class Order {

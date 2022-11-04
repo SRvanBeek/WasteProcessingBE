@@ -1,18 +1,12 @@
 package nl.groep14.ipsen2BE;
 
-import nl.groep14.ipsen2BE.Models.Role;
-import nl.groep14.ipsen2BE.Models.User;
+import nl.groep14.ipsen2BE.Services.UserService;
 import nl.groep14.ipsen2BE.config.RsaKeyProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import nl.groep14.ipsen2BE.Services.UserService;
-
-import java.util.ArrayList;
 
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication
@@ -26,7 +20,9 @@ public class Ipsen2BeApplication {
 //	@Bean
 //	CommandLineRunner run(UserService userService){
 //		return args -> {
-//			userService.addRolAanGebruiker("Piet", "ROLE_USER");
+//			userService.addRolAanGebruiker("admin", "ROLE_ADMIN");
+//			userService.addRolAanGebruiker("jandea", "ROLE_ADMIN");
+//			System.out.println(userService.getGebruiker("jandeman").getRoles());
 //		};
 //	}
 }

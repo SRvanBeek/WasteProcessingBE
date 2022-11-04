@@ -2,6 +2,10 @@ package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
 
+/**
+ * Article is the model of the Article entity.
+ * @author Dino Yang
+ */
 @Entity
 @Table(name = "artikel")
 public class Article {
@@ -15,7 +19,7 @@ public class Article {
 
     @Basic
     @Column(name = "customer_ID")
-    private int customerId;
+    private long customerId;
     @Basic
     @Column(name = "artikelnummer")
     private String artikelnummer;
@@ -60,6 +64,8 @@ public class Article {
     @Column(name = "samenstelling")
     private String samenstelling;
 
+
+
     public long getArtikelId() {
         return id;
     }
@@ -84,11 +90,11 @@ public class Article {
         this.artikelnummer = artikelnummer;
     }
 
-    public int getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 

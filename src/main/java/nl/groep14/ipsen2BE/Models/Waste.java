@@ -1,8 +1,12 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.Objects;
 
+/**
+ * Waste is the model of the Waste entity.
+ * @author Dino Yang
+ */
 @Entity
 @Table(name = "afval", schema = "vdl")
 public class Waste {
@@ -70,5 +74,13 @@ public class Waste {
                 ", metrage=" + metrage +
                 ", categories='" + categories + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Waste waste = (Waste) o;
+        return afvalId == waste.afvalId && artikelId == waste.artikelId && metrage == waste.metrage && Objects.equals(categories, waste.categories);
     }
 }
