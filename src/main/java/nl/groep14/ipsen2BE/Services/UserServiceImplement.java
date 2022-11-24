@@ -75,7 +75,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     /**
      * saves an user
       * @param user takes the user to save
-     * @return returns the saved user
      */
     @Override
     public void saveGebruiker(User user) {
