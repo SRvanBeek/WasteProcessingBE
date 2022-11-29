@@ -6,7 +6,6 @@ import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -71,14 +70,18 @@ public class OrderController {
     }
 
     /**
-     * deleteOneOrder deletes one Order from the database.
-     * @param id id of the Order that needs to be deleted
+     * disableOneOrder disables one Order from the database.
+     * @param order order that needs to be disabled
      * @return ApiResponse with a corresponding message
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse deleteOneOrder(@PathVariable Long id){
-        this.orderDAO.deleteById(id);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted order "+id+"!");
+    public ApiResponse disableOneOrder(@RequestBody Order order){
+        if (this.orderDAO.getOrderByID(order.getId()).isEmpty()){
+            return new ApiResponse(HttpStatus.ACCEPTED, "Order "+order.getId()+" not found!");
+        }else{
+            this.orderDAO.setOrderVisibilityFalseByID(this.orderDAO.getOrderByID(order.getId()).get());
+            return new ApiResponse(HttpStatus.ACCEPTED, "You disabled order "+order+"!");
+        }
     }
 }

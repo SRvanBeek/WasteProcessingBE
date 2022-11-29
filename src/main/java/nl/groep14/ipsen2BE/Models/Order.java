@@ -23,6 +23,9 @@ public class Order {
     @Column(name = "metrage")
     private float metrage;
 
+    @Column(name = "visibility")
+    private boolean visibility;
+
     public Order(){
 
     }
@@ -31,6 +34,10 @@ public class Order {
         this.customerID = customerID;
         this.artikelID = artikelID;
         this.metrage = metrage;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
 
     public Long getId() {
