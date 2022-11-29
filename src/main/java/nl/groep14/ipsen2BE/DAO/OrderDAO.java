@@ -49,4 +49,10 @@ public class OrderDAO {
     }
 
 
+    public void setOrderVisibilityById(Order order){
+        this.orderRepository.save(order);
+    }
+
+
+
 }
