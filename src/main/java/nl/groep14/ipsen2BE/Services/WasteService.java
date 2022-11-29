@@ -95,12 +95,12 @@ public class WasteService {
 
     /**
      * checkCondition splits the 'condition' of a Category into 'conditionParts' so that we can check them separately.
-     * We first split the 'condition' by || into 'conditionParts'. Then we split the 'conditionParts' again if it contains a &&, into 'conditionAND'.
+     * We first split the 'condition' by || into 'conditionParts'. Then we split the 'conditionParts' again if it contains an AND-character, into 'conditionAND'.
      * After splitting the 'condition' we use conditionFalseOrTrue() to see if the 'conditionParts' matches with the samenstelling.
      * @param samenstellingMap A hashmap with String material as key and int percentage as value.
      * @param category the Category we are checking
      * @return We return True when the samenstelling matches one of the 'conditionParts'.
-     * If there are any && in the 'conditionParts', every condition in String[]'conditionAND' need to match the samenstelling.
+     * If there are any AND-characters in the 'conditionParts', every condition in String[]'conditionAND' need to match the samenstelling.
      */
     public Boolean checkCondition(HashMap<String, Integer> samenstellingMap, Category category) {
         String[] conditionParts = category.getVoorwaarde().split("\\|\\|");

@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.config;
 
 
 import lombok.RequiredArgsConstructor;
+import nl.groep14.ipsen2BE.filters.CustomCorsFilter;
 import nl.groep14.ipsen2BE.filters.CustomAuthenticationFilter;
 import nl.groep14.ipsen2BE.filters.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -67,6 +69,7 @@ public class SecurityConfig {
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilter(customAuthenticationFilter)
+                .addFilterBefore(new CustomCorsFilter(), ChannelProcessingFilter.class)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
 

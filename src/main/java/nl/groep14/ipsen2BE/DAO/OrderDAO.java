@@ -34,7 +34,7 @@ public class OrderDAO {
     /**
      * Attempts to return a single Order if one exists in the database with the given id.
      * @param id The id that is used to find a specific Order.
-     * @return A Order if a Order with the id exists.
+     * @return An Order if an Order with the id exists.
      */
     public Optional<Order> getOrderByID(Long id){
         return this.orderRepository.findById(id);
@@ -42,18 +42,17 @@ public class OrderDAO {
     /**
      * Attempts to return a single Order if one exists in the database with the given Article id.
      * @param id The Article id that is used to find a specific Order.
-     * @return A Order if a Order with the Article id exists.
+     * @return An Order if an Order with the Article id exists.
      */
     public Optional<Order> getOrderByArtikelId(Long id){
         return this.orderRepository.getOrdersByArtikelID(id);
     }
 
-    /**
-     * Deletes a specific Order in the database based on the given id.
-     * @param id the target Order to be deleted
-     */
-    public void deleteById(long id){
-        this.orderRepository.deleteById(id);
+    public void setOrderVisibilityFalseByID(Order order){
+        order.setVisibility(false);
+        this.orderRepository.save(order);
     }
+
+
 
 }
