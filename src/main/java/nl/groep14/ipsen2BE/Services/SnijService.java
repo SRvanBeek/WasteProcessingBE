@@ -58,7 +58,7 @@ public class SnijService {
         if (metrage > maxMeter) {
             return "Voorraad, " + chosenArticle.getArtikelId();
         } else if (metrage >= minMeter && metrage <= maxMeter) {
-            Order order = new Order(customerID,chosenArticle.getArtikelId(),metrage);
+            Order order = new Order(customerID,chosenArticle.getArtikelId(),metrage, true);
             this.orderDAO.saveToDatabase(order);
             return "Order, " + chosenArticle.getArtikelId();
         } else {
