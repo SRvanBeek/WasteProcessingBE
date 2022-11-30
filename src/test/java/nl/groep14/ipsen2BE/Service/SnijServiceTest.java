@@ -1,5 +1,6 @@
 package nl.groep14.ipsen2BE.Service;
 
+import nl.groep14.ipsen2BE.Controllers.ArticleController;
 import nl.groep14.ipsen2BE.DAO.*;
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Category;
@@ -33,6 +34,9 @@ public class SnijServiceTest {
     @Mock
     OrderDAO orderDAO;
 
+    @Mock
+    ArticleController ac;
+
     @BeforeEach
     void setUp(){
         articleDAO = mock(ArticleDAO.class);
@@ -40,7 +44,8 @@ public class SnijServiceTest {
         categoryDAO = mock(CategoryDAO.class);
         wasteService = mock(WasteService.class);
         orderDAO = mock(OrderDAO.class);
-        snijService = new SnijService(articleDAO,customerDAO,wasteService,categoryDAO,orderDAO);
+        ac = mock(ArticleController.class);
+        snijService = new SnijService(articleDAO,customerDAO,wasteService,categoryDAO,orderDAO, ac);
     }
 
     @Test

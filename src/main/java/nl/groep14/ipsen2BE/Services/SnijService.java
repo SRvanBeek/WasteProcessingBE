@@ -1,5 +1,6 @@
 package nl.groep14.ipsen2BE.Services;
 
+import nl.groep14.ipsen2BE.Controllers.ArticleController;
 import nl.groep14.ipsen2BE.DAO.ArticleDAO;
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
@@ -26,15 +27,18 @@ public class SnijService {
     private final CategoryDAO categoryDAO;
     private final OrderDAO orderDAO;
 
+    private final ArticleController ac;
+
     private final Random rand = new Random();
 
     public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, WasteService wasteService,
-                       CategoryDAO categoryDAO, OrderDAO orderDAO) {
+                       CategoryDAO categoryDAO, OrderDAO orderDAO, ArticleController ac) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
         this.wasteService = wasteService;
         this.categoryDAO = categoryDAO;
         this.orderDAO = orderDAO;
+        this.ac = ac;
     }
 
     /**
@@ -55,6 +59,8 @@ public class SnijService {
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
         ArrayList<Category> catogories = this.categoryDAO.getAll();
+        chosenArticle.setUserId(1);
+        this.ac.putOneArticle(chosenArticle.getArtikelId(),chosenArticle);
         if (metrage > maxMeter) {
             return "Voorraad, " + chosenArticle.getArtikelId();
         } else if (metrage >= minMeter && metrage <= maxMeter) {
