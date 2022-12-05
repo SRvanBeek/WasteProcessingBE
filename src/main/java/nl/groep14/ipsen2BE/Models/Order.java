@@ -11,38 +11,28 @@ import javax.persistence.*;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_ID", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "customer_ID")
-    private long customerID;
+    @Column(name = "cutwasteID")
+    private long cutwasteID;
 
-    @Column(name = "artikel_ID")
-    private long artikelID;
+    @Column(name = "userID")
+    private long userID;
 
-    @Column(name = "metrage")
-    private float metrage;
+    @Column(name = "enabled")
+    private boolean enabled;
 
-    @Column(name = "visibility")
-    private boolean visibility;
+    @Column(name = "datecreated")
+    private String datecreated;
 
     public Order(){
 
     }
 
-    public Order(long customerID, long artikelID, float metrage, boolean visibility) {
-        this.customerID = customerID;
-        this.artikelID = artikelID;
-        this.metrage = metrage;
-        this.visibility = visibility;
-    }
-
-    public void setVisibility(boolean visibility) {
-        this.visibility = visibility;
-    }
-
-    public boolean getVisibility(){
-        return this.visibility;
+    public Order(long cutwasteID, long userID) {
+        this.cutwasteID = cutwasteID;
+        this.userID = userID;
     }
 
     public Long getId() {
@@ -53,38 +43,46 @@ public class Order {
         this.id = id;
     }
 
-    public long getCustomerID() {
-        return customerID;
+    public long getCutwasteID() {
+        return cutwasteID;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCutwasteID(long cutwasteID) {
+        this.cutwasteID = cutwasteID;
     }
 
-    public long getArtikelID() {
-        return artikelID;
+    public long getUserID() {
+        return userID;
     }
 
-    public void setArtikelID(int artikelID) {
-        this.artikelID = artikelID;
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 
-    public float getMetrage() {
-        return metrage;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setMetrage(float metrage) {
-        this.metrage = metrage;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
+    public String getDatecreated() {
+        return datecreated;
+    }
+
+    public void setDatecreated(String datecreated) {
+        this.datecreated = datecreated;
+    }
 
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", customerID=" + customerID +
-                ", artikelID=" + artikelID +
-                ", metrage=" + metrage +
+                ", cutwasteID=" + cutwasteID +
+                ", userID=" + userID +
+                ", enabled=" + enabled +
+                ", datecreated='" + datecreated + '\'' +
                 '}';
     }
 }

@@ -12,75 +12,105 @@ import java.util.Objects;
 public class Waste {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "afval_ID")
-    private long afvalId;
+    @Column(name = "id")
+    private long id;
     @Basic
-    @Column(name = "artikel_ID")
-    private long artikelId;
-    @Basic
-    @Column(name = "metrage")
-    private long metrage;
-    @Basic
-    @Column(name = "categories")
-    private String categories;
+    @Column(name = "cutwasteID")
+    private long cutwasteId;
 
-    public Waste(long artikelId, long metrage, String categories) {
-        this.artikelId = artikelId;
-        this.metrage = metrage;
-        this.categories = categories;
+    @Basic
+    @Column(name = "categoryID")
+    private long categoryId;
+
+    @Basic
+    @Column(name = "userID")
+    private long userId;
+
+    @Basic
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Basic
+    @Column(name = "dateCreated")
+    private String dateCreated;
+
+    public Waste(long cutwasteId, long categoryId, long userId) {
+        this.cutwasteId = cutwasteId;
+        this.categoryId = categoryId;
+        this.userId = userId;
     }
 
     public Waste() {
 
     }
 
-    public long getAfvalId() {
-        return afvalId;
+    public long getId() {
+        return id;
     }
 
-    public void setAfvalId(long afvalId) {
-        this.afvalId = afvalId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getArtikelId() {
-        return artikelId;
+    public long getCutwasteId() {
+        return cutwasteId;
     }
 
-    public void setArtikelId(long artikelId) {
-        this.artikelId = artikelId;
+    public void setCutwasteId(long cutwasteId) {
+        this.cutwasteId = cutwasteId;
     }
 
-    public long getMetrage() {
-        return metrage;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setMetrage(long metrage) {
-        this.metrage = metrage;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getCategories() {
-        return categories;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setCategories(String categories) {
-        this.categories = categories;
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override
     public String toString() {
         return "Waste{" +
-                "afvalId=" + afvalId +
-                ", artikelId=" + artikelId +
-                ", metrage=" + metrage +
-                ", categories='" + categories + '\'' +
+                "id=" + id +
+                ", cutwasteId=" + cutwasteId +
+                ", categoryId=" + categoryId +
+                ", userId=" + userId +
+                ", enabled=" + enabled +
+                ", dateCreated='" + dateCreated + '\'' +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Waste waste = (Waste) o;
-        return afvalId == waste.afvalId && artikelId == waste.artikelId && metrage == waste.metrage && Objects.equals(categories, waste.categories);
+        return id == waste.id && cutwasteId == waste.cutwasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateCreated, waste.dateCreated);
     }
+
 }
