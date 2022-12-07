@@ -39,7 +39,7 @@ public class CustomerController {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse updateCustomer(@RequestBody Customer customer) {
-        if(this.customerDAO.getCustomerByID(customer.getId()).isEmpty()){
+        if(this.customerDAO.getCustomerByID(customer.getCustomerID()).isEmpty()){
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "customer does not exist!");
         }
 
@@ -83,11 +83,11 @@ public class CustomerController {
      *
      * @param id The id acquired from the @RequestMapping annotation.
      * @return The requested Customer.
-     * @see CustomerDAO#getCustomerByID(Long)
+     * @see CustomerDAO#getCustomerByID(String)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Optional<Customer> getCustomerByID(@PathVariable long id){
+    public Optional<Customer> getCustomerByID(@PathVariable String id){
         Optional<Customer> customer = this.customerDAO.getCustomerByID(id);
         return customer;
     }

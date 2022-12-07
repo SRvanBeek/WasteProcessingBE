@@ -10,77 +10,72 @@ import javax.persistence.*;
 @Table(name = "artikel")
 public class Article {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "artikel_ID", unique = true, nullable = false)
-    private Long id;
-    @Basic
-    @Column(name = "user_ID")
-    private Integer userId;
-
-    @Basic
-    @Column(name = "customer_ID")
-    private long customerId;
-    @Basic
-    @Column(name = "artikelnummer")
+    @Column(name = "artikelnummer", unique = true, nullable = false)
     private String artikelnummer;
+    @Basic
+    @Column(name = "leverancier")
+    private String leverancier;
 
     @Basic
     @Column(name = "productgroep")
     private String productgroep;
+
     @Basic
     @Column(name = "eancode")
     private String eancode;
+
     @Basic
     @Column(name = "omschrijving")
     private String omschrijving;
+
     @Basic
     @Column(name = "kleur")
-    private String kleur;
+    private int kleur;
+
     @Basic
-    @Column(name = "breedte")
-    private int breedte;
-    @Basic
-    @Column(name = "patroonbreedte")
-    private int patroonbreedte;
+    @Column(name = "stofbreedte")
+    private int stofbreedte;
+
     @Basic
     @Column(name = "patroonlengte")
     private int patroonlengte;
+
+    @Basic
+    @Column(name = "patroonbreedte")
+    private int patroonbreedte;
+
     @Basic
     @Column(name = "soort")
     private String soort;
+
     @Basic
     @Column(name = "opmaak")
     private String opmaak;
+
     @Basic
-    @Column(name = "verkoop_prijs")
-    private float verkoopPrijs;
-    @Basic
-    @Column(name = "aankoop_prijs")
-    private float aankoopPrijs;
-    @Basic
-    @Column(name = "wassymbolen")
-    private String wassymbolen;
+    @Column(name = "wascode")
+    private String wascode;
+
     @Basic
     @Column(name = "samenstelling")
     private String samenstelling;
 
+    @Basic
+    @Column(name = "gewicht")
+    private double gewicht;
 
+    @Basic
+    @Column(name = "niet_kantelbaar")
+    private String nietKantelbaar;
 
-    public long getArtikelId() {
-        return id;
-    }
+    @Basic
+    @Column(name = "stock_rl")
+    private String stockRl;
 
-    public void setArtikelId(long id) {
-        this.id = id;
-    }
+    @Basic
+    @Column(name = "min")
+    private int min;
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getArtikelnummer() {
         return artikelnummer;
@@ -90,12 +85,12 @@ public class Article {
         this.artikelnummer = artikelnummer;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public String getLeverancier() {
+        return leverancier;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setLeverancier(String leverancier) {
+        this.leverancier = leverancier;
     }
 
     public String getProductgroep() {
@@ -122,28 +117,20 @@ public class Article {
         this.omschrijving = omschrijving;
     }
 
-    public String getKleur() {
+    public int getKleur() {
         return kleur;
     }
 
-    public void setKleur(String kleur) {
+    public void setKleur(int kleur) {
         this.kleur = kleur;
     }
 
-    public int getBreedte() {
-        return breedte;
+    public int getStofbreedte() {
+        return stofbreedte;
     }
 
-    public void setBreedte(int breedte) {
-        this.breedte = breedte;
-    }
-
-    public int getPatroonbreedte() {
-        return patroonbreedte;
-    }
-
-    public void setPatroonbreedte(int patroonbreedte) {
-        this.patroonbreedte = patroonbreedte;
+    public void setStofbreedte(int stofbreedte) {
+        this.stofbreedte = stofbreedte;
     }
 
     public int getPatroonlengte() {
@@ -152,6 +139,14 @@ public class Article {
 
     public void setPatroonlengte(int patroonlengte) {
         this.patroonlengte = patroonlengte;
+    }
+
+    public int getPatroonbreedte() {
+        return patroonbreedte;
+    }
+
+    public void setPatroonbreedte(int patroonbreedte) {
+        this.patroonbreedte = patroonbreedte;
     }
 
     public String getSoort() {
@@ -170,28 +165,12 @@ public class Article {
         this.opmaak = opmaak;
     }
 
-    public float getVerkoopPrijs() {
-        return verkoopPrijs;
+    public String getWascode() {
+        return wascode;
     }
 
-    public void setVerkoopPrijs(float verkoopPrijs) {
-        this.verkoopPrijs = verkoopPrijs;
-    }
-
-    public float getAankoopPrijs() {
-        return aankoopPrijs;
-    }
-
-    public void setAankoopPrijs(float aankoopPrijs) {
-        this.aankoopPrijs = aankoopPrijs;
-    }
-
-    public String getWassymbolen() {
-        return wassymbolen;
-    }
-
-    public void setWassymbolen(String wassymbolen) {
-        this.wassymbolen = wassymbolen;
+    public void setWascode(String wascode) {
+        this.wascode = wascode;
     }
 
     public String getSamenstelling() {
@@ -202,26 +181,58 @@ public class Article {
         this.samenstelling = samenstelling;
     }
 
+    public double getGewicht() {
+        return gewicht;
+    }
+
+    public void setGewicht(double gewicht) {
+        this.gewicht = gewicht;
+    }
+
+    public String getNietKantelbaar() {
+        return nietKantelbaar;
+    }
+
+    public void setNietKantelbaar(String nietKantelbaar) {
+        this.nietKantelbaar = nietKantelbaar;
+    }
+
+    public String getStockRl() {
+        return stockRl;
+    }
+
+    public void setStockRl(String stockRl) {
+        this.stockRl = stockRl;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
-                "artikelId=" + id +
-                ", userId=" + userId +
-                ", customerId=" + customerId +
-                ", artikelnummer='" + artikelnummer + '\'' +
+                "artikelnummer='" + artikelnummer + '\'' +
+                ", leverancier='" + leverancier + '\'' +
                 ", productgroep='" + productgroep + '\'' +
                 ", eancode='" + eancode + '\'' +
                 ", omschrijving='" + omschrijving + '\'' +
-                ", kleur='" + kleur + '\'' +
-                ", breedte=" + breedte +
-                ", patroonbreedte=" + patroonbreedte +
+                ", kleur=" + kleur +
+                ", stofbreedte=" + stofbreedte +
                 ", patroonlengte=" + patroonlengte +
+                ", patroonbreedte=" + patroonbreedte +
                 ", soort='" + soort + '\'' +
                 ", opmaak='" + opmaak + '\'' +
-                ", verkoopPrijs=" + verkoopPrijs +
-                ", aankoopPrijs=" + aankoopPrijs +
-                ", wassymbolen='" + wassymbolen + '\'' +
+                ", wascode='" + wascode + '\'' +
                 ", samenstelling='" + samenstelling + '\'' +
+                ", gewicht=" + gewicht +
+                ", nietKantelbaar='" + nietKantelbaar + '\'' +
+                ", stockRl='" + stockRl + '\'' +
+                ", min=" + min +
                 '}';
     }
 }

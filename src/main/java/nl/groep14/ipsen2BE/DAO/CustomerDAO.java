@@ -45,8 +45,8 @@ public class CustomerDAO {
      * @param id The id that is used to find a specific Customer.
      * @return A Customer if a Customer with the id exists.
      */
-    public Optional<Customer> getCustomerByID(Long id){
-        return this.customerRepository.findById(id);
+    public Optional<Customer> getCustomerByID(String id){
+        return this.customerRepository.getCustomerByCustomerName(id);
     }
 }
 

@@ -46,17 +46,17 @@ public class ArticleDAO {
      * picks a random Article that has no user ID.
      * @return Article
      */
-    public Article getRandomArticle() {
-        long qty = articleRepository.count();
-        Random rand = new Random();
-        long id = rand.nextLong(qty);
-        Article chosenArticle = getArticleByID(id).get();
-        while(chosenArticle.getUserId() != null){
-            id = rand.nextLong(qty);
-            chosenArticle = getArticleByID(id).get();
-        }
-        return chosenArticle;
-    }
+//    public Article getRandomArticle() {
+//        long qty = articleRepository.count();
+//        Random rand = new Random();
+//        long id = rand.nextLong(qty);
+//        Article chosenArticle = getArticleByID(id).get();
+//        while(chosenArticle.getUserId() != null){
+//            id = rand.nextLong(qty);
+//            chosenArticle = getArticleByID(id).get();
+//        }
+//        return chosenArticle;
+//    }
 
 
 }

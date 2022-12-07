@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
 
-    @Query(value = "SELECT o from Order o where o.artikelID = :artikelID")
-    Optional<Order> getOrdersByArtikelID(@Param("artikelID") long artikelId);
+    @Query(value = "SELECT o from Order o where o.cutwasteID = :cutWasteId")
+    Optional<Order> getOrdersByCutwasteID(@Param("cutWasteId") long cutWasteId);
 }

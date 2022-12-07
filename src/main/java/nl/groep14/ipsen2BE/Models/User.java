@@ -19,6 +19,7 @@ public class User {
     private String name;
     private String username;
     private String password;
+    private boolean enabled;
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
     @JoinTable(
@@ -66,6 +67,14 @@ public class User {
 
     public Collection<Role> getRoles() {
         return roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setRoles(Collection<Role> roles) {
