@@ -22,9 +22,9 @@ public class SnijController {
         this.snijService = snijService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ResponseBody
-    public String snijApplicatie(){
-        return snijService.snijApplication();
-    }
+//    @RequestMapping(value = "", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String snijApplicatie(){
+//        return snijService.snijApplication();
+//    }
 }

@@ -63,11 +63,11 @@ public class OrderController {
      * @param articleId is the id of the Article linked to the Order
      * @return An Order
      */
-    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
-    @ResponseBody
-    public Order getOneOrderByArticleId(@PathVariable Long articleId){
-        return this.orderDAO.getOrderByArtikelId(articleId).get();
-    }
+//    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Order getOneOrderByArticleId(@PathVariable Long articleId){
+//        return this.orderDAO.getOrderByArtikelId(articleId).get();
+//    }
 
     /**
      * disableOneOrder disables one Order from the database.

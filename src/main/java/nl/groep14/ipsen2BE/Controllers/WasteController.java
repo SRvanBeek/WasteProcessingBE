@@ -16,8 +16,6 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/api/waste")
 public class WasteController {
-
-
     private final WasteDAO wasteDAO;
 
     public WasteController(WasteDAO wasteDAO) {
@@ -62,10 +60,10 @@ public class WasteController {
      * @param articleId is the id of the Article linked to the Waste entity
      * @return Waste entity
      */
-    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
-    @ResponseBody
-    public Waste getOneWasteByArticleId(@PathVariable Long articleId){
-        return this.wasteDAO.getWasteByOrderID(articleId).get();
-    }
+//    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Waste getOneWasteByArticleId(@PathVariable Long articleId){
+//        return this.wasteDAO.getWasteByOrderID(articleId).get();
+//    }
 
 }

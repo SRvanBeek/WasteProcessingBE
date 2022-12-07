@@ -44,12 +44,12 @@ public class OrderDAO {
      * @param id The Article id that is used to find a specific Order.
      * @return An Order if an Order with the Article id exists.
      */
-    public Optional<Order> getOrderByArtikelId(Long id){
-        return this.orderRepository.getOrdersByArtikelID(id);
-    }
+//    public Optional<Order> getOrderByArtikelId(Long id){
+//        return this.orderRepository.getOrdersByArtikelID(id);
+//    }
 
     public void setOrderVisibilityFalseByID(Order order){
-        order.setVisibility(false);
+//        order.setVisibility(false);
         this.orderRepository.save(order);
     }
 

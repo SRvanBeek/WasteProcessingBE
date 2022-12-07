@@ -36,16 +36,16 @@ public class CustomerController {
      *
      * @see CustomerDAO#saveToDatabase(Customer)
      */
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    @ResponseBody
-    public ApiResponse updateCustomer(@RequestBody Customer customer) {
-        if(this.customerDAO.getCustomerByID(customer.getId()).isEmpty()){
-            return new ApiResponse<>(HttpStatus.NOT_FOUND, "customer does not exist!");
-        }
-
-        this.customerDAO.saveToDatabase(customer);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "customer updated");
-    }
+//    @RequestMapping(value = "", method = RequestMethod.PUT)
+//    @ResponseBody
+//    public ApiResponse updateCustomer(@RequestBody Customer customer) {
+//        if(this.customerDAO.getCustomerByID(customer.getId()).isEmpty()){
+//            return new ApiResponse<>(HttpStatus.NOT_FOUND, "customer does not exist!");
+//        }
+//
+//        this.customerDAO.saveToDatabase(customer);
+//        return new ApiResponse<>(HttpStatus.ACCEPTED, "customer updated");
+//    }
 
     /**
      * Adds the given Customer to the database using the saveToDataBase method in the CustomerDAO.

@@ -29,10 +29,10 @@ public class WasteService {
      * @param catogories A list of all the categories in the database
      * @param metrage The 'metrage' of the Waste
      */
-    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long metrage){
-        Waste waste = createWaste(chosenArticle,catogories,metrage);
-        this.wasteDAO.saveToDatabase(waste);
-    }
+//    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long metrage){
+//        Waste waste = createWaste(chosenArticle,catogories,metrage);
+//        this.wasteDAO.saveToDatabase(waste);
+//    }
 
     /**
      * createWaste takes the 'samenstelling' from an Article and checks for every Category if it matches with the 'condition' of the category.
@@ -44,24 +44,24 @@ public class WasteService {
      * @param metrage The 'metrage' of the Waste
      * @return created Waste entity
      */
-    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
-        ArrayList<String> acceptedCategoriesList = new ArrayList<>();
-        String samenstelling = chosenArticle.getSamenstelling();
-        HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
-        for (Category category : catogories) {
-            if (checkCondition(samenstellingMap,category)) {
-                acceptedCategoriesList.add(category.getName());
-                if (this.hundredPercent){
-                    String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
-                    acceptedCategoriesList.clear();
-                    acceptedCategoriesList.add(hundred);
-                    break;
-                }
-            }
-        }
-        String categories = String.join(",",acceptedCategoriesList);
-        return new Waste(chosenArticle.getArtikelId(),metrage,categories);
-    }
+//    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
+//        ArrayList<String> acceptedCategoriesList = new ArrayList<>();
+//        String samenstelling = chosenArticle.getSamenstelling();
+//        HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
+//        for (Category category : catogories) {
+//            if (checkCondition(samenstellingMap,category)) {
+//                acceptedCategoriesList.add(category.getName());
+//                if (this.hundredPercent){
+//                    String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
+//                    acceptedCategoriesList.clear();
+//                    acceptedCategoriesList.add(hundred);
+//                    break;
+//                }
+//            }
+//        }
+//        String categories = String.join(",",acceptedCategoriesList);
+//        return new Waste(chosenArticle.getArtikelId(),metrage,categories);
+//    }
 
     /**
      * samenstellingSplitter splits the String 'samenstelling' and returns a hashmap with material name as key and percentage as value.
