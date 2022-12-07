@@ -69,17 +69,17 @@ public class ArticleController {
      * @param newArticle is the Article model with changes.
      * @return ApiResponse with a corresponding message
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public ApiResponse putOneArticle(@PathVariable Long id, @RequestBody Article newArticle) {
-        if (this.articleDAO.getArticleByID(newArticle.getArtikelId()).isEmpty()) {
-            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Article:" + newArticle.getArtikelId() + " does not exist!");
-        }
-        Article currentArticle = articleDAO.getArticleByID(id).get();
-        Long currentID = currentArticle.getArtikelId();
-        currentArticle = newArticle;
-        currentArticle.setArtikelId(currentID);
-        this.articleDAO.saveToDatabase(currentArticle);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You updated article " + currentID + "!");
-    }
+//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+//    @ResponseBody
+//    public ApiResponse putOneArticle(@PathVariable Long id, @RequestBody Article newArticle) {
+//        if (this.articleDAO.getArticleByID(newArticle.getArtikelId()).isEmpty()) {
+//            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Article:" + newArticle.getArtikelId() + " does not exist!");
+//        }
+//        Article currentArticle = articleDAO.getArticleByID(id).get();
+//        Long currentID = currentArticle.getArtikelId();
+//        currentArticle = newArticle;
+//        currentArticle.setArtikelnummer(currentID);
+//        this.articleDAO.saveToDatabase(currentArticle);
+//        return new ApiResponse(HttpStatus.ACCEPTED, "You updated article " + currentID + "!");
+//    }
 }

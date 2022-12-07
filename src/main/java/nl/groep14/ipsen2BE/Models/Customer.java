@@ -11,35 +11,26 @@ import javax.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "customerID")
+    private String customerID;
     @Column(name = "min_meter")
     private double min_meter;
     @Column(name = "max_meter")
     private double max_meter;
-    @Column(name = "street")
-    private String street;
-    @Column(name = "postal_code")
-    private String postalCode;
-    @Column(name = "country")
-    private String country;
 
-    public long getId() {
-        return id;
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
+
+    public String getCustomerID() {
+        return customerID;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
     }
 
     public double getMin_meter() {
@@ -58,39 +49,30 @@ public class Customer {
         this.max_meter = max_meter;
     }
 
-    public String getStreet() {
-        return street;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
 
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id + '\'' +
-                ", name=" + name + '\'' +
-                ", min_meter=" + min_meter + '\'' +
-                ", max_meter=" + max_meter + '\'' +
-                ", address=" + street + " " + postalCode + " " + country +
+                "customerID='" + customerID + '\'' +
+                ", min_meter=" + min_meter +
+                ", max_meter=" + max_meter +
+                ", address='" + address + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
