@@ -65,7 +65,7 @@ public class WasteController {
     @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
     @ResponseBody
     public Waste getOneWasteByArticleId(@PathVariable Long articleId){
-        return this.wasteDAO.getWasteByOrderID(articleId).get();
+        return this.wasteDAO.getWasteByCutWasteId(articleId).get();
     }
 
 }

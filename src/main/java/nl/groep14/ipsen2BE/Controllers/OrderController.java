@@ -66,7 +66,7 @@ public class OrderController {
     @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
     @ResponseBody
     public Order getOneOrderByArticleId(@PathVariable Long articleId){
-        return this.orderDAO.getOrderByArtikelId(articleId).get();
+        return this.orderDAO.getOrdersByCutWasteId(articleId).get();
     }
 
     /**

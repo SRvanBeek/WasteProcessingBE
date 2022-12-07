@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface WasteRepository extends JpaRepository<Waste,Long> {
 
 
-    @Query(value = "SELECT w from Waste w where w.artikelId = :artikelID")
-    Optional<Waste> getWasteByArtikelId(@Param("artikelID") long artikelId);
+    @Query(value = "SELECT w from Waste w where w.cutwasteId = :cutWasteId")
+    Optional<Waste> getWasteByCutWasteId(@Param("cutWasteId") long cutWasteId);
 }
