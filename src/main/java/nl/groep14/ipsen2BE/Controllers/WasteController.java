@@ -16,8 +16,6 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/api/waste")
 public class WasteController {
-
-
     private final WasteDAO wasteDAO;
 
     public WasteController(WasteDAO wasteDAO) {

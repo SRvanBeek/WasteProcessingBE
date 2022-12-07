@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "cutwaste")
@@ -17,7 +18,7 @@ public class Cutwaste {
 
    @Basic
    @Column(name = "processed")
-   private String processed;
+   private boolean processed;
 
    @Basic
    @Column(name = "metrage")
@@ -28,8 +29,12 @@ public class Cutwaste {
    private String gewicht;
 
    @Basic
-   @Column(name = "tododate")
-   private String tododate;
+   @Column(name = "date_cut")
+   private Date dateCut;
+
+    @Basic
+    @Column(name = "type")
+    private String type;
 
     public long getId() {
         return id;
@@ -37,6 +42,14 @@ public class Cutwaste {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getArtikelnummer() {
@@ -47,11 +60,11 @@ public class Cutwaste {
         this.artikelnummer = artikelnummer;
     }
 
-    public String getProcessed() {
+    public boolean getProcessed() {
         return processed;
     }
 
-    public void setProcessed(String processed) {
+    public void setProcessed(boolean processed) {
         this.processed = processed;
     }
 
@@ -71,12 +84,12 @@ public class Cutwaste {
         this.gewicht = gewicht;
     }
 
-    public String getTododate() {
-        return tododate;
+    public Date getDateCut() {
+        return dateCut;
     }
 
-    public void setTododate(String tododate) {
-        this.tododate = tododate;
+    public void setDateCut(Date dateCut) {
+        this.dateCut = dateCut;
     }
 
     @Override
@@ -87,7 +100,8 @@ public class Cutwaste {
                 ", processed='" + processed + '\'' +
                 ", metrage='" + metrage + '\'' +
                 ", gewicht='" + gewicht + '\'' +
-                ", tododate='" + tododate + '\'' +
+                ", dateCut=" + dateCut +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

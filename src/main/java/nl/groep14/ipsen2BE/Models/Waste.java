@@ -8,7 +8,7 @@ import java.util.Objects;
  * @author Dino Yang
  */
 @Entity
-@Table(name = "afval", schema = "vdl")
+@Table(name = "afval")
 public class Waste {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,8 +31,8 @@ public class Waste {
     private boolean enabled;
 
     @Basic
-    @Column(name = "dateCreated")
-    private String dateCreated;
+    @Column(name = "date_processed")
+    private String dateProcessed;
 
     public Waste(long cutwasteId, long categoryId, long userId) {
         this.cutwasteId = cutwasteId;
@@ -84,12 +84,12 @@ public class Waste {
         this.enabled = enabled;
     }
 
-    public String getDateCreated() {
-        return dateCreated;
+    public String getDateProcessed() {
+        return dateProcessed;
     }
 
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateProcessed(String dateProcessed) {
+        this.dateProcessed = dateProcessed;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Waste {
                 ", categoryId=" + categoryId +
                 ", userId=" + userId +
                 ", enabled=" + enabled +
-                ", dateCreated='" + dateCreated + '\'' +
+                ", dateCreated='" + dateProcessed + '\'' +
                 '}';
     }
 
@@ -110,7 +110,7 @@ public class Waste {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Waste waste = (Waste) o;
-        return id == waste.id && cutwasteId == waste.cutwasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateCreated, waste.dateCreated);
+        return id == waste.id && cutwasteId == waste.cutwasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateProcessed, waste.dateProcessed);
     }
 
 }

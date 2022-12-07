@@ -23,8 +23,8 @@ public class Order {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @Column(name = "datecreated")
-    private String datecreated;
+    @Column(name = "date_processed")
+    private String dateProcessed;
 
     public Order(){
 
@@ -67,12 +67,12 @@ public class Order {
         this.enabled = enabled;
     }
 
-    public String getDatecreated() {
-        return datecreated;
+    public String getDateProcessed() {
+        return dateProcessed;
     }
 
-    public void setDatecreated(String datecreated) {
-        this.datecreated = datecreated;
+    public void setDateProcessed(String dateProcessed) {
+        this.dateProcessed = dateProcessed;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Order {
                 ", cutwasteID=" + cutwasteID +
                 ", userID=" + userID +
                 ", enabled=" + enabled +
-                ", datecreated='" + datecreated + '\'' +
+                ", datecreated='" + dateProcessed + '\'' +
                 '}';
     }
 }
