@@ -3,11 +3,10 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
+import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
@@ -18,10 +17,12 @@ import static org.mockito.Mockito.*;
 class CategoryControllerTest {
     @Mock
     private CategoryDAO categoryDAO;
+    private WasteFilterService wasteFilterService;
 
     @BeforeEach
     void setup(){
         categoryDAO = mock(CategoryDAO.class);
+        wasteFilterService = mock(WasteFilterService.class);
     }
 
     @Test
@@ -30,7 +31,7 @@ class CategoryControllerTest {
         Category categoryUnderTesting = new Category();
         categoryUnderTesting.setId(1);
 
-        CategoryController categoryController = new CategoryController(this.categoryDAO);
+        CategoryController categoryController = new CategoryController(this.categoryDAO, wasteFilterService);
         when(this.categoryDAO.getCategoryByID(categoryUnderTesting.getId())).thenReturn(Optional.empty()); //STUBBING
 
         ApiResponse expectedResult = new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");

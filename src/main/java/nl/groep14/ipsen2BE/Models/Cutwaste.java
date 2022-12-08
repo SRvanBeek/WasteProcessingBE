@@ -22,11 +22,11 @@ public class Cutwaste {
 
    @Basic
    @Column(name = "metrage")
-   private String metrage;
+   private double metrage;
 
    @Basic
    @Column(name = "gewicht")
-   private String gewicht;
+   private double gewicht;
 
    @Basic
    @Column(name = "date_cut")
@@ -68,19 +68,19 @@ public class Cutwaste {
         this.processed = processed;
     }
 
-    public String getMetrage() {
+    public double getMetrage() {
         return metrage;
     }
 
-    public void setMetrage(String metrage) {
+    public void setMetrage(double metrage) {
         this.metrage = metrage;
     }
 
-    public String getGewicht() {
+    public double getGewicht() {
         return gewicht;
     }
 
-    public void setGewicht(String gewicht) {
+    public void setGewicht(double gewicht) {
         this.gewicht = gewicht;
     }
 

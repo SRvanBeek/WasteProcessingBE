@@ -50,4 +50,8 @@ public class WasteDAO {
         return this.wasteRepository.getWasteByCutWasteId(id);
     }
 
+    public Optional<ArrayList<Waste>> getWasteByCategoryId(Long id){
+        return this.wasteRepository.getWasteByCategoryId(id);
+    }
+
 }

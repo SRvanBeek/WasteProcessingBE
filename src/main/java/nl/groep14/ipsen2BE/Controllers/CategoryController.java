@@ -5,6 +5,7 @@ import nl.groep14.ipsen2BE.DAO.CustomerDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Customer;
+import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,17 @@ import java.util.Optional;
 @RequestMapping(value = "/api/categories")
 public class CategoryController {
     private final CategoryDAO categoryDAO;
+    private final WasteFilterService wasteFilterService;
 
     /**
      * Class Constructer, initializes the CategoryDAO
-     * @param categoryDAO The CategoryDAO that will be initialized in this Controller
+     *
+     * @param categoryDAO        The CategoryDAO that will be initialized in this Controller
+     * @param wasteFilterService
      */
-    public CategoryController(CategoryDAO categoryDAO) {
+    public CategoryController(CategoryDAO categoryDAO, WasteFilterService wasteFilterService) {
         this.categoryDAO = categoryDAO;
+        this.wasteFilterService = wasteFilterService;
     }
 
     /**
@@ -104,6 +109,12 @@ public class CategoryController {
     public ApiResponse deleteCategoryByID(@PathVariable Long id){
         this.categoryDAO.deleteById(id);
         return new ApiResponse(HttpStatus.ACCEPTED, "You deleted category "+id+"!");
+    }
+
+    @RequestMapping(value = "/names", method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<String> categoryNames(){
+        return this.wasteFilterService.getCategoryNames();
     }
 
 }

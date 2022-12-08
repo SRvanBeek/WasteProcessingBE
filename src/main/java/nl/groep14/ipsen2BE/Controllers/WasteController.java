@@ -3,6 +3,7 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Waste;
+import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,11 @@ import java.util.List;
 @RequestMapping(value = "/api/waste")
 public class WasteController {
     private final WasteDAO wasteDAO;
+    private final WasteFilterService wasteFilterService;
 
-    public WasteController(WasteDAO wasteDAO) {
+    public WasteController(WasteDAO wasteDAO, WasteFilterService wasteFilterService) {
         this.wasteDAO = wasteDAO;
+        this.wasteFilterService = wasteFilterService;
     }
 
     /**
@@ -64,6 +67,18 @@ public class WasteController {
     @ResponseBody
     public Waste getOneWasteByArticleId(@PathVariable Long articleId){
         return this.wasteDAO.getWasteByCutWasteId(articleId).get();
+    }
+
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetails(){
+        return this.wasteFilterService.getTotalWaste();
+    }
+
+    @RequestMapping(value = "/details/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getTotalWastePerCategory(categoryName);
     }
 
 }
