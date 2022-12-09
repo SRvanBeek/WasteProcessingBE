@@ -36,12 +36,11 @@ public class Cutwaste {
     @Column(name = "type")
     private String type;
 
-    public Cutwaste(String artikelnummer, boolean processed, long metrage, long gewicht, String type) {
+    public Cutwaste(String artikelnummer, boolean processed, long metrage, long gewicht) {
         this.artikelnummer = artikelnummer;
         this.processed = processed;
         this.metrage = metrage;
         this.gewicht = gewicht;
-        this.type = type;
     }
 
     public Cutwaste() {

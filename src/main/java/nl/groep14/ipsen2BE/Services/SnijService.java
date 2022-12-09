@@ -53,14 +53,15 @@ public class SnijService {
         long gewicht = this.rand.nextLong((articleGewicht / 3));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
+        Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
         if (metrage > maxMeter) {
-            Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, "Voorraad");
+            cutwaste.setType("Voorraad");
             return this.cw.postCutWaste(cutwaste);
         } else if (metrage >= minMeter && metrage <= maxMeter) {
-            Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, "Order");
+            cutwaste.setType("Order");
             return this.cw.postCutWaste(cutwaste);
         } else {
-            Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, "Afval");
+            cutwaste.setType("Afval");
             return this.cw.postCutWaste(cutwaste);
         }
     }
