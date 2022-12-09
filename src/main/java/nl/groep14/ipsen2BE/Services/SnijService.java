@@ -46,13 +46,11 @@ public class SnijService {
         Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
         if (metrage > maxMeter) {
             cutwaste.setType("Voorraad");
-            return this.cw.postCutWaste(cutwaste);
         } else if (metrage >= minMeter && metrage <= maxMeter) {
             cutwaste.setType("Order");
-            return this.cw.postCutWaste(cutwaste);
         } else {
             cutwaste.setType("Afval");
-            return this.cw.postCutWaste(cutwaste);
         }
+        return this.cw.postCutWaste(cutwaste);
     }
 }

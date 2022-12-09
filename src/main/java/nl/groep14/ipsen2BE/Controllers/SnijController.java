@@ -28,4 +28,13 @@ public class SnijController {
     public ApiResponse snijApplicatie(){
         return snijService.snijApplication();
     }
+
+    @RequestMapping(value = "/setup", method = RequestMethod.GET)
+    @ResponseBody
+    public String snijSetup(){
+        for (int i = 0; i < 100; i++) {
+            snijService.snijApplication();
+        }
+        return "Setup complete";
+    }
 }
