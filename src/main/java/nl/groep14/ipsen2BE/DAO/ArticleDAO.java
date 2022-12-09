@@ -38,7 +38,7 @@ public class ArticleDAO {
      * @param id The id that is used to find a specific Article.
      * @return an Article if an Article with the id exists.
      */
-    public Optional<Article> getArticleByID(Long id){
+    public Optional<Article> getArticleByID(long id){
         return this.articleRepository.findById(id);
     }
 
@@ -46,17 +46,17 @@ public class ArticleDAO {
      * picks a random Article that has no user ID.
      * @return Article
      */
-//    public Article getRandomArticle() {
-//        long qty = articleRepository.count();
-//        Random rand = new Random();
-//        long id = rand.nextLong(qty);
-//        Article chosenArticle = getArticleByID(id).get();
-//        while(chosenArticle.getUserId() != null){
-//            id = rand.nextLong(qty);
-//            chosenArticle = getArticleByID(id).get();
-//        }
-//        return chosenArticle;
-//    }
+    public Article getRandomArticle() {
+        long qty = articleRepository.count();
+        Random rand = new Random();
+        long id = rand.nextLong(qty);
+        Article chosenArticle = getArticleByID(id).get();
+        while(chosenArticle.getLeverancier() != null){
+            id = rand.nextLong(qty);
+            chosenArticle = getArticleByID(id).get();
+        }
+        return chosenArticle;
+    }
 
 
 }
