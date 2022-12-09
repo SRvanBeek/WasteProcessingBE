@@ -1,9 +1,11 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Article;
+import nl.groep14.ipsen2BE.Models.Cutwaste;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
@@ -15,9 +17,11 @@ import java.util.Random;
 public class ArticleDAO {
 
     private final ArticleRepository articleRepository;
+    private final CutWasteDAO cutWasteDAO;
 
-    public ArticleDAO(ArticleRepository articleRepository) {
+    public ArticleDAO(ArticleRepository articleRepository, CutWasteDAO cutwaste) {
         this.articleRepository = articleRepository;
+        this.cutWasteDAO = cutwaste;
     }
     /**
      * Saves a single Article to the database.
@@ -47,15 +51,24 @@ public class ArticleDAO {
      * @return Article
      */
     public Article getRandomArticle() {
-        long qty = articleRepository.count();
-        Random rand = new Random();
-        long id = rand.nextLong(qty);
-        Article chosenArticle = getArticleByID(id).get();
-        while(chosenArticle.getLeverancier() != null){
-            id = rand.nextLong(qty);
-            chosenArticle = getArticleByID(id).get();
+        while (true) {
+            boolean artikelExists = false;
+            long qty = articleRepository.count();
+            Random rand = new Random();
+            long id = rand.nextLong(qty);
+            Article chosenArticle = getArticleByID(id).get();
+            ArrayList<Cutwaste> cutwaste = this.cutWasteDAO.getAll();
+            for (Cutwaste value : cutwaste) {
+                if (Objects.equals(chosenArticle.getArtikelnummer(), value.getArtikelnummer())) {
+                    artikelExists = true;
+                    break;
+                }
+            }
+            if (!artikelExists) {
+                return chosenArticle;
+            }
         }
-        return chosenArticle;
+
     }
 
 
