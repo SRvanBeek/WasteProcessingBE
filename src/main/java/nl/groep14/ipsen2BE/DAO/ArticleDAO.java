@@ -41,6 +41,9 @@ public class ArticleDAO {
     public Optional<Article> getArticleByID(Long id){
         return this.articleRepository.findById(id);
     }
+    public Optional<Article> getArticleByArticleNumber(String articleNumber) {
+        return this.articleRepository.getArticleByArticleNumber(articleNumber);
+    }
 
     /**
      * picks a random Article that has no user ID.

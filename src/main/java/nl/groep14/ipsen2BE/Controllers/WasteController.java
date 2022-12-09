@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,4 +82,9 @@ public class WasteController {
         return this.wasteFilterService.getTotalWastePerCategory(categoryName);
     }
 
+    @RequestMapping(value = "/composition/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getCompositionPerCategory(categoryName);
+    }
 }
