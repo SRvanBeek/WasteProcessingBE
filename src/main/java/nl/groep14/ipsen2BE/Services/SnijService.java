@@ -16,21 +16,11 @@ public class SnijService {
 
     private final ArticleDAO articleDAO;
     private final CustomerDAO customerDAO;
-    private final CutWasteDAO cutWasteDAO;
-    private final CategoryDAO categoryDAO;
-    private final OrderDAO orderDAO;
-//
     private final CutWasteController cw;
-//
     private final Random rand = new Random();
-//
-    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, CutWasteDAO cutWasteDAO,
-                       CategoryDAO categoryDAO, OrderDAO orderDAO, CutWasteController cw) {
+    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, CutWasteController cw) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
-        this.cutWasteDAO = cutWasteDAO;
-        this.categoryDAO = categoryDAO;
-        this.orderDAO = orderDAO;
         this.cw = cw;
     }
 
