@@ -40,7 +40,7 @@ public class SnijService {
         int articleBreedte = chosenArticle.getStofbreedte();
         long articleGewicht = (long) chosenArticle.getGewicht();
         long metrage = this.rand.nextLong((articleBreedte / 3));
-        long gewicht = this.rand.nextLong((articleGewicht / 3));
+        long gewicht = articleGewicht / 100 * (100 / articleBreedte * metrage);
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
         Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
