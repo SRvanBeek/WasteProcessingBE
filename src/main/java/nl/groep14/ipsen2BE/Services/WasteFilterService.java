@@ -73,7 +73,6 @@ public class WasteFilterService {
 
         for (Cutwaste cutwaste: cutwastePerCategory
              ) {
-
             Optional<Article> article = articleDAO.getArticleByArticleNumber(cutwaste.getArtikelnummer());
             if (article.isPresent()) {
                 ArrayList<String[]> compositionValues = getCompositionValues(article.get());
@@ -91,7 +90,6 @@ public class WasteFilterService {
                 }
             }
         }
-
         for (String key: totalWeightPerMaterial.keySet()
              ) {
             String materialValueString = key + ": " + totalWeightPerMaterial.get(key);
@@ -112,7 +110,6 @@ public class WasteFilterService {
 
         for (Cutwaste cutwaste: cutwastePerCategory
         ) {
-
             Optional<Article> article = articleDAO.getArticleByArticleNumber(cutwaste.getArtikelnummer());
             if (article.isPresent()) {
                 String composition = article.get().getSamenstelling();
@@ -125,7 +122,6 @@ public class WasteFilterService {
                 }
             }
         }
-
         for (String key: totalWeightPerMaterial.keySet()
         ) {
             String materialValueString = key + ": " + totalWeightPerMaterial.get(key);
