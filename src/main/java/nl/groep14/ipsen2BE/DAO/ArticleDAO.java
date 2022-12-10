@@ -46,6 +46,10 @@ public class ArticleDAO {
         return this.articleRepository.findById(id);
     }
 
+    public Optional<Article> getArticleByArtikelNummer(String id){
+        return this.articleRepository.getArticleByArtikelNummer(id);
+    }
+
     /**
      * picks a random Article that has no user ID.
      * @return Article
@@ -53,10 +57,10 @@ public class ArticleDAO {
     public Article getRandomArticle() {
         while (true) {
             boolean artikelExists = false;
-            long qty = articleRepository.count();
+            ArrayList<Article> qty = this.getAll();
             Random rand = new Random();
-            long id = rand.nextLong(qty);
-            Article chosenArticle = getArticleByID(id).get();
+            long id2 = rand.nextLong(qty.size());
+            Article chosenArticle = qty.get((int) id2);
             ArrayList<Cutwaste> cutwaste = this.cutWasteDAO.getAll();
             for (Cutwaste value : cutwaste) {
                 if (Objects.equals(chosenArticle.getArtikelnummer(), value.getArtikelnummer())) {

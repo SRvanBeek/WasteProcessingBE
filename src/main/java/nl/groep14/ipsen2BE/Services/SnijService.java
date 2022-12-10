@@ -3,8 +3,10 @@ package nl.groep14.ipsen2BE.Services;
 import nl.groep14.ipsen2BE.Controllers.CutWasteController;
 import nl.groep14.ipsen2BE.DAO.*;
 import nl.groep14.ipsen2BE.Models.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -16,12 +18,24 @@ public class SnijService {
 
     private final ArticleDAO articleDAO;
     private final CustomerDAO customerDAO;
+    private final CutWasteDAO cutWasteDAO;
+    private final OrderDAO orderDAO;
+    private final VoorraadDAO voorraadDAO;
+    private final CategoryDAO categoryDAO;
     private final CutWasteController cw;
+
+    private final WasteService wasteService;
     private final Random rand = new Random();
-    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, CutWasteController cw) {
+    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, CutWasteDAO cutWasteDAO,
+                       CutWasteController cw, VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
+        this.orderDAO = orderDAO;
+        this.cutWasteDAO = cutWasteDAO;
         this.cw = cw;
+        this.voorraadDAO = voorraadDAO;
+        this.wasteService = wasteService;
+        this.categoryDAO = categoryDAO;
     }
 
     /**
@@ -34,16 +48,19 @@ public class SnijService {
      * depending on the min and max settings of the customer and articleID is the id of the article.
      */
     public ApiResponse snijApplication(){
-        Article chosenArticle = articleDAO.getRandomArticle();
+        Article chosenArticle = this.articleDAO.getRandomArticle();
         String customerId = chosenArticle.getLeverancier();
         Customer customer = this.customerDAO.getCustomerByID(customerId).get();
         int articleBreedte = chosenArticle.getStofbreedte();
         long articleGewicht = (long) chosenArticle.getGewicht();
-        long metrage = this.rand.nextLong((articleBreedte / 3));
-        long gewicht = articleGewicht / 100 * (100 / articleBreedte * metrage);
+    //  long metrage = this.rand.nextLong((articleBreedte / 3));
+        long metrage = 4;
+        long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
+
         Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
+        String artikelNummer = cutwaste.getArtikelnummer();
         if (metrage > maxMeter) {
             cutwaste.setType("Voorraad");
         } else if (metrage >= minMeter && metrage <= maxMeter) {
@@ -51,6 +68,20 @@ public class SnijService {
         } else {
             cutwaste.setType("Afval");
         }
-        return this.cw.postCutWaste(cutwaste);
+
+        this.cw.postCutWaste(cutwaste);
+
+        if (Objects.equals(cutwaste.getType(), "Voorraad")) {
+            Voorraad voorraad = new Voorraad(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
+            this.voorraadDAO.saveToDatabase(voorraad);
+        } else if (Objects.equals(cutwaste.getType(), "Order")) {
+            Order order = new Order(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);;
+            this.orderDAO.saveToDatabase(order);
+        } else {
+            this.wasteService.createAndSave(chosenArticle, categoryDAO.getAll(),
+                    cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
+        }
+
+        return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");
     }
 }
