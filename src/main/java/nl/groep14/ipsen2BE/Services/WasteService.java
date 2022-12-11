@@ -5,9 +5,8 @@ import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Service;
-
-import java.io.Console;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -30,8 +29,8 @@ public class WasteService {
      * @param catogories A list of all the categories in the database
      *
      */
-    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID, long userID){
-        Waste waste = createWaste(chosenArticle,catogories,cutwasteID, userID);
+    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
+        Waste waste = createWaste(chosenArticle,catogories,cutwasteID);
         this.wasteDAO.saveToDatabase(waste);
     }
 
@@ -42,13 +41,11 @@ public class WasteService {
      * We create a new 'Waste' entity after checking all the Categories and return it.
      * @param chosenArticle The Article that needs to be checked
      * @param catogories A list of all the categories in the database
-
      * @return created Waste entity
      */
-    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID, long userID){
+    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
         ArrayList<Category> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
-        System.out.println(samenstelling);
         HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
         for (Category category : catogories) {
             if (checkCondition(samenstellingMap,category)) {
@@ -61,9 +58,7 @@ public class WasteService {
                 }
             }
         }
-        //String categorie = String.join(",",acceptedCategoriesList);
-        System.out.println(acceptedCategoriesList);
-        return new Waste(cutwasteID, acceptedCategoriesList.get(0).getId() + 1, userID);
+        return new Waste(cutwasteID,acceptedCategoriesList.get(0).getId(),null,false,null);
     }
 
     /**

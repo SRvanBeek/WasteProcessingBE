@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Order is the model of the Order entity.
@@ -18,21 +19,23 @@ public class Order {
     private long cutwasteID;
 
     @Column(name = "userID")
-    private long userID;
+    private Long userID;
 
     @Column(name = "enabled")
     private boolean enabled;
 
     @Column(name = "date_processed")
-    private String dateProcessed;
+    private Date dateProcessed;
 
     public Order(){
 
     }
 
-    public Order(long cutwasteID, long userID) {
+    public Order(long cutwasteID, Long userID, boolean enabled, Date dateProcessed) {
         this.cutwasteID = cutwasteID;
         this.userID = userID;
+        this.enabled = enabled;
+        this.dateProcessed = dateProcessed;
     }
 
     public Long getId() {
@@ -43,11 +46,11 @@ public class Order {
         this.id = id;
     }
 
-    public long getCutwasteID() {
+    public Long getCutwasteID() {
         return cutwasteID;
     }
 
-    public void setCutwasteID(long cutwasteID) {
+    public void setCutwasteID(Long cutwasteID) {
         this.cutwasteID = cutwasteID;
     }
 
@@ -67,11 +70,11 @@ public class Order {
         this.enabled = enabled;
     }
 
-    public String getDateProcessed() {
+    public Date getDateProcessed() {
         return dateProcessed;
     }
 
-    public void setDateProcessed(String dateProcessed) {
+    public void setDateProcessed(Date dateProcessed) {
         this.dateProcessed = dateProcessed;
     }
 

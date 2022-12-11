@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.Models;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "voorraad")
@@ -16,21 +17,23 @@ public class Voorraad {
     private long cutwasteID;
 
     @Column(name = "userID")
-    private long userID;
+    private Long userID;
 
     @Column(name = "enabled")
     private boolean enabled;
 
     @Column(name = "date_processed")
-    private String dateProcessed;
+    private Date dateProcessed;
 
-    public Voorraad(long cutwasteID, long userID) {
-        this.cutwasteID = cutwasteID;
-        this.userID = userID;
+    public Voorraad(){
+
     }
 
-    public Voorraad() {
-
+    public Voorraad(long cutwasteID, Long userID, boolean enabled, Date dateProcessed) {
+        this.cutwasteID = cutwasteID;
+        this.userID = userID;
+        this.enabled = enabled;
+        this.dateProcessed = dateProcessed;
     }
 
     public Long getId() {
@@ -49,11 +52,11 @@ public class Voorraad {
         this.cutwasteID = cutwasteID;
     }
 
-    public long getUserID() {
+    public Long getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(Long userID) {
         this.userID = userID;
     }
 
@@ -65,11 +68,11 @@ public class Voorraad {
         this.enabled = enabled;
     }
 
-    public String getDateProcessed() {
+    public Date getDateProcessed() {
         return dateProcessed;
     }
 
-    public void setDateProcessed(String dateProcessed) {
+    public void setDateProcessed(Date dateProcessed) {
         this.dateProcessed = dateProcessed;
     }
 

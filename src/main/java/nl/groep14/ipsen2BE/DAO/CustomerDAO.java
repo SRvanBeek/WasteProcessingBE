@@ -46,7 +46,7 @@ public class CustomerDAO {
      * @return A Customer if a Customer with the id exists.
      */
     public Optional<Customer> getCustomerByID(String id){
-        return this.customerRepository.getCustomerByCustomerName(id);
+        return this.customerRepository.getCustomersByCustomerID(id);
     }
 }
 

@@ -47,7 +47,7 @@ public class ArticleDAO {
     }
 
     public Optional<Article> getArticleByArtikelNummer(String id){
-        return this.articleRepository.getArticleByArtikelNummer(id);
+        return this.articleRepository.getArticleByArtikelnummer(id);
     }
 
     /**
@@ -72,8 +72,5 @@ public class ArticleDAO {
                 return chosenArticle;
             }
         }
-
     }
-
-
 }

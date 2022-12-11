@@ -6,6 +6,8 @@ import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -54,33 +56,38 @@ public class SnijService {
         int articleBreedte = chosenArticle.getStofbreedte();
         long articleGewicht = (long) chosenArticle.getGewicht();
     //  long metrage = this.rand.nextLong((articleBreedte / 3));
-        long metrage = 4;
+        long metrage = 0;
         long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-
         Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
         String artikelNummer = cutwaste.getArtikelnummer();
         if (metrage > maxMeter) {
             cutwaste.setType("Voorraad");
+            this.cw.postCutWaste(cutwaste);
+            this.voorraadDAO.saveToDatabase(new Voorraad(cutwaste.getId(), null,false, null));
         } else if (metrage >= minMeter && metrage <= maxMeter) {
             cutwaste.setType("Order");
+            this.cw.postCutWaste(cutwaste);
+            this.orderDAO.saveToDatabase(new Order(cutwaste.getId(), null,false, null));
         } else {
+            ArrayList<Category> catogories = this.categoryDAO.getAll();
             cutwaste.setType("Afval");
+            this.cw.postCutWaste(cutwaste);
+            wasteService.createAndSave(chosenArticle,catogories, cutwaste.getId() );
         }
 
-        this.cw.postCutWaste(cutwaste);
 
-        if (Objects.equals(cutwaste.getType(), "Voorraad")) {
-            Voorraad voorraad = new Voorraad(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
-            this.voorraadDAO.saveToDatabase(voorraad);
-        } else if (Objects.equals(cutwaste.getType(), "Order")) {
-            Order order = new Order(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);;
-            this.orderDAO.saveToDatabase(order);
-        } else {
-            this.wasteService.createAndSave(chosenArticle, categoryDAO.getAll(),
-                    cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
-        }
+//
+//        if (Objects.equals(cutwaste.getType(), "Voorraad")) {
+//
+//        } else if (Objects.equals(cutwaste.getType(), "Order")) {
+//            Order order = new Order(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);;
+//            this.orderDAO.saveToDatabase(order);
+//        } else {
+//            this.wasteService.createAndSave(chosenArticle, categoryDAO.getAll(),
+//                    cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
+//        }
 
         return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");
     }

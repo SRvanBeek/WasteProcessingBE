@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Category {
     @Id
     @GeneratedValue
-    @Column(name = "customerID")
+    @Column(name = "id")
     private long id;
     private String name;
     private String voorwaarde;

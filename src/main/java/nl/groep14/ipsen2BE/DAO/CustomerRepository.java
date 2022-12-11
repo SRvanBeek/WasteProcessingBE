@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Query(value = "SELECT c from Customer c where c.customerID = :customerName")
-    Optional<Customer> getCustomerByCustomerName(@Param("customerName") String customerName);
+//    @Query(value = "SELECT c from Customer c where c.customerID = :customerName")
+//    Optional<Customer> getCustomerByCustomerName(@Param("customerName") String customerName);
+
+    Optional<Customer> getCustomersByCustomerID(String id);
 }
