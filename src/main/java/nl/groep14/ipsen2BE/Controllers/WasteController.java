@@ -3,10 +3,12 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Waste;
+import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +19,11 @@ import java.util.List;
 @RequestMapping(value = "/api/waste")
 public class WasteController {
     private final WasteDAO wasteDAO;
+    private final WasteFilterService wasteFilterService;
 
-    public WasteController(WasteDAO wasteDAO) {
+    public WasteController(WasteDAO wasteDAO, WasteFilterService wasteFilterService) {
         this.wasteDAO = wasteDAO;
+        this.wasteFilterService = wasteFilterService;
     }
 
     /**
@@ -66,4 +70,36 @@ public class WasteController {
         return this.wasteDAO.getWasteByCutWasteId(articleId).get();
     }
 
+    /**
+     * returns the total weight and metrage of all categorized waste.
+     * @return weight and metrage of all categorized waste.
+     */
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetails(){
+        return this.wasteFilterService.getTotalWaste();
+    }
+
+    /**
+     * returns the total weight and metrage of all waste in the given category.
+     *
+     * @param categoryName the category to retrieve the details from.
+     * @return weight and metrage of all waste in a given category.
+     */
+    @RequestMapping(value = "/details/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getTotalWastePerCategory(categoryName);
+    }
+
+    /**
+     * returns the composition and its weight of all waste in a given category
+     * @param categoryName the category to retrieve the composition from.
+     * @return the composition of a given category.
+     */
+    @RequestMapping(value = "/composition/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getImpureCompositionPerCategory(categoryName);
+    }
 }
