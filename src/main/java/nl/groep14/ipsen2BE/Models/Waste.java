@@ -17,7 +17,7 @@ public class Waste {
     private long id;
     @Basic
     @Column(name = "cutwasteID")
-    private long cutwasteId;
+    private long cutWasteId;
 
     @Basic
     @Column(name = "categoryID")
@@ -35,8 +35,8 @@ public class Waste {
     @Column(name = "date_processed")
     private Date dateProcessed;
 
-    public Waste(long cutwasteId, long categoryId, Integer userId, boolean enabled, Date dateProcessed) {
-        this.cutwasteId = cutwasteId;
+    public Waste(long cutWasteId, long categoryId, Integer userId, boolean enabled, Date dateProcessed) {
+        this.cutWasteId = cutWasteId;
         this.categoryId = categoryId;
         this.userId = userId;
         this.enabled = enabled;
@@ -57,11 +57,11 @@ public class Waste {
     }
 
     public long getCutwasteId() {
-        return cutwasteId;
+        return cutWasteId;
     }
 
     public void setCutwasteId(long cutwasteId) {
-        this.cutwasteId = cutwasteId;
+        this.cutWasteId = cutwasteId;
     }
 
     public long getCategoryId() {
@@ -100,7 +100,7 @@ public class Waste {
     public String toString() {
         return "Waste{" +
                 "id=" + id +
-                ", cutwasteId=" + cutwasteId +
+                ", cutwasteId=" + cutWasteId +
                 ", categoryId=" + categoryId +
                 ", userId=" + userId +
                 ", enabled=" + enabled +
@@ -114,7 +114,7 @@ public class Waste {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Waste waste = (Waste) o;
-        return id == waste.id && cutwasteId == waste.cutwasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateProcessed, waste.dateProcessed);
+        return id == waste.id && cutWasteId == waste.cutWasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateProcessed, waste.dateProcessed);
     }
 
 }

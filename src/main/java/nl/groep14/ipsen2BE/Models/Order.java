@@ -19,7 +19,7 @@ public class Order {
     private long cutwasteID;
 
     @Column(name = "userID")
-    private Long userID;
+    private Integer userId;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -31,9 +31,9 @@ public class Order {
 
     }
 
-    public Order(long cutwasteID, Long userID, boolean enabled, Date dateProcessed) {
+    public Order(long cutwasteID, Integer userId, boolean enabled, Date dateProcessed) {
         this.cutwasteID = cutwasteID;
-        this.userID = userID;
+        this.userId = userId;
         this.enabled = enabled;
         this.dateProcessed = dateProcessed;
     }
@@ -54,12 +54,12 @@ public class Order {
         this.cutwasteID = cutwasteID;
     }
 
-    public long getUserID() {
-        return userID;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserID(long userID) {
-        this.userID = userID;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public boolean isEnabled() {
@@ -83,7 +83,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", cutwasteID=" + cutwasteID +
-                ", userID=" + userID +
+                ", userID=" + userId +
                 ", enabled=" + enabled +
                 ", datecreated='" + dateProcessed + '\'' +
                 '}';

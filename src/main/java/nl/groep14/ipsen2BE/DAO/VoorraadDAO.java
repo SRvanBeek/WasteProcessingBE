@@ -27,4 +27,11 @@ public class VoorraadDAO {
     public Optional<Voorraad> getVoorraadByID(Long id){
         return this.voorraadRepository.findById(id);
     }
+
+    public Voorraad getVoorraadByCutWasteId(long id) {
+        Optional<Voorraad> voorraad = this.voorraadRepository.findVoorraadByCutwasteID(id);
+        return voorraad.orElse(null);
+    }
+
+
 }

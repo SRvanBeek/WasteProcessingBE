@@ -117,4 +117,12 @@ public class CategoryController {
         return this.wasteFilterService.getCategoryNames();
     }
 
+    @RequestMapping(value = "/names/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getCategoryNameByID(@PathVariable long id){
+        Category category = this.categoryDAO.getCategoryByID(id).get();
+        System.out.println(category.getName());
+        return category.getName();
+    }
+
 }

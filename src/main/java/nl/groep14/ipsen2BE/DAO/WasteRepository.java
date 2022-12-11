@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public interface WasteRepository extends JpaRepository<Waste,Long> {
-    @Query(value = "SELECT w from Waste w where w.cutwasteId = :cutWasteId")
+    @Query(value = "SELECT w from Waste w where w.cutWasteId = :cutWasteId")
     Optional<Waste> getWasteByCutWasteId(@Param("cutWasteId") long cutWasteId);
 
     @Query(value = "SELECT w from Waste w where w.categoryId = :categoryId")

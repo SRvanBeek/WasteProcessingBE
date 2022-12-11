@@ -26,6 +26,13 @@ public class VoorraadController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse putVoorraad(@RequestBody Voorraad voorraad){
+        this.voorraadDAO.saveToDatabase(voorraad);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public List<Voorraad> getAllWaste(){
@@ -36,5 +43,11 @@ public class VoorraadController {
     @ResponseBody
     public Voorraad getVoorraadByID(@PathVariable Long id){
         return this.voorraadDAO.getVoorraadByID(id).get();
+    }
+
+    @RequestMapping(value = "/perCutWaste/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Voorraad getVoorraadByIDByCutWasteID(@PathVariable Long id){
+        return this.voorraadDAO.getVoorraadByCutWasteId(id);
     }
 }

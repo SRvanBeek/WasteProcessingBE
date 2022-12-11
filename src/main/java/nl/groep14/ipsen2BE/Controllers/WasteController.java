@@ -37,6 +37,17 @@ public class WasteController {
         this.wasteDAO.saveToDatabase(waste);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
+    /**
+     * putWaste puts a Waste into the database.
+     * @param waste The WasteModel that is received in the PutMethod
+     * @return ApiResponse with a corresponding message
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse putWaste(@RequestBody Waste waste){
+        this.wasteDAO.saveToDatabase(waste);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
+    }
 
     /**
      * getAllWaste gets all waste entities in the database.
@@ -61,13 +72,13 @@ public class WasteController {
 
     /**
      * getOneWasteByArticleId returns one Waste entity based on the Article id of the Waste entity from the database.
-     * @param articleId is the id of the Article linked to the Waste entity
+     * @param cutWasteId is the id of the cutWaste linked to the Waste entity
      * @return Waste entity
      */
-    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perCutWaste/{cutWasteId}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneWasteByArticleId(@PathVariable Long articleId){
-        return this.wasteDAO.getWasteByCutWasteId(articleId).get();
+    public Waste getOneWasteByCutWasteId(@PathVariable Long cutWasteId){
+        return this.wasteDAO.getWasteByCutWasteId(cutWasteId).get();
     }
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
@@ -87,4 +98,8 @@ public class WasteController {
     public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
         return this.wasteFilterService.getCompositionPerCategory(categoryName);
     }
+
+
+
+
 }
