@@ -6,6 +6,8 @@ import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class UserDAO {
     private final UserRepository userRepository;
@@ -43,7 +45,7 @@ public class UserDAO {
         return role;
     }
 
-    public User getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username);
+    public Optional<User> getUserByUserId(Long Id){
+        return userRepository.findById(Id);
     }
 }

@@ -80,4 +80,12 @@ public class CutWasteController {
     public ArrayList<Cutwaste> getCutWasteByType(@PathVariable String type){
         return this.cutWasteDAO.getByType(type);
     }
+
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Cutwaste getCutWasteById(@PathVariable Long id){
+        return this.cutWasteDAO.getByID(id).get();
+    }
+
 }
