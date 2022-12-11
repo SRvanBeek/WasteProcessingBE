@@ -55,13 +55,11 @@ public class SnijService {
         Customer customer = this.customerDAO.getCustomerByID(customerId).get();
         int articleBreedte = chosenArticle.getStofbreedte();
         long articleGewicht = (long) chosenArticle.getGewicht();
-    //  long metrage = this.rand.nextLong((articleBreedte / 3));
-        long metrage = 0;
+        long metrage = this.rand.nextLong((articleBreedte / 3));
         long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
         Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
-        String artikelNummer = cutwaste.getArtikelnummer();
         if (metrage > maxMeter) {
             cutwaste.setType("Voorraad");
             this.cw.postCutWaste(cutwaste);
@@ -76,18 +74,6 @@ public class SnijService {
             this.cw.postCutWaste(cutwaste);
             wasteService.createAndSave(chosenArticle,catogories, cutwaste.getId() );
         }
-
-
-//
-//        if (Objects.equals(cutwaste.getType(), "Voorraad")) {
-//
-//        } else if (Objects.equals(cutwaste.getType(), "Order")) {
-//            Order order = new Order(cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);;
-//            this.orderDAO.saveToDatabase(order);
-//        } else {
-//            this.wasteService.createAndSave(chosenArticle, categoryDAO.getAll(),
-//                    cutWasteDAO.getByArtikelNummer(artikelNummer).get().getId(), 32);
-//        }
 
         return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");
     }
