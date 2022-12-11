@@ -13,8 +13,5 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article,Long> {
     long count();
 
-//    @Query(value = "SELECT a FROM Article a WHERE a.artikelnummer = :artikelnummer")
-//    Optional<Article> getArticleByArtikelNummer(@Param("artikelnummer") String artikelnummer);
-
     Optional<Article> getArticleByArtikelnummer(String id);
 }
