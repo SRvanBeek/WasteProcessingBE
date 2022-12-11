@@ -57,7 +57,7 @@ public class WasteFilterService {
         for (Cutwaste cutwaste: cutwastePerCategory
              ) {
 
-            Optional<Article> article = articleDAO.getArticleByArticleNumber(cutwaste.getArtikelnummer());
+            Optional<Article> article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer());
             if (article.isPresent()) {
                 ArrayList<String[]> compositionValues = getCompositionValues(article.get());
                 for (String[] values : compositionValues

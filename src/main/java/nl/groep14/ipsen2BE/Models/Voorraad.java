@@ -17,7 +17,7 @@ public class Voorraad {
     private long cutwasteID;
 
     @Column(name = "userID")
-    private Long userID;
+    private Integer userID;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -29,7 +29,7 @@ public class Voorraad {
 
     }
 
-    public Voorraad(long cutwasteID, Long userID, boolean enabled, Date dateProcessed) {
+    public Voorraad(long cutwasteID, Integer userID, boolean enabled, Date dateProcessed) {
         this.cutwasteID = cutwasteID;
         this.userID = userID;
         this.enabled = enabled;
@@ -52,11 +52,11 @@ public class Voorraad {
         this.cutwasteID = cutwasteID;
     }
 
-    public Long getUserID() {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
