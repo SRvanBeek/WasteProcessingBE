@@ -15,4 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
 
     @Query(value = "SELECT a from Article a where a.artikelnummer = :articleNumber")
     Optional<Article> getArticleByArticleNumber(@Param("articleNumber") String articleNumber);
+
+    Article findArticleByArtikelnummer(String artikkelnummer);
 }

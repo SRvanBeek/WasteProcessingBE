@@ -38,8 +38,8 @@ public class ArticleDAO {
      * @param id The id that is used to find a specific Article.
      * @return an Article if an Article with the id exists.
      */
-    public Optional<Article> getArticleByID(Long id){
-        return this.articleRepository.findById(id);
+    public Optional<Article> getArticleByID(String id){
+        return Optional.ofNullable(this.articleRepository.findArticleByArtikelnummer(id));
     }
     public Optional<Article> getArticleByArticleNumber(String articleNumber) {
         return this.articleRepository.getArticleByArticleNumber(articleNumber);
