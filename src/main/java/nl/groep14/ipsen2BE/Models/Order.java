@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Order is the model of the Order entity.
@@ -24,7 +25,7 @@ public class Order {
     private boolean enabled;
 
     @Column(name = "date_processed")
-    private String dateProcessed;
+    private Date dateProcessed;
 
     public Order(){
 
@@ -67,11 +68,11 @@ public class Order {
         this.enabled = enabled;
     }
 
-    public String getDateProcessed() {
+    public Date getDateProcessed() {
         return dateProcessed;
     }
 
-    public void setDateProcessed(String dateProcessed) {
+    public void setDateProcessed(Date dateProcessed) {
         this.dateProcessed = dateProcessed;
     }
 
