@@ -41,6 +41,11 @@ public class WasteFilterService {
         return getWasteDetails(allWaste);
     }
 
+    /**
+     * returns the total weight and metrage of all categorized waste on a given category.
+     * @param categoryName
+     * @return total weight and metrage as array of a given category.
+     */
     public double[] getTotalWastePerCategory(String categoryName) {
         return getWasteDetails(getAllWastePerCategory(categoryName));
     }

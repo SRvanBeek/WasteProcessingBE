@@ -41,6 +41,7 @@ public class WasteDAO {
     public Optional<Waste> getWasteByID(Long id){
         return this.wasteRepository.findById(id);
     }
+
     /**
      * Attempts to return a single Waste if one exists in the database with the given Article id.
      * @param id The Article id that is used to find a specific Waste.
@@ -49,7 +50,11 @@ public class WasteDAO {
     public Optional<Waste> getWasteByCutWasteId(Long id){
         return this.wasteRepository.getWasteByCutWasteId(id);
     }
-
+    /**
+     * Attempts to return a List of Waste if at least one exists in the database with the given Category id.
+     * @param id The Category id that is used to find specific Waste.
+     * @return An arraylist of Waste if at least one Waste with the cateory id exists.
+     */
     public Optional<ArrayList<Waste>> getWasteByCategoryId(Long id){
         return this.wasteRepository.getWasteByCategoryId(id);
     }
