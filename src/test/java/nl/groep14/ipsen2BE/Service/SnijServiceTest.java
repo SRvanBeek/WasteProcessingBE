@@ -18,10 +18,10 @@
 //import static org.mockito.ArgumentMatchers.anyLong;
 //import static org.mockito.Mockito.mock;
 //import static org.mockito.Mockito.when;
-//
-//
-//public class SnijServiceTest {
-//
+
+
+public class SnijServiceTest {
+
 //    SnijService snijService;
 //    @Mock
 //    WasteService wasteService;
@@ -47,7 +47,7 @@
 //        ac = mock(ArticleController.class);
 //        snijService = new SnijService(articleDAO,customerDAO,wasteService,categoryDAO,orderDAO, ac);
 //    }
-//
+
 //    @Test
 //    public void should_returnVoorraadString_whenSnijApplication(){
 //        Article testArticle = new Article();
@@ -110,4 +110,4 @@
 //
 //        assertEquals(response,expectedString);
 //    }
-//}
+}
