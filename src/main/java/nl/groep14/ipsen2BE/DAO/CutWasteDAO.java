@@ -4,7 +4,6 @@ import nl.groep14.ipsen2BE.Models.Cutwaste;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Component
 public class CutWasteDAO {
@@ -24,6 +23,12 @@ public class CutWasteDAO {
 
     public ArrayList<Cutwaste> getByType(String type) {
         return (ArrayList<Cutwaste>) this.cutWasteRepository.findByType(type);
+    }
+
+    public Cutwaste getById(long id) {
+        Optional<Cutwaste> cutwaste = this.cutWasteRepository.findById(id);
+        return cutwaste.orElse(null);
+
     }
 
     public Optional<Cutwaste> getByArtikelNummer(String artikelnummer) {

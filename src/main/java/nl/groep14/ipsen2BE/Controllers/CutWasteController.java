@@ -1,21 +1,34 @@
 package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.CutWasteDAO;
+import nl.groep14.ipsen2BE.DAO.OrderDAO;
+import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
+import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Cutwaste;
+import nl.groep14.ipsen2BE.Models.Order;
+import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "api/cutWaste")
 public class CutWasteController {
     private final CutWasteDAO cutWasteDAO;
+    private final OrderDAO orderDAO;
+    private final VoorraadDAO voorraadDAO;
+    private final WasteDAO wasteDAO;
 
-    public CutWasteController(CutWasteDAO cutWasteDAO) {
+    public CutWasteController(CutWasteDAO cutWasteDAO, OrderDAO orderDAO, VoorraadDAO voorraadDAO, WasteDAO wasteDAO) {
         this.cutWasteDAO = cutWasteDAO;
+        this.orderDAO = orderDAO;
+        this.voorraadDAO = voorraadDAO;
+        this.wasteDAO = wasteDAO;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -35,5 +48,26 @@ public class CutWasteController {
     @ResponseBody
     public ArrayList<Cutwaste> getCutWasteByType(@PathVariable String type){
         return this.cutWasteDAO.getByType(type);
+    }
+
+    @RequestMapping(value = "/done/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse setDone(@PathVariable long id, @RequestBody String type){
+        if (Objects.equals(type, "catWaste")){
+            Waste waste = this.wasteDAO.getWasteByCutWasteId(id).get();
+            waste.setUserId(1);
+            waste.setEnabled(true);
+            waste.setDateProcessed(new Date());
+            this.wasteDAO.saveToDatabase(waste);
+        } else if (Objects.equals(type, "order")) {
+            Order order = this.orderDAO.getOrdersByCutWasteId(id).get();
+            order.setUserID(1);
+            order.setEnabled(true);
+            order.setDateProcessed(new Date());
+            this.orderDAO.saveToDatabase(order);
+        } else if (Objects.equals(type, "voorraad")) {
+
+        }
+        return new ApiResponse(HttpStatus.ACCEPTED, "setDONE!");
     }
 }
