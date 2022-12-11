@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-
     @Query(value = "SELECT o from Order o where o.cutwasteID = :cutWasteId")
     Optional<Order> getOrdersByCutwasteID(@Param("cutWasteId") long cutWasteId);
 }
