@@ -6,6 +6,7 @@ import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import nl.groep14.ipsen2BE.Services.OrderService;
 import java.util.List;
 
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class OrderController {
 
     private final OrderDAO orderDAO;
+    private final OrderService orderService;
 
 
-    public OrderController(OrderDAO orderDAO) {
+    public OrderController(OrderDAO orderDAO, OrderService orderService) {
         this.orderDAO = orderDAO;
+        this.orderService = orderService;
     }
 
 
@@ -95,5 +98,11 @@ public class OrderController {
     public ApiResponse putOrder(@RequestBody Order order){
         this.orderDAO.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+    }
+
+    @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getArticleFromOrder(@PathVariable Long id){
+        return orderService.OrderToArticle(id);
     }
 }
