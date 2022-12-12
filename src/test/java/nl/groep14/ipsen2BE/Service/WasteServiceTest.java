@@ -1,6 +1,6 @@
-package nl.groep14.ipsen2BE.Service;
-
-
+//package nl.groep14.ipsen2BE.Service;
+//
+//
 //import nl.groep14.ipsen2BE.DAO.WasteDAO;
 //import nl.groep14.ipsen2BE.Models.Article;
 //import nl.groep14.ipsen2BE.Models.Category;
@@ -15,8 +15,8 @@ package nl.groep14.ipsen2BE.Service;
 //import java.util.Arrays;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class WasteServiceTest {
+//
+//public class WasteServiceTest {
 //    WasteService wasteService;
 //
 //    @Mock
@@ -26,7 +26,7 @@ public class WasteServiceTest {
 //    void setUp(){
 //        this.wasteService = new WasteService(wasteDAO);
 //    }
-
+//
 //    @Test
 //    public void should_returnWasteWithCorrectCategories_whenCreateWaste(){
 //        //arrange
@@ -49,5 +49,5 @@ public class WasteServiceTest {
 //        //assert
 //        assertEquals(waste,expectedWaste);
 //    }
-
-}
+//
+//}
