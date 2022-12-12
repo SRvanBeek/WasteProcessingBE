@@ -111,6 +111,10 @@ public class CategoryController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You deleted category "+id+"!");
     }
 
+    /**
+     * returns a list with every category name that exists in the database.
+     * @return an Arraylist with category names.
+     */
     @RequestMapping(value = "/names", method = RequestMethod.GET)
     @ResponseBody
     public ArrayList<String> categoryNames(){

@@ -15,4 +15,9 @@ public interface WasteRepository extends JpaRepository<Waste,Long> {
 
     @Query(value = "SELECT w from Waste w where w.categoryId = :categoryId")
     Optional<ArrayList<Waste>> getWasteByCategoryId(@Param("categoryId") long categoryId);
+
+//    ArrayList<Waste> getAllByEnabled(boolean enabled);
+//    Optional<Waste> getWasteByCutwasteId(long cutwasteId);
+//    Optional<ArrayList<Waste>> getAllByCategoryIdAndEnabled(long categoryId, boolean enabled);
+
 }

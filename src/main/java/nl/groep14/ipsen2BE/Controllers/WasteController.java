@@ -81,25 +81,37 @@ public class WasteController {
         return this.wasteDAO.getWasteByCutWasteId(cutWasteId).get();
     }
 
+    /**
+     * returns the total weight and metrage of all categorized waste.
+     * @return weight and metrage of all categorized waste.
+     */
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     @ResponseBody
     public double[] getTotalWasteDetails(){
         return this.wasteFilterService.getTotalWaste();
     }
 
+    /**
+     * returns the total weight and metrage of all waste in the given category.
+     *
+     * @param categoryName the category to retrieve the details from.
+     * @return weight and metrage of all waste in a given category.
+     */
     @RequestMapping(value = "/details/{categoryName}", method = RequestMethod.GET)
     @ResponseBody
     public double[] getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
         return this.wasteFilterService.getTotalWastePerCategory(categoryName);
     }
 
+    /**
+     * returns the composition and its weight of all waste in a given category
+     * @param categoryName the category to retrieve the composition from.
+     * @return the composition of a given category.
+     */
     @RequestMapping(value = "/composition/{categoryName}", method = RequestMethod.GET)
     @ResponseBody
     public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
-        return this.wasteFilterService.getCompositionPerCategory(categoryName);
+        return this.wasteFilterService.getImpureCompositionPerCategory(categoryName);
     }
-
-
-
 
 }

@@ -21,6 +21,7 @@ public class Order {
     @Column(name = "userID")
     private Integer userId;
 
+
     @Column(name = "enabled")
     private boolean enabled;
 
@@ -31,7 +32,9 @@ public class Order {
 
     }
 
+
     public Order(long cutwasteID, Integer userId, boolean enabled, Date dateProcessed) {
+
         this.cutwasteID = cutwasteID;
         this.userId = userId;
         this.enabled = enabled;
@@ -60,6 +63,7 @@ public class Order {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+
     }
 
     public boolean isEnabled() {
