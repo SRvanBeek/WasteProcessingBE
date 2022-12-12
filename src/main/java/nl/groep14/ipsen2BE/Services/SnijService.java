@@ -59,18 +59,18 @@ public class SnijService {
         long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-        Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht);
+        Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
         if (metrage > maxMeter) {
-            cutwaste.setType("Voorraad");
+            cutwaste.setType("storage");
             this.cw.postCutWaste(cutwaste);
             this.voorraadDAO.saveToDatabase(new Voorraad(cutwaste.getId(), null,false, null));
         } else if (metrage >= minMeter && metrage <= maxMeter) {
-            cutwaste.setType("Order");
+            cutwaste.setType("order");
             this.cw.postCutWaste(cutwaste);
             this.orderDAO.saveToDatabase(new Order(cutwaste.getId(), null,false, null));
         } else {
             ArrayList<Category> catogories = this.categoryDAO.getAll();
-            cutwaste.setType("Afval");
+            cutwaste.setType("catWaste");
             this.cw.postCutWaste(cutwaste);
             wasteService.createAndSave(chosenArticle,catogories, cutwaste.getId() );
         }

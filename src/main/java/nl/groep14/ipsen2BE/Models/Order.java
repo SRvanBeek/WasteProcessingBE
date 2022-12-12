@@ -19,7 +19,7 @@ public class Order {
     private long cutwasteID;
 
     @Column(name = "userID")
-    private Long userID;
+    private Integer userID;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -31,7 +31,7 @@ public class Order {
 
     }
 
-    public Order(long cutwasteID, Long userID, boolean enabled, Date dateProcessed) {
+    public Order(long cutwasteID, Integer userID, boolean enabled, Date dateProcessed) {
         this.cutwasteID = cutwasteID;
         this.userID = userID;
         this.enabled = enabled;
@@ -54,11 +54,11 @@ public class Order {
         this.cutwasteID = cutwasteID;
     }
 
-    public long getUserID() {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
