@@ -218,7 +218,7 @@ public class WasteFilterService {
 
         for (Waste waste : allWastePerCategory
         ) {
-            cutwastePerCategory.add(cutWasteDAO.getById(waste.getId()));
+            cutwastePerCategory.add(cutWasteDAO.getById(waste.getCutwasteId()));
         }
         return cutwastePerCategory;
     }
