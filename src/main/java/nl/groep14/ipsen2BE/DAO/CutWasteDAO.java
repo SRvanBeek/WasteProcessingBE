@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * @author Dino Yang && Noah Elstgeest && Stijn van Beek
+ */
 @Component
 public class CutWasteDAO {
     private final CutWasteRepository cutWasteRepository;
@@ -13,14 +16,27 @@ public class CutWasteDAO {
         this.cutWasteRepository = cutWasteRepository;
     }
 
+    /**
+     * getAll returns every CutWaste entity in the database.
+     * @return Arraylist with ever CutWaste.
+     */
     public ArrayList<Cutwaste> getAll() {
         return (ArrayList<Cutwaste>) this.cutWasteRepository.findAll();
     }
 
+    /**
+     * saveToDatabase saves a cutWaste to the database.
+     * @param cutwaste that needs to be saved.
+     */
     public void saveToDatabase(Cutwaste cutwaste){
         this.cutWasteRepository.save(cutwaste);
     }
 
+    /**
+     * getByType gets every cutWaste with a specified type.
+     * @param type is the type of cutWastes that need to be pulled.
+     * @return ArrayList with Cutwastes.
+     */
     public ArrayList<Cutwaste> getByType(String type) {
         return (ArrayList<Cutwaste>) this.cutWasteRepository.findByType(type);
     }
