@@ -43,7 +43,7 @@ public class CutWasteController {
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Cutwaste getOneCutWaste(@PathVariable long id){
-        return this.cutWasteDAO.getById(id);
+        return this.cutWasteDAO.getByID(id).get();
     }
 
     /**
@@ -82,10 +82,10 @@ public class CutWasteController {
     }
 
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Cutwaste getCutWasteById(@PathVariable Long id){
-        return this.cutWasteDAO.getByID(id).get();
-    }
+//    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Cutwaste getCutWasteById(@PathVariable Long id){
+//        return this.cutWasteDAO.getByID(id).get();
+//    }
 
 }

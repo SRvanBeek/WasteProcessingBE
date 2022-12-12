@@ -44,6 +44,10 @@ public class UserDAO {
 
         return role;
     }
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
 
     public Optional<User> getUserByUserId(Long Id){
         return userRepository.findById(Id);
