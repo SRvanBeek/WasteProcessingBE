@@ -104,9 +104,9 @@ public class WasteFilterService {
 
         for (Waste waste: allWastePerCategory
         ) {
-            Cutwaste cutWaste = cutWasteDAO.getById(waste.getId());
-            totalWeight += cutWaste.getGewicht();
-            totalMetrage += cutWaste.getMetrage();
+            //Cutwaste cutWaste = cutWasteDAO.getByID(waste.getId());
+            //totalWeight += cutWaste.getGewicht();
+            //totalMetrage += cutWaste.getMetrage();
         }
         return new double[]{totalWeight, totalMetrage};
     }
@@ -139,7 +139,7 @@ public class WasteFilterService {
 
         for (Waste waste : allWastePerCategory
         ) {
-            cutwastePerCategory.add(cutWasteDAO.getById(waste.getId()));
+            //cutwastePerCategory.add(cutWasteDAO.getById(waste.getId()));
         }
         return cutwastePerCategory;
     }

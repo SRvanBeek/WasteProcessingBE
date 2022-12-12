@@ -25,13 +25,13 @@ public class Order {
     private boolean enabled;
 
     @Column(name = "date_processed")
-    private Date dateProcessed;
+    private String dateProcessed;
 
     public Order(){
 
     }
 
-    public Order(long cutwasteID, Integer userId, boolean enabled, Date dateProcessed) {
+    public Order(long cutwasteID, Integer userId, boolean enabled, String dateProcessed) {
         this.cutwasteID = cutwasteID;
         this.userId = userId;
         this.enabled = enabled;
@@ -70,11 +70,11 @@ public class Order {
         this.enabled = enabled;
     }
 
-    public Date getDateProcessed() {
+    public String getDateProcessed() {
         return dateProcessed;
     }
 
-    public void setDateProcessed(Date dateProcessed) {
+    public void setDateProcessed(String dateProcessed) {
         this.dateProcessed = dateProcessed;
     }
 
