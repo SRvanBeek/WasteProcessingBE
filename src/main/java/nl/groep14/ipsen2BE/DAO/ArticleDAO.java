@@ -45,7 +45,12 @@ public class ArticleDAO {
     public Optional<Article> getArticleByID(long id){
         return this.articleRepository.findById(id);
     }
-
+    
+        /**
+     * attempts to return a single article on the given articleNumber.
+     * @param articleNumber the articlenumber which will be used to retrieve the Article from the database.
+     * @return a single Article if one exists with the given articleNumber.
+     */
     public Optional<Article> getArticleByArtikelNummer(String id){
         return this.articleRepository.getArticleByArtikelnummer(id);
     }

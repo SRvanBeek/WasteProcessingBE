@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * @author Stijn van Beek
+ */
 @Service
 public class WasteFilterService {
     CutWasteDAO cutWasteDAO;
@@ -28,16 +31,29 @@ public class WasteFilterService {
         this.articleDAO = articleDAO;
     }
 
+    /**
+     * returns the total weight and metrage of all categorized waste.
+     * @return total weight and metrage as array.
+     */
     public double[] getTotalWaste() {
        ArrayList<Waste> allWaste = wasteDAO.getAll();
 
         return getWasteDetails(allWaste);
     }
 
+    /**
+     * returns the total weight and metrage of all categorized waste on a given category.
+     * @param categoryName
+     * @return total weight and metrage as array of a given category.
+     */
     public double[] getTotalWastePerCategory(String categoryName) {
         return getWasteDetails(getAllWastePerCategory(categoryName));
     }
 
+    /**
+     * returns a list of every category name in the database
+     * @return arraylist with every category name
+     */
     public ArrayList<String> getCategoryNames(){
         ArrayList<Category> categories = categoryDAO.getAll();
         ArrayList<String> categoryNames = new ArrayList<>();
@@ -49,14 +65,19 @@ public class WasteFilterService {
         return categoryNames;
     }
 
-    public ArrayList<String> getCompositionPerCategory(String categoryName) {
+    /**
+     * returns the pure composition based on a given category. The pure composition is calculated
+     * by the cutwaste weight divided by the percentage of a material in the composition in an article.
+     * @param categoryName the given category to retrieve the composition from.
+     * @return an ArrayList with every pure material in the given category and its weight as a string.
+     */
+    public ArrayList<String> getPureCompositionPerCategory(String categoryName) {
         ArrayList<Cutwaste> cutwastePerCategory = getCategorizedCutwaste(categoryName);
         HashMap<String, Double> totalWeightPerMaterial = new HashMap<>();
         ArrayList<String> materialWeightList = new ArrayList<>();
 
         for (Cutwaste cutwaste: cutwastePerCategory
              ) {
-
             Optional<Article> article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer());
             if (article.isPresent()) {
                 ArrayList<String[]> compositionValues = getCompositionValues(article.get());
@@ -74,7 +95,6 @@ public class WasteFilterService {
                 }
             }
         }
-
         for (String key: totalWeightPerMaterial.keySet()
              ) {
             String materialValueString = key + ": " + totalWeightPerMaterial.get(key);
@@ -83,6 +103,43 @@ public class WasteFilterService {
         return materialWeightList;
     }
 
+    /**
+     * returns the impure composition based on a given category. An impure material is for example: '50% PL/50% PES'
+     * @param categoryName the given category to retrieve the composition from.
+     * @return an ArrayList with every impure material in the given category and its weight as a string.
+     */
+    public ArrayList<String> getImpureCompositionPerCategory(String categoryName) {
+        ArrayList<Cutwaste> cutwastePerCategory = getCategorizedCutwaste(categoryName);
+        HashMap<String, Double> totalWeightPerMaterial = new HashMap<>();
+        ArrayList<String> materialWeightList = new ArrayList<>();
+
+        for (Cutwaste cutwaste: cutwastePerCategory
+        ) {
+            Optional<Article> article = articleDAO.getArticleByArticleNumber(cutwaste.getArtikelnummer());
+            if (article.isPresent()) {
+                String composition = article.get().getSamenstelling();
+
+                if (totalWeightPerMaterial.containsKey(composition)) {
+                    totalWeightPerMaterial.put(composition, totalWeightPerMaterial.get(composition) + cutwaste.getGewicht());
+                }
+                else {
+                    totalWeightPerMaterial.put(composition, cutwaste.getGewicht());
+                }
+            }
+        }
+        for (String key: totalWeightPerMaterial.keySet()
+        ) {
+            String materialValueString = key + ": " + totalWeightPerMaterial.get(key);
+            materialWeightList.add(materialValueString);
+        }
+        return materialWeightList;
+    }
+
+    /**
+     * returns the values from the composition string so that they can be used for calculations.
+     * @param article the article from which the composition string is received.
+     * @return an arraylist of String arrays, with each array containing the pure material and its percentage.
+     */
     private ArrayList<String[]> getCompositionValues(Article article) {
         ArrayList<String[]> compositionValues = new ArrayList<>();
 
@@ -98,11 +155,18 @@ public class WasteFilterService {
         }
         return compositionValues;
     }
-    private double[] getWasteDetails(ArrayList<Waste> allWastePerCategory) {
+
+    /**
+     * returns a double array with the total weight and metrage of a given list of Waste.
+     *
+     * @param wasteList the list of waste from which the weight and metrage are calculated
+     * @return a double array with the total weight and metrage.
+     */
+    private double[] getWasteDetails(ArrayList<Waste> wasteList) {
         double totalWeight = 0;
         double totalMetrage = 0;
 
-        for (Waste waste: allWastePerCategory
+        for (Waste waste: wasteList
         ) {
             Cutwaste cutWaste = cutWasteDAO.getById(waste.getId());
             totalWeight += cutWaste.getGewicht();
@@ -111,6 +175,11 @@ public class WasteFilterService {
         return new double[]{totalWeight, totalMetrage};
     }
 
+    /**
+     * returns the designated category id from a given category name.
+     * @param categoryName the given category name.
+     * @return a category id as a long.
+     */
     private long getCategoryIdByName(String categoryName) {
         ArrayList<Category> categories = categoryDAO.getAll();
 
@@ -123,6 +192,11 @@ public class WasteFilterService {
         return 0;
     }
 
+    /**
+     * returns an ArrayList of Waste based on a given category name.
+     * @param categoryName the given category name.
+     * @return an arraylist with Waste.
+     */
     private ArrayList<Waste> getAllWastePerCategory(String categoryName) {
         long categoryId = getCategoryIdByName(categoryName);
         ArrayList<Waste> allWastePerCategory = new ArrayList<>();
@@ -133,13 +207,18 @@ public class WasteFilterService {
         return allWastePerCategory;
     }
 
+    /**
+     * returns an ArrayList of CutWaste based on a given category name.
+     * @param categoryName the given category name.
+     * @return an arraylist with CutWaste.
+     */
     private ArrayList<Cutwaste> getCategorizedCutwaste(String categoryName) {
         ArrayList<Waste> allWastePerCategory = getAllWastePerCategory(categoryName);
         ArrayList<Cutwaste> cutwastePerCategory = new ArrayList<>();
 
         for (Waste waste : allWastePerCategory
         ) {
-            cutwastePerCategory.add(cutWasteDAO.getById(waste.getId()));
+            cutwastePerCategory.add(cutWasteDAO.getById(waste.getCutwasteId()));
         }
         return cutwastePerCategory;
     }
