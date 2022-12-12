@@ -27,27 +27,27 @@ public class WasteServiceTest {
         this.wasteService = new WasteService(wasteDAO);
     }
 
-    @Test
-    public void should_returnWasteWithCorrectCategories_whenCreateWaste(){
-        //arrange
-        Article article = new Article();
-        article.setArtikelId(1);
-        article.setSamenstelling("100% PL");
-        Category categoryExpected = new Category();
-        categoryExpected.setName("1");
-        categoryExpected.setVoorwaarde("100% PL || 100% PES");
-        Category categoryB = new Category();
-        categoryB.setName("2");
-        categoryB.setVoorwaarde("100% VI");
-        ArrayList<Category> categorieList = new ArrayList<>(Arrays.asList(categoryExpected,categoryB));
-        long metrage = 10;
-        Waste expectedWaste = new Waste(1,10,categoryExpected.getName());
-
-        //act
-        Waste waste = this.wasteService.createWaste(article , categorieList, metrage);
-
-        //assert
-        assertEquals(waste,expectedWaste);
-    }
+//    @Test
+//    public void should_returnWasteWithCorrectCategories_whenCreateWaste(){
+//        //arrange
+//        Article article = new Article();
+//        article.setArtikelId(1);
+//        article.setSamenstelling("100% PL");
+//        Category categoryExpected = new Category();
+//        categoryExpected.setName("1");
+//        categoryExpected.setVoorwaarde("100% PL || 100% PES");
+//        Category categoryB = new Category();
+//        categoryB.setName("2");
+//        categoryB.setVoorwaarde("100% VI");
+//        ArrayList<Category> categorieList = new ArrayList<>(Arrays.asList(categoryExpected,categoryB));
+//        long metrage = 10;
+//        Waste expectedWaste = new Waste(1,10,categoryExpected.getName());
+//
+//        //act
+//        Waste waste = this.wasteService.createWaste(article , categorieList, metrage);
+//
+//        //assert
+//        assertEquals(waste,expectedWaste);
+//    }
 
 }

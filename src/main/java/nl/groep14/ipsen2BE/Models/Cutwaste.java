@@ -22,11 +22,11 @@ public class Cutwaste {
 
    @Basic
    @Column(name = "metrage")
-   private double metrage;
+   private long metrage;
 
    @Basic
    @Column(name = "gewicht")
-   private double gewicht;
+   private long gewicht;
 
    @Basic
    @Column(name = "date_cut")
@@ -35,6 +35,18 @@ public class Cutwaste {
     @Basic
     @Column(name = "type")
     private String type;
+
+    public Cutwaste(String artikelnummer, boolean processed, long metrage, long gewicht, Date dateCut) {
+        this.artikelnummer = artikelnummer;
+        this.processed = processed;
+        this.metrage = metrage;
+        this.gewicht = gewicht;
+        this.dateCut = dateCut;
+    }
+
+    public Cutwaste() {
+
+    }
 
     public long getId() {
         return id;
@@ -68,19 +80,19 @@ public class Cutwaste {
         this.processed = processed;
     }
 
-    public double getMetrage() {
+    public long getMetrage() {
         return metrage;
     }
 
-    public void setMetrage(double metrage) {
+    public void setMetrage(long metrage) {
         this.metrage = metrage;
     }
 
-    public double getGewicht() {
+    public long getGewicht() {
         return gewicht;
     }
 
-    public void setGewicht(double gewicht) {
+    public void setGewicht(long gewicht) {
         this.gewicht = gewicht;
     }
 

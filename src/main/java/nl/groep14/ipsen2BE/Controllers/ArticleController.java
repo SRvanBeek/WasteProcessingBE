@@ -57,8 +57,8 @@ public class ArticleController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article getOneArticle(@PathVariable long id) {
-        return this.articleDAO.getArticleByID(id).get();
+    public Article getOneArticle(@PathVariable String id) {
+        return this.articleDAO.getArticleByArtikelNummer(id).get();
     }
 
     /**

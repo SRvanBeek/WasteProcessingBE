@@ -1,15 +1,13 @@
 package nl.groep14.ipsen2BE.Models;
 
+
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Order is the model of the Order entity.
- * @author Dino Yang
- */
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "voorraad")
+public class Voorraad {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -27,11 +25,11 @@ public class Order {
     @Column(name = "date_processed")
     private Date dateProcessed;
 
-    public Order(){
+    public Voorraad(){
 
     }
 
-    public Order(long cutwasteID, Integer userID, boolean enabled, Date dateProcessed) {
+    public Voorraad(long cutwasteID, Integer userID, boolean enabled, Date dateProcessed) {
         this.cutwasteID = cutwasteID;
         this.userID = userID;
         this.enabled = enabled;
@@ -46,11 +44,11 @@ public class Order {
         this.id = id;
     }
 
-    public Long getCutwasteID() {
+    public long getCutwasteID() {
         return cutwasteID;
     }
 
-    public void setCutwasteID(Long cutwasteID) {
+    public void setCutwasteID(long cutwasteID) {
         this.cutwasteID = cutwasteID;
     }
 
@@ -80,12 +78,12 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Voorraad{" +
                 "id=" + id +
                 ", cutwasteID=" + cutwasteID +
                 ", userID=" + userID +
                 ", enabled=" + enabled +
-                ", datecreated='" + dateProcessed + '\'' +
+                ", dateProcessed='" + dateProcessed + '\'' +
                 '}';
     }
 }

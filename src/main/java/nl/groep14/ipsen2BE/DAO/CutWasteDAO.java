@@ -33,6 +33,9 @@ public class CutWasteDAO {
     public Cutwaste getById(long id) {
         Optional<Cutwaste> cutwaste = this.cutWasteRepository.findById(id);
         return cutwaste.orElse(null);
+    }
 
+    public Optional<Cutwaste> getByArtikelNummer(String artikelnummer) {
+        return this.cutWasteRepository.getCutwasteByArtikelnummer(artikelnummer);
     }
 }

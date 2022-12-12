@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -24,7 +25,7 @@ public class Waste {
 
     @Basic
     @Column(name = "userID")
-    private long userId;
+    private Integer userId;
 
     @Basic
     @Column(name = "enabled")
@@ -32,17 +33,20 @@ public class Waste {
 
     @Basic
     @Column(name = "date_processed")
-    private String dateProcessed;
+    private Date dateProcessed;
 
-    public Waste(long cutwasteId, long categoryId, long userId) {
+    public Waste(long cutwasteId, long categoryId, Integer userId, boolean enabled, Date dateProcessed) {
         this.cutwasteId = cutwasteId;
         this.categoryId = categoryId;
         this.userId = userId;
+        this.enabled = enabled;
+        this.dateProcessed = dateProcessed;
     }
 
     public Waste() {
 
     }
+
 
     public long getId() {
         return id;
@@ -68,11 +72,11 @@ public class Waste {
         this.categoryId = categoryId;
     }
 
-    public long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -84,11 +88,11 @@ public class Waste {
         this.enabled = enabled;
     }
 
-    public String getDateProcessed() {
+    public Date getDateProcessed() {
         return dateProcessed;
     }
 
-    public void setDateProcessed(String dateProcessed) {
+    public void setDateProcessed(Date dateProcessed) {
         this.dateProcessed = dateProcessed;
     }
 

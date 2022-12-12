@@ -1,7 +1,7 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Article;
-import nl.groep14.ipsen2BE.Models.Customer;
+import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +13,5 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article,Long> {
     long count();
 
-    @Query(value = "SELECT a from Article a where a.artikelnummer = :articleNumber")
-    Optional<Article> getArticleByArticleNumber(@Param("articleNumber") String articleNumber);
+    Optional<Article> getArticleByArtikelnummer(String id);
 }
