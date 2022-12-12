@@ -31,7 +31,7 @@ public class WasteDAO {
      * @return arrayList of Waste
      */
     public ArrayList<Waste> getAll(){
-        return (ArrayList<Waste>) this.wasteRepository.findAll();
+        return this.wasteRepository.getAllByEnabled(true);
     }
     /**
      * Attempts to return a single Waste if one exists in the database with the given id.
@@ -48,7 +48,7 @@ public class WasteDAO {
      * @return A Waste if a Waste with the Article id exists.
      */
     public Optional<Waste> getWasteByCutWasteId(Long id){
-        return this.wasteRepository.getWasteByCutWasteId(id);
+        return this.wasteRepository.getWasteByCutwasteId(id);
     }
     /**
      * Attempts to return a List of Waste if at least one exists in the database with the given Category id.
@@ -56,7 +56,7 @@ public class WasteDAO {
      * @return An arraylist of Waste if at least one Waste with the cateory id exists.
      */
     public Optional<ArrayList<Waste>> getWasteByCategoryId(Long id){
-        return this.wasteRepository.getWasteByCategoryId(id);
+        return this.wasteRepository.getAllByCategoryIdAndEnabled(id, true);
     }
 
 }
