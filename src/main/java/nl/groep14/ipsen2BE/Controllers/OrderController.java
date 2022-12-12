@@ -85,6 +85,11 @@ public class OrderController {
         }
     }
 
+    /**
+     * putOrder puts an Order in the database.
+     * @param order that needs to be put.
+     * @return ApiRespone with response.
+     */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putOrder(@RequestBody Order order){

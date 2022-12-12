@@ -71,7 +71,7 @@ public class WasteController {
     }
 
     /**
-     * getOneWasteByArticleId returns one Waste entity based on the Article id of the Waste entity from the database.
+     * getOneWasteByCutWasteId returns one Waste entity based on the CutWaste id of the Waste entity from the database.
      * @param cutWasteId is the id of the cutWaste linked to the Waste entity
      * @return Waste entity
      */

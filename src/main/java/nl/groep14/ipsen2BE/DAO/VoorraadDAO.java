@@ -28,6 +28,11 @@ public class VoorraadDAO {
         return this.voorraadRepository.findById(id);
     }
 
+    /**
+     * getVoorraadByCutWasteId gets a Voorraad By cutWasteID.
+     * @param id cutWasteID
+     * @return Voorraad entity.
+     */
     public Voorraad getVoorraadByCutWasteId(long id) {
         Optional<Voorraad> voorraad = this.voorraadRepository.findVoorraadByCutwasteID(id);
         return voorraad.orElse(null);

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author Noah Elstgeest && Dino Yang
+ */
 @Controller
 @RequestMapping(value = "/api/voorraad")
 public class VoorraadController {
@@ -26,6 +29,11 @@ public class VoorraadController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
+    /**
+     * putVoorraad puts a Voorraad entity in the database.
+     * @param voorraad entity that needs to be put.
+     * @return ApiResponse with response.
+     */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putVoorraad(@RequestBody Voorraad voorraad){
@@ -45,6 +53,11 @@ public class VoorraadController {
         return this.voorraadDAO.getVoorraadByID(id).get();
     }
 
+    /**
+     * getVoorraadByIDByCutWasteID gets an voorraad by cutWastID
+     * @param id cutWasteID.
+     * @return Voorraad entity.
+     */
     @RequestMapping(value = "/perCutWaste/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Voorraad getVoorraadByIDByCutWasteID(@PathVariable Long id){
