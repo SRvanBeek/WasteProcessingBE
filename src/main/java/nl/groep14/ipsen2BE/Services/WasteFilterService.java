@@ -115,7 +115,7 @@ public class WasteFilterService {
 
         for (Cutwaste cutwaste: cutwastePerCategory
         ) {
-            Optional<Article> article = articleDAO.getArticleByArticleNumber(cutwaste.getArtikelnummer());
+            Optional<Article> article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer());
             if (article.isPresent()) {
                 String composition = article.get().getSamenstelling();
 
@@ -123,7 +123,7 @@ public class WasteFilterService {
                     totalWeightPerMaterial.put(composition, totalWeightPerMaterial.get(composition) + cutwaste.getGewicht());
                 }
                 else {
-                    totalWeightPerMaterial.put(composition, cutwaste.getGewicht());
+                    totalWeightPerMaterial.put(composition, (double) cutwaste.getGewicht());
                 }
             }
         }

@@ -21,7 +21,6 @@ public class Order {
     @Column(name = "userID")
     private Integer userId;
 
-
     @Column(name = "enabled")
     private boolean enabled;
 
