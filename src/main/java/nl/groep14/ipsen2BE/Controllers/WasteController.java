@@ -2,8 +2,10 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
+import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Waste;
 import nl.groep14.ipsen2BE.Services.WasteFilterService;
+import nl.groep14.ipsen2BE.Services.WasteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +22,12 @@ import java.util.List;
 public class WasteController {
     private final WasteDAO wasteDAO;
     private final WasteFilterService wasteFilterService;
+    private final WasteService wasteService;
 
-    public WasteController(WasteDAO wasteDAO, WasteFilterService wasteFilterService) {
+    public WasteController(WasteDAO wasteDAO, WasteFilterService wasteFilterService, WasteService wasteService) {
         this.wasteDAO = wasteDAO;
         this.wasteFilterService = wasteFilterService;
+        this.wasteService = wasteService;
     }
 
     /**
@@ -128,6 +132,11 @@ public class WasteController {
         } else {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "No compostions for given category");
         }
+    }
+    @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Article getArticleByWasteId(@PathVariable Long id){
+        return this.wasteService.getArticleByWasteId(id);
     }
 
 }

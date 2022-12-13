@@ -1,9 +1,9 @@
 package nl.groep14.ipsen2BE.Services;
 
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
-import nl.groep14.ipsen2BE.Models.Article;
-import nl.groep14.ipsen2BE.Models.Category;
-import nl.groep14.ipsen2BE.Models.Waste;
+import nl.groep14.ipsen2BE.DAO.ArticleDAO;
+import nl.groep14.ipsen2BE.DAO.CutWasteDAO;
+import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,10 +17,14 @@ import java.util.HashMap;
 public class WasteService {
 
     private final WasteDAO wasteDAO;
+    private final CutWasteDAO cutWasteDAO;
+    private final ArticleDAO articleDAO;
     private boolean hundredPercent = false;
 
-    public WasteService(WasteDAO wasteDAO) {
+    public WasteService(WasteDAO wasteDAO, CutWasteDAO cutWasteDAO, ArticleDAO articleDAO) {
         this.wasteDAO = wasteDAO;
+        this.cutWasteDAO = cutWasteDAO;
+        this.articleDAO = articleDAO;
     }
 
     /**
@@ -183,5 +187,12 @@ public class WasteService {
             return samenstellingMap.containsKey(conditionPart);
         }
         return false;
+    }
+
+    public Article getArticleByWasteId(Long id){
+        Waste waste = wasteDAO.getWasteByID(id).get();
+        Cutwaste cutwaste = cutWasteDAO.getByID(waste.getCutwasteId()).get();
+        return articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer()).get();
+
     }
 }

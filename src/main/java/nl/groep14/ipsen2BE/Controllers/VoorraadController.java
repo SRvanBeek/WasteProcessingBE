@@ -2,11 +2,13 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
+import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Voorraad;
 import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import nl.groep14.ipsen2BE.Services.VoorraadService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +20,11 @@ import java.util.List;
 @RequestMapping(value = "/api/voorraad")
 public class VoorraadController {
     private final VoorraadDAO voorraadDAO;
+    private final VoorraadService voorraadService;
 
-    public VoorraadController(VoorraadDAO voorraadDAO) {
+    public VoorraadController(VoorraadDAO voorraadDAO, VoorraadService voorraadService) {
         this.voorraadDAO = voorraadDAO;
+        this.voorraadService = voorraadService;
     }
 
     /**
@@ -85,5 +89,10 @@ public class VoorraadController {
         } else {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "No voorraad found with this leftoverId");
         }
+    }
+    @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Article getArticlebyVoorraadId(@PathVariable Long id){
+        return this.voorraadService.OrderToArticle(id);
     }
 }

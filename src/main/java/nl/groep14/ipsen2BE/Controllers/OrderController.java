@@ -2,11 +2,13 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.OrderDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
+import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import nl.groep14.ipsen2BE.Services.OrderService;
+import java.util.List;
 
 
 /**
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderDAO orderDAO;
+    private final OrderService orderService;
 
 
-    public OrderController(OrderDAO orderDAO) {
+    public OrderController(OrderDAO orderDAO, OrderService orderService) {
         this.orderDAO = orderDAO;
+        this.orderService = orderService;
     }
 
 
@@ -38,41 +42,35 @@ public class OrderController {
     }
     /**
      * getAllOrders gets all orders from the database using the getAll method from the orderDAO.
-     * The Orders are returned as a ApiResponse.
-     * @return a ApiRepsonse with every Order from the database.
+     * The Orders are returned as a List.
+     * @return a List with every Order in the database.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getAllOrders(){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getAll());
+    public List<Order> getAllOrders(){
+        return this.orderDAO.getAll();
     }
 
     /**
      * getOneOrder returns one specific Order from the database.
      * @param id is the id of the Order
-     * @return An ApiResponse with the order that belongs to the given ID
+     * @return An Order
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getOneOrder(@PathVariable Long id){
-        if(this.orderDAO.getOrderByID(id).isEmpty()){
-            return new ApiResponse(HttpStatus.NOT_FOUND, "this Id doesn't exist");
-        }
-        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id).get());
+    public Order getOneOrder(@PathVariable Long id){
+        return this.orderDAO.getOrderByID(id).get();
     }
 
     /**
      * getOneOrderByArticleId returns one Order based on the Article id of the order from the database.
-     * @param leftoverID is the id of the leftover linked to the Order
-     * @return An ApiResponse with the order in the payload from the given article ID
+     * @param cutWasteID is the id of the cutWaste linked to the Order
+     * @return An Order
      */
-    @RequestMapping(value = "/perleftover/{leftoverID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perCutWaste/{cutWasteID}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getOneOrderByLeftoverId(@PathVariable Long leftoverID){
-        if(this.orderDAO.getOrdersByLeftoverId(leftoverID).isEmpty()){
-            return new ApiResponse(HttpStatus.NOT_FOUND, "this Id doesn't exist");
-        }
-        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrdersByLeftoverId(leftoverID));
+    public Order getOneOrderByCutWasteId(@PathVariable Long cutWasteID){
+        return this.orderDAO.getOrdersByCutWasteId(cutWasteID).get();
     }
 
     /**
@@ -101,5 +99,11 @@ public class OrderController {
     public ApiResponse putOrder(@RequestBody Order order){
         this.orderDAO.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+    }
+
+    @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Article getArticleFromOrder(@PathVariable Long id){
+        return orderService.OrderToArticle(id);
     }
 }
