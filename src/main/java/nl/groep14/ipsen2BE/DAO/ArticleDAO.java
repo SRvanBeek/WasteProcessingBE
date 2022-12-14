@@ -1,9 +1,11 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Article;
+import nl.groep14.ipsen2BE.Models.Cutwaste;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
@@ -15,9 +17,11 @@ import java.util.Random;
 public class ArticleDAO {
 
     private final ArticleRepository articleRepository;
+    private final CutWasteDAO cutWasteDAO;
 
-    public ArticleDAO(ArticleRepository articleRepository) {
+    public ArticleDAO(ArticleRepository articleRepository, CutWasteDAO cutwaste) {
         this.articleRepository = articleRepository;
+        this.cutWasteDAO = cutwaste;
     }
     /**
      * Saves a single Article to the database.
@@ -38,8 +42,17 @@ public class ArticleDAO {
      * @param id The id that is used to find a specific Article.
      * @return an Article if an Article with the id exists.
      */
-    public Optional<Article> getArticleByID(Long id){
+    public Optional<Article> getArticleByID(long id){
         return this.articleRepository.findById(id);
+    }
+    
+        /**
+     * attempts to return a single article on the given articleNumber.
+     * @param id the articlenumber which will be used to retrieve the Article from the database.
+     * @return a single Article if one exists with the given articleNumber.
+     */
+    public Optional<Article> getArticleByArtikelNummer(String id){
+        return this.articleRepository.getArticleByArtikelnummer(id);
     }
 
     /**
@@ -47,16 +60,22 @@ public class ArticleDAO {
      * @return Article
      */
     public Article getRandomArticle() {
-        long qty = articleRepository.count();
-        Random rand = new Random();
-        long id = rand.nextLong(qty);
-        Article chosenArticle = getArticleByID(id).get();
-        while(chosenArticle.getUserId() != null){
-            id = rand.nextLong(qty);
-            chosenArticle = getArticleByID(id).get();
+        while (true) {
+            boolean artikelExists = false;
+            ArrayList<Article> qty = this.getAll();
+            Random rand = new Random();
+            long id2 = rand.nextLong(qty.size());
+            Article chosenArticle = qty.get((int) id2);
+            ArrayList<Cutwaste> cutwaste = this.cutWasteDAO.getAll();
+            for (Cutwaste value : cutwaste) {
+                if (Objects.equals(chosenArticle.getArtikelnummer(), value.getArtikelnummer())) {
+                    artikelExists = true;
+                    break;
+                }
+            }
+            if (!artikelExists) {
+                return chosenArticle;
+            }
         }
-        return chosenArticle;
     }
-
-
 }

@@ -3,10 +3,12 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Waste;
+import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +18,12 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/api/waste")
 public class WasteController {
-
-
     private final WasteDAO wasteDAO;
+    private final WasteFilterService wasteFilterService;
 
-    public WasteController(WasteDAO wasteDAO) {
+    public WasteController(WasteDAO wasteDAO, WasteFilterService wasteFilterService) {
         this.wasteDAO = wasteDAO;
+        this.wasteFilterService = wasteFilterService;
     }
 
     /**
@@ -34,6 +36,17 @@ public class WasteController {
     public ApiResponse postWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+    }
+    /**
+     * putWaste puts a Waste into the database.
+     * @param waste The WasteModel that is received in the PutMethod
+     * @return ApiResponse with a corresponding message
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse putWaste(@RequestBody Waste waste){
+        this.wasteDAO.saveToDatabase(waste);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
     }
 
     /**
@@ -58,14 +71,47 @@ public class WasteController {
     }
 
     /**
-     * getOneWasteByArticleId returns one Waste entity based on the Article id of the Waste entity from the database.
-     * @param articleId is the id of the Article linked to the Waste entity
+     * getOneWasteByCutWasteId returns one Waste entity based on the CutWaste id of the Waste entity from the database.
+     * @param cutWasteId is the id of the cutWaste linked to the Waste entity
      * @return Waste entity
      */
-    @RequestMapping(value = "/perArticle/{articleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perCutWaste/{cutWasteId}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneWasteByArticleId(@PathVariable Long articleId){
-        return this.wasteDAO.getWasteByOrderID(articleId).get();
+    public Waste getOneWasteByCutWasteId(@PathVariable Long cutWasteId){
+        return this.wasteDAO.getWasteByCutWasteId(cutWasteId).get();
+    }
+
+    /**
+     * returns the total weight and metrage of all categorized waste.
+     * @return weight and metrage of all categorized waste.
+     */
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetails(){
+        return this.wasteFilterService.getTotalWaste();
+    }
+
+    /**
+     * returns the total weight and metrage of all waste in the given category.
+     *
+     * @param categoryName the category to retrieve the details from.
+     * @return weight and metrage of all waste in a given category.
+     */
+    @RequestMapping(value = "/details/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public double[] getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getTotalWastePerCategory(categoryName);
+    }
+
+    /**
+     * returns the composition and its weight of all waste in a given category
+     * @param categoryName the category to retrieve the composition from.
+     * @return the composition of a given category.
+     */
+    @RequestMapping(value = "/composition/{categoryName}", method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
+        return this.wasteFilterService.getImpureCompositionPerCategory(categoryName);
     }
 
 }

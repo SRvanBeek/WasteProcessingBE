@@ -5,8 +5,8 @@ import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -27,10 +27,10 @@ public class WasteService {
      * createAndSave creates a waste entity using createWaste and saves it to the database.
      * @param chosenArticle The Article that needs to be checked
      * @param catogories A list of all the categories in the database
-     * @param metrage The 'metrage' of the Waste
+     *
      */
-    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long metrage){
-        Waste waste = createWaste(chosenArticle,catogories,metrage);
+    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
+        Waste waste = createWaste(chosenArticle,catogories,cutwasteID);
         this.wasteDAO.saveToDatabase(waste);
     }
 
@@ -41,26 +41,24 @@ public class WasteService {
      * We create a new 'Waste' entity after checking all the Categories and return it.
      * @param chosenArticle The Article that needs to be checked
      * @param catogories A list of all the categories in the database
-     * @param metrage The 'metrage' of the Waste
      * @return created Waste entity
      */
-    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long metrage){
-        ArrayList<String> acceptedCategoriesList = new ArrayList<>();
+    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
+        ArrayList<Category> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
         HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
         for (Category category : catogories) {
             if (checkCondition(samenstellingMap,category)) {
-                acceptedCategoriesList.add(category.getName());
+                acceptedCategoriesList.add(category);
                 if (this.hundredPercent){
-                    String hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
+                    Category hundred = acceptedCategoriesList.get(acceptedCategoriesList.size() - 1);
                     acceptedCategoriesList.clear();
                     acceptedCategoriesList.add(hundred);
                     break;
                 }
             }
         }
-        String categories = String.join(",",acceptedCategoriesList);
-        return new Waste(chosenArticle.getArtikelId(),metrage,categories);
+        return new Waste(cutwasteID,acceptedCategoriesList.get(0).getId(),null,false,null);
     }
 
     /**
@@ -134,11 +132,11 @@ public class WasteService {
         }
         return true;
     }
-    
+
 
     /**
      * conditionFalseOrTrue does the actual check itself. This method separates the name of the material and
-     * the value of the material in the condition and checks whether the condition is true or false given 
+     * the value of the material in the condition and checks whether the condition is true or false given
      * the samenstelling of an Article. When the samenstelling matches a condition which is a hundred percent of a  material
      * this.hundredPercent becomes true. We do this because when the samenstelling matches a condition of a category
      * which is a hundred percent of a material, we only want to send that particular category back.

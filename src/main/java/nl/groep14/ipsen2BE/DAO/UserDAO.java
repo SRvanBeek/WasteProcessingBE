@@ -42,4 +42,8 @@ public class UserDAO {
 
         return role;
     }
+
+    public User getUserByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
 }

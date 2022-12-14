@@ -11,9 +11,11 @@ import javax.persistence.*;
 public class Category {
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private long id;
     private String name;
     private String voorwaarde;
+    private boolean enabled;
 
 
     public long getId() {
@@ -40,12 +42,21 @@ public class Category {
         this.voorwaarde = voorwaarde;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + id + '\'' +
-                ", naam=" + name + '\'' +
-                ", voorwaarde=" + voorwaarde +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", voorwaarde='" + voorwaarde + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

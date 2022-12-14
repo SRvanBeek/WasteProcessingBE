@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.config;
 
 
 import lombok.RequiredArgsConstructor;
+import nl.groep14.ipsen2BE.DAO.UserDAO;
 import nl.groep14.ipsen2BE.filters.CustomCorsFilter;
 import nl.groep14.ipsen2BE.filters.CustomAuthenticationFilter;
 import nl.groep14.ipsen2BE.filters.CustomAuthorizationFilter;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
+    private final UserDAO userDAO;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -46,7 +48,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager);
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager, userDAO);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         return http
