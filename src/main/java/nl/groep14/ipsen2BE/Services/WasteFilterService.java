@@ -168,7 +168,7 @@ public class WasteFilterService {
 
         for (Waste waste: wasteList
         ) {
-            Leftover cutWaste = leftoverDAO.getById(waste.getId());
+            Leftover cutWaste = leftoverDAO.getById(waste.getLeftoverId());
             totalWeight += cutWaste.getGewicht();
             totalMetrage += cutWaste.getMetrage();
         }
@@ -218,7 +218,7 @@ public class WasteFilterService {
 
         for (Waste waste : allWastePerCategory
         ) {
-            leftoverPerCategory.add(leftoverDAO.getById(waste.getCutwasteId()));
+            leftoverPerCategory.add(leftoverDAO.getById(waste.getLeftoverId()));
         }
         return leftoverPerCategory;
     }

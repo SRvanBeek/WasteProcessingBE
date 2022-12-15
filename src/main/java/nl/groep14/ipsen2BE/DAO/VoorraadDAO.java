@@ -34,7 +34,7 @@ public class VoorraadDAO {
      * @return Voorraad entity.
      */
     public Voorraad getVoorraadByCutWasteId(long id) {
-        Optional<Voorraad> voorraad = this.voorraadRepository.findVoorraadByCutwasteID(id);
+        Optional<Voorraad> voorraad = this.voorraadRepository.findVoorraadByLeftoverId(id);
         return voorraad.orElse(null);
     }
 

@@ -45,7 +45,7 @@ public class OrderDAO {
      * @return An Order if an Order with the Article id exists.
      */
     public Optional<Order> getOrdersByCutWasteId(Long id){
-        return this.orderRepository.getOrdersByCutwasteID(id);
+        return this.orderRepository.getOrdersByLeftoverId(id);
     }
 
     public void setOrderVisibilityFalseByID(Order order){

@@ -61,16 +61,16 @@ public class SnijService {
         Leftover leftover = new Leftover(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
         if (metrage > maxMeter) {
             leftover.setType("storage");
-            this.cw.postCutWaste(leftover);
+            this.cw.postLeftover(leftover);
             this.voorraadDAO.saveToDatabase(new Voorraad(leftover.getId(), null,false, null));
         } else if (metrage >= minMeter && metrage <= maxMeter) {
             leftover.setType("order");
-            this.cw.postCutWaste(leftover);
+            this.cw.postLeftover(leftover);
             this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
         } else {
             ArrayList<Category> catogories = this.categoryDAO.getAll();
             leftover.setType("catWaste");
-            this.cw.postCutWaste(leftover);
+            this.cw.postLeftover(leftover);
             wasteService.createAndSave(chosenArticle,catogories, leftover.getId() );
         }
 

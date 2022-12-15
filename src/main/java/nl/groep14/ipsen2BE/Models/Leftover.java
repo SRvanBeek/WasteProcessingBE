@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "cutwaste")
+@Table(name = "leftover")
 public class Leftover {
 
    @Id

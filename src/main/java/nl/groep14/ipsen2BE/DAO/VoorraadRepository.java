@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface VoorraadRepository extends JpaRepository<Voorraad,Long> {
-    Optional<Voorraad> findVoorraadByCutwasteID(Long id);
+    Optional<Voorraad> findVoorraadByLeftoverId(Long id);
 }

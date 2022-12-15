@@ -15,7 +15,7 @@ public class Order {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "leftoverId")
+    @Column(name = "leftoverID")
     private long leftoverId;
 
     @Column(name = "userID")
