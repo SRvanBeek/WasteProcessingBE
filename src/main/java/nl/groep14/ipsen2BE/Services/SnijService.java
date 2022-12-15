@@ -1,6 +1,6 @@
 package nl.groep14.ipsen2BE.Services;
 
-import nl.groep14.ipsen2BE.Controllers.CutWasteController;
+import nl.groep14.ipsen2BE.Controllers.LeftoverController;
 import nl.groep14.ipsen2BE.DAO.*;
 import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -20,20 +19,20 @@ public class SnijService {
 
     private final ArticleDAO articleDAO;
     private final CustomerDAO customerDAO;
-    private final CutWasteDAO cutWasteDAO;
+    private final LeftoverDAO leftoverDAO;
     private final OrderDAO orderDAO;
     private final VoorraadDAO voorraadDAO;
     private final CategoryDAO categoryDAO;
-    private final CutWasteController cw;
+    private final LeftoverController cw;
 
     private final WasteService wasteService;
     private final Random rand = new Random();
-    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, CutWasteDAO cutWasteDAO,
-                       CutWasteController cw, VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
+    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, LeftoverDAO leftoverDAO,
+                       LeftoverController cw, VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
-        this.cutWasteDAO = cutWasteDAO;
+        this.leftoverDAO = leftoverDAO;
         this.cw = cw;
         this.voorraadDAO = voorraadDAO;
         this.wasteService = wasteService;
@@ -59,20 +58,20 @@ public class SnijService {
         long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-        Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
+        Leftover leftover = new Leftover(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
         if (metrage > maxMeter) {
-            cutwaste.setType("storage");
-            this.cw.postCutWaste(cutwaste);
-            this.voorraadDAO.saveToDatabase(new Voorraad(cutwaste.getId(), null,false, null));
+            leftover.setType("storage");
+            this.cw.postCutWaste(leftover);
+            this.voorraadDAO.saveToDatabase(new Voorraad(leftover.getId(), null,false, null));
         } else if (metrage >= minMeter && metrage <= maxMeter) {
-            cutwaste.setType("order");
-            this.cw.postCutWaste(cutwaste);
-            this.orderDAO.saveToDatabase(new Order(cutwaste.getId(), null,false, null));
+            leftover.setType("order");
+            this.cw.postCutWaste(leftover);
+            this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
         } else {
             ArrayList<Category> catogories = this.categoryDAO.getAll();
-            cutwaste.setType("catWaste");
-            this.cw.postCutWaste(cutwaste);
-            wasteService.createAndSave(chosenArticle,catogories, cutwaste.getId() );
+            leftover.setType("catWaste");
+            this.cw.postCutWaste(leftover);
+            wasteService.createAndSave(chosenArticle,catogories, leftover.getId() );
         }
 
         return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");

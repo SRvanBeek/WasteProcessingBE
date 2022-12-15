@@ -15,8 +15,8 @@ public class Order {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "cutwasteID")
-    private long cutwasteID;
+    @Column(name = "leftoverId")
+    private long leftoverId;
 
     @Column(name = "userID")
     private Integer userId;
@@ -32,9 +32,9 @@ public class Order {
     }
 
 
-    public Order(long cutwasteID, Integer userId, boolean enabled, Date dateProcessed) {
+    public Order(long leftoverId, Integer userId, boolean enabled, Date dateProcessed) {
 
-        this.cutwasteID = cutwasteID;
+        this.leftoverId = leftoverId;
         this.userId = userId;
         this.enabled = enabled;
         this.dateProcessed = dateProcessed;
@@ -48,12 +48,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getCutwasteID() {
-        return cutwasteID;
+    public Long getLeftoverId() {
+        return leftoverId;
     }
 
-    public void setCutwasteID(Long cutwasteID) {
-        this.cutwasteID = cutwasteID;
+    public void setLeftoverId(Long leftoverId) {
+        this.leftoverId = leftoverId;
     }
 
     public Integer getUserId() {
@@ -85,7 +85,7 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", cutwasteID=" + cutwasteID +
+                ", leftoverId=" + leftoverId +
                 ", userID=" + userId +
                 ", enabled=" + enabled +
                 ", datecreated='" + dateProcessed + '\'' +

@@ -13,8 +13,8 @@ public class Voorraad {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "cutwasteID")
-    private long cutwasteID;
+    @Column(name = "leftoverId")
+    private long leftoverId;
 
     @Column(name = "userID")
     private Integer userId;
@@ -29,8 +29,8 @@ public class Voorraad {
 
     }
 
-    public Voorraad(long cutwasteID, Integer userId, boolean enabled, Date dateProcessed) {
-        this.cutwasteID = cutwasteID;
+    public Voorraad(long leftoverId, Integer userId, boolean enabled, Date dateProcessed) {
+        this.leftoverId = leftoverId;
         this.userId = userId;
         this.enabled = enabled;
         this.dateProcessed = dateProcessed;
@@ -44,12 +44,12 @@ public class Voorraad {
         this.id = id;
     }
 
-    public long getCutwasteID() {
-        return cutwasteID;
+    public long getLeftoverId() {
+        return leftoverId;
     }
 
-    public void setCutwasteID(long cutwasteID) {
-        this.cutwasteID = cutwasteID;
+    public void setLeftoverId(long cutwasteID) {
+        this.leftoverId = leftoverId;
     }
 
     public Integer getUserId() {
@@ -80,7 +80,7 @@ public class Voorraad {
     public String toString() {
         return "Voorraad{" +
                 "id=" + id +
-                ", cutwasteID=" + cutwasteID +
+                ", leftoverId=" + leftoverId +
                 ", userID=" + userId +
                 ", enabled=" + enabled +
                 ", dateProcessed='" + dateProcessed + '\'' +

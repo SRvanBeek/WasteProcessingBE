@@ -1,28 +1,23 @@
 package nl.groep14.ipsen2BE.Controllers;
 
-import nl.groep14.ipsen2BE.DAO.CutWasteDAO;
-import nl.groep14.ipsen2BE.DAO.OrderDAO;
-import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
-import nl.groep14.ipsen2BE.DAO.WasteDAO;
+import nl.groep14.ipsen2BE.DAO.LeftoverDAO;
 import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author Dino Yang
  */
 @Controller
-@RequestMapping(value = "api/cutWaste")
-public class CutWasteController {
-    private final CutWasteDAO cutWasteDAO;
+@RequestMapping(value = "api/leftover")
+public class LeftoverController {
+    private final LeftoverDAO leftoverDAO;
 
-    public CutWasteController(CutWasteDAO cutWasteDAO) {
-        this.cutWasteDAO = cutWasteDAO;
+    public LeftoverController(LeftoverDAO leftoverDAO) {
+        this.leftoverDAO = leftoverDAO;
     }
 
     /**
@@ -31,8 +26,8 @@ public class CutWasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Cutwaste> getAllCutWaste(){
-        return this.cutWasteDAO.getAll();
+    public ArrayList<Leftover> getAllLeftovers(){
+        return this.leftoverDAO.getAll();
     }
 
     /**
@@ -42,31 +37,31 @@ public class CutWasteController {
      */
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Cutwaste getOneCutWaste(@PathVariable long id){
-        return this.cutWasteDAO.getById(id);
+    public Leftover getOneLeftover(@PathVariable long id){
+        return this.leftoverDAO.getById(id);
     }
 
     /**
      * postCutWaste posts a CutWaste in to the database.
-     * @param cutwaste that needs to be posted.
+     * @param leftover that needs to be posted.
      * @return ApiResponse with response.
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postCutWaste(@RequestBody Cutwaste cutwaste){
-        this.cutWasteDAO.saveToDatabase(cutwaste);
+    public ApiResponse postLeftover(@RequestBody Leftover leftover){
+        this.leftoverDAO.saveToDatabase(leftover);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted a CutWaste!");
     }
 
     /**
      * PutCutWaste puts a CutWaste into the database
-     * @param cutwaste that needs to be put.
+     * @param leftover that needs to be put.
      * @return ApiResponse with response.
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse PutCutWaste(@RequestBody Cutwaste cutwaste){
-        this.cutWasteDAO.saveToDatabase(cutwaste);
+    public ApiResponse perLeftover(@RequestBody Leftover leftover){
+        this.leftoverDAO.saveToDatabase(leftover);
         return new ApiResponse(HttpStatus.ACCEPTED, "You've put a CutWaste!");
     }
 
@@ -77,7 +72,7 @@ public class CutWasteController {
      */
     @RequestMapping(value = "/{type}", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Cutwaste> getCutWasteByType(@PathVariable String type){
-        return this.cutWasteDAO.getByType(type);
+    public ArrayList<Leftover> getLeftoverByType(@PathVariable String type){
+        return this.leftoverDAO.getByType(type);
     }
 }
