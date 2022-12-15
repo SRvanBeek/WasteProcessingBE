@@ -71,14 +71,14 @@ public class WasteController {
     }
 
     /**
-     * getOneWasteByCutWasteId returns one Waste entity based on the CutWaste id of the Waste entity from the database.
-     * @param cutWasteId is the id of the cutWaste linked to the Waste entity
+     * getOneWasteByleftoverId returns one Waste entity based on the leftover id of the Waste entity from the database.
+     * @param leftoverId is the id of the leftover linked to the Waste entity
      * @return Waste entity
      */
-    @RequestMapping(value = "/perCutWaste/{cutWasteId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perleftover/{leftoverId}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneWasteByCutWasteId(@PathVariable Long cutWasteId){
-        return this.wasteDAO.getWasteByCutWasteId(cutWasteId).get();
+    public Waste getOneWasteByLeftoverId(@PathVariable Long leftoverId){
+        return this.wasteDAO.getWasteByLeftoverId(leftoverId).get();
     }
 
     /**

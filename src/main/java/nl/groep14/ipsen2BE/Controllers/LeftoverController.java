@@ -21,8 +21,8 @@ public class LeftoverController {
     }
 
     /**
-     * getAllCutWaste gets all the cutWaste in the database.
-     * @return ArrayList containing every CutWaste entity in the database.
+     * getAllLeftover gets all the Leftover in the database.
+     * @return ArrayList containing every Leftover entity in the database.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
@@ -31,9 +31,9 @@ public class LeftoverController {
     }
 
     /**
-     *getOneCutWaste gets one CutWaste entity from the database.
-     * @param id of the CutWaste entity.
-     * @return CutWaste.
+     *getOneLeftover gets one Leftover entity from the database.
+     * @param id of the Leftover entity.
+     * @return Leftover.
      */
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -42,7 +42,7 @@ public class LeftoverController {
     }
 
     /**
-     * postCutWaste posts a CutWaste in to the database.
+     * postLeftover posts a Leftover in to the database.
      * @param leftover that needs to be posted.
      * @return ApiResponse with response.
      */
@@ -50,11 +50,11 @@ public class LeftoverController {
     @ResponseBody
     public ApiResponse postLeftover(@RequestBody Leftover leftover){
         this.leftoverDAO.saveToDatabase(leftover);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted a CutWaste!");
+        return new ApiResponse(HttpStatus.ACCEPTED, "You posted a Leftover!");
     }
 
     /**
-     * PutCutWaste puts a CutWaste into the database
+     * PutLeftover puts a Leftover into the database
      * @param leftover that needs to be put.
      * @return ApiResponse with response.
      */
@@ -62,13 +62,13 @@ public class LeftoverController {
     @ResponseBody
     public ApiResponse perLeftover(@RequestBody Leftover leftover){
         this.leftoverDAO.saveToDatabase(leftover);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You've put a CutWaste!");
+        return new ApiResponse(HttpStatus.ACCEPTED, "You've put a Leftover!");
     }
 
     /**
-     *getCutWasteByType gets every cutWaste with a specified type.
-     * @param type of CutWaste.
-     * @return ArrayList with CutWaste.
+     *getLeftoverByType gets every Leftover with a specified type.
+     * @param type of Leftover.
+     * @return ArrayList with Leftover.
      */
     @RequestMapping(value = "/{type}", method = RequestMethod.GET)
     @ResponseBody

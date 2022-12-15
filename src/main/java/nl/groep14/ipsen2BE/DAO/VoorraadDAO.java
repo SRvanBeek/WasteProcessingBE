@@ -1,7 +1,6 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Voorraad;
-import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,11 +28,11 @@ public class VoorraadDAO {
     }
 
     /**
-     * getVoorraadByCutWasteId gets a Voorraad By cutWasteID.
-     * @param id cutWasteID
+     * getVoorraadByLeftoverId gets a Voorraad By LeftoverID.
+     * @param id leftoverID
      * @return Voorraad entity.
      */
-    public Voorraad getVoorraadByCutWasteId(long id) {
+    public Voorraad getVoorraadByLeftoverId(long id) {
         Optional<Voorraad> voorraad = this.voorraadRepository.findVoorraadByLeftoverId(id);
         return voorraad.orElse(null);
     }
