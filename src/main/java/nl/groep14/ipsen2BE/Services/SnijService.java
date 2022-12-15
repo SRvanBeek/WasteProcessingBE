@@ -48,17 +48,20 @@ public class SnijService {
      * @return String containing 'type, articleID' type is here the either an order, voorraad or waste
      * depending on the min and max settings of the customer and articleID is the id of the article.
      */
-    public ApiResponse snijApplication(){
-        Article chosenArticle = this.articleDAO.getRandomArticle();
+    public ApiResponse snijApplication(String articleNumber, double metrageJSON){
+        if (this.articleDAO.getArticleByArtikelNummer(articleNumber).isEmpty()) {
+            return new ApiResponse(HttpStatus.FORBIDDEN, "Article not in database");
+        }
+
+        long metrage = (long) metrageJSON;
+
+        Article chosenArticle = this.articleDAO.getArticleByArtikelNummer(articleNumber).get();
         String customerId = chosenArticle.getLeverancier();
         Customer customer = this.customerDAO.getCustomerByID(customerId).get();
-        int articleBreedte = chosenArticle.getStofbreedte();
-        long articleGewicht = (long) chosenArticle.getGewicht();
-        long metrage = this.rand.nextLong((articleBreedte / 3));
-        long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-        Leftover leftover = new Leftover(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
+
+        Leftover leftover = new Leftover(chosenArticle.getArtikelnummer(), false, metrage, 20, new Date());
         if (metrage > maxMeter) {
             leftover.setType("storage");
             this.cw.postLeftover(leftover);
@@ -68,12 +71,19 @@ public class SnijService {
             this.cw.postLeftover(leftover);
             this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
         } else {
-            ArrayList<Category> catogories = this.categoryDAO.getAll();
+            ArrayList<Category> categories = this.categoryDAO.getAll();
             leftover.setType("catWaste");
             this.cw.postLeftover(leftover);
-            wasteService.createAndSave(chosenArticle,catogories, leftover.getId() );
+            wasteService.createAndSave(chosenArticle,categories, leftover.getId());
         }
 
-        return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");
+        return new ApiResponse(HttpStatus.ACCEPTED, "Cut data loaded");
+    }
+
+    private long calculateWeight(Article article, long length) {
+        long articleWeight = (long) article.getGewicht();
+        long articleWidth = article.getStofbreedte();
+
+        return 10;
     }
 }

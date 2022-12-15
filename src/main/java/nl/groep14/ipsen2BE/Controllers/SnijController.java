@@ -3,9 +3,13 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Services.SnijService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 /**
@@ -19,17 +23,18 @@ public class SnijController {
     public SnijController(SnijService snijService) {
         this.snijService = snijService;
     }
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse snijApplicatie(){
-        return snijService.snijApplication();
+    public ApiResponse snijApplicatie(@RequestBody Map<String, Object> payload){
+        System.out.println(payload);
+        return snijService.snijApplication((String) payload.get("articleNumber"), (double) payload.get("metrage"));
     }
-    @RequestMapping(value = "/setup", method = RequestMethod.GET)
-    @ResponseBody
-    public String snijSetup(){
-        for (int i = 0; i < 100; i++) {
-            snijService.snijApplication();
-        }
-        return "Setup complete";
-    }
+//    @RequestMapping(value = "/setup", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String snijSetup(){
+//        for (int i = 0; i < 100; i++) {
+//            snijService.snijApplication();
+//        }
+//        return "Setup complete";
+//    }
 }
