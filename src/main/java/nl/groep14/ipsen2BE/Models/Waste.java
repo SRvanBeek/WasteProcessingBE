@@ -16,8 +16,8 @@ public class Waste {
     @Column(name = "id")
     private long id;
     @Basic
-    @Column(name = "cutwasteID")
-    private long cutWasteId;
+    @Column(name = "leftoverID")
+    private long leftoverId;
 
     @Basic
     @Column(name = "categoryID")
@@ -35,8 +35,8 @@ public class Waste {
     @Column(name = "date_processed")
     private Date dateProcessed;
 
-    public Waste(long cutWasteId, long categoryId, Integer userId, boolean enabled, Date dateProcessed) {
-        this.cutWasteId = cutWasteId;
+    public Waste(long leftoverId, long categoryId, Integer userId, boolean enabled, Date dateProcessed) {
+        this.leftoverId = leftoverId;
         this.categoryId = categoryId;
         this.userId = userId;
         this.enabled = enabled;
@@ -56,12 +56,12 @@ public class Waste {
         this.id = id;
     }
 
-    public long getCutwasteId() {
-        return cutWasteId;
+    public long getLeftoverId() {
+        return leftoverId;
     }
 
-    public void setCutwasteId(long cutwasteId) {
-        this.cutWasteId = cutwasteId;
+    public void setLeftoverId(long leftoverId) {
+        this.leftoverId = leftoverId;
     }
 
     public long getCategoryId() {
@@ -100,7 +100,7 @@ public class Waste {
     public String toString() {
         return "Waste{" +
                 "id=" + id +
-                ", cutwasteId=" + cutWasteId +
+                ", leftoverId=" + leftoverId +
                 ", categoryId=" + categoryId +
                 ", userId=" + userId +
                 ", enabled=" + enabled +
@@ -114,7 +114,7 @@ public class Waste {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Waste waste = (Waste) o;
-        return id == waste.id && cutWasteId == waste.cutWasteId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateProcessed, waste.dateProcessed);
+        return id == waste.id && leftoverId == waste.leftoverId && categoryId == waste.categoryId && userId == waste.userId && enabled == waste.enabled && Objects.equals(dateProcessed, waste.dateProcessed);
     }
 
 }

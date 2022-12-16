@@ -2,11 +2,11 @@ package nl.groep14.ipsen2BE.Services;
 
 import nl.groep14.ipsen2BE.DAO.ArticleDAO;
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
-import nl.groep14.ipsen2BE.DAO.CutWasteDAO;
+import nl.groep14.ipsen2BE.DAO.LeftoverDAO;
 import nl.groep14.ipsen2BE.DAO.WasteDAO;
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Category;
-import nl.groep14.ipsen2BE.Models.Cutwaste;
+import nl.groep14.ipsen2BE.Models.Leftover;
 import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,13 @@ import java.util.Optional;
  */
 @Service
 public class WasteFilterService {
-    CutWasteDAO cutWasteDAO;
+    LeftoverDAO leftoverDAO;
     WasteDAO wasteDAO;
     CategoryDAO categoryDAO;
     ArticleDAO articleDAO;
 
-    public WasteFilterService(CutWasteDAO cutWasteDAO, WasteDAO wasteDAO, CategoryDAO categoryDAO, ArticleDAO articleDAO) {
-        this.cutWasteDAO = cutWasteDAO;
+    public WasteFilterService(LeftoverDAO leftoverDAO, WasteDAO wasteDAO, CategoryDAO categoryDAO, ArticleDAO articleDAO) {
+        this.leftoverDAO = leftoverDAO;
         this.wasteDAO = wasteDAO;
         this.categoryDAO = categoryDAO;
         this.articleDAO = articleDAO;
@@ -67,24 +67,24 @@ public class WasteFilterService {
 
     /**
      * returns the pure composition based on a given category. The pure composition is calculated
-     * by the cutwaste weight divided by the percentage of a material in the composition in an article.
+     * by the leftover weight divided by the percentage of a material in the composition in an article.
      * @param categoryName the given category to retrieve the composition from.
      * @return an ArrayList with every pure material in the given category and its weight as a string.
      */
     public ArrayList<String> getPureCompositionPerCategory(String categoryName) {
-        ArrayList<Cutwaste> cutwastePerCategory = getCategorizedCutwaste(categoryName);
+        ArrayList<Leftover> leftoverPerCategory = getCategorizedLeftovers(categoryName);
         HashMap<String, Double> totalWeightPerMaterial = new HashMap<>();
         ArrayList<String> materialWeightList = new ArrayList<>();
 
-        for (Cutwaste cutwaste: cutwastePerCategory
+        for (Leftover leftover : leftoverPerCategory
              ) {
-            Optional<Article> article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer());
+            Optional<Article> article = articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer());
             if (article.isPresent()) {
                 ArrayList<String[]> compositionValues = getCompositionValues(article.get());
                 for (String[] values : compositionValues
                 ) {
                     double percentage = Double.parseDouble(values[1]);
-                    double weight = cutwaste.getGewicht() * percentage / 100;
+                    double weight = leftover.getGewicht() * percentage / 100;
 
                     if (totalWeightPerMaterial.containsKey(values[0])) {
                         totalWeightPerMaterial.put(values[0], (totalWeightPerMaterial.get(values[0]) + weight));
@@ -109,21 +109,21 @@ public class WasteFilterService {
      * @return an ArrayList with every impure material in the given category and its weight as a string.
      */
     public ArrayList<String> getImpureCompositionPerCategory(String categoryName) {
-        ArrayList<Cutwaste> cutwastePerCategory = getCategorizedCutwaste(categoryName);
+        ArrayList<Leftover> leftoverPerCategory = getCategorizedLeftovers(categoryName);
         HashMap<String, Double> totalWeightPerMaterial = new HashMap<>();
         ArrayList<String> materialWeightList = new ArrayList<>();
 
-        for (Cutwaste cutwaste: cutwastePerCategory
+        for (Leftover leftover : leftoverPerCategory
         ) {
-            Optional<Article> article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer());
+            Optional<Article> article = articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer());
             if (article.isPresent()) {
                 String composition = article.get().getSamenstelling();
 
                 if (totalWeightPerMaterial.containsKey(composition)) {
-                    totalWeightPerMaterial.put(composition, totalWeightPerMaterial.get(composition) + cutwaste.getGewicht());
+                    totalWeightPerMaterial.put(composition, totalWeightPerMaterial.get(composition) + leftover.getGewicht());
                 }
                 else {
-                    totalWeightPerMaterial.put(composition, (double) cutwaste.getGewicht());
+                    totalWeightPerMaterial.put(composition, (double) leftover.getGewicht());
                 }
             }
         }
@@ -168,7 +168,7 @@ public class WasteFilterService {
 
         for (Waste waste: wasteList
         ) {
-            Cutwaste cutWaste = cutWasteDAO.getById(waste.getId());
+            Leftover cutWaste = leftoverDAO.getById(waste.getLeftoverId());
             totalWeight += cutWaste.getGewicht();
             totalMetrage += cutWaste.getMetrage();
         }
@@ -208,18 +208,18 @@ public class WasteFilterService {
     }
 
     /**
-     * returns an ArrayList of CutWaste based on a given category name.
+     * returns an ArrayList of leftovers based on a given category name.
      * @param categoryName the given category name.
-     * @return an arraylist with CutWaste.
+     * @return an arraylist with Leftovers.
      */
-    private ArrayList<Cutwaste> getCategorizedCutwaste(String categoryName) {
+    private ArrayList<Leftover> getCategorizedLeftovers(String categoryName) {
         ArrayList<Waste> allWastePerCategory = getAllWastePerCategory(categoryName);
-        ArrayList<Cutwaste> cutwastePerCategory = new ArrayList<>();
+        ArrayList<Leftover> leftoverPerCategory = new ArrayList<>();
 
         for (Waste waste : allWastePerCategory
         ) {
-            cutwastePerCategory.add(cutWasteDAO.getById(waste.getCutwasteId()));
+            leftoverPerCategory.add(leftoverDAO.getById(waste.getLeftoverId()));
         }
-        return cutwastePerCategory;
+        return leftoverPerCategory;
     }
 }
