@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api" )
+@RequestMapping("/api/users" )
 
 public class UserController {
     private final UserServiceImplement userService;
@@ -36,12 +36,12 @@ public class UserController {
      *
      * @return returns all users
      */
-    @GetMapping("/users")
+    @GetMapping("")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getGebruikers());
     }
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {
         User user = userService.getGebruiker(username);
         return user;
@@ -52,14 +52,14 @@ public class UserController {
      * @param user the user to save
      * @return returns the user
      */
-    @PostMapping("/users/save")
+    @PostMapping("/save")
     public ApiResponse saveUser(@RequestBody User user) {
         this.userService.saveGebruiker(user);
         this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_USER");
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
 
-    @GetMapping("/users/roles/{username}")
+    @GetMapping("/roles/{username}")
     public Collection<Role> getRolesByUser(@PathVariable String username) {
         return userService.getGebruiker(username).getRoles();
     }
@@ -76,7 +76,7 @@ public class UserController {
      * @param user model of the user that needs to be saved
      * @return ApiResponse with the response of the request
      */
-    @PostMapping("/admin/save")
+    @PostMapping("/admins/save")
     public ApiResponse saveAdmin(@RequestBody User user) {
         this.userService.saveGebruiker(user);
         this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_ADMIN");
