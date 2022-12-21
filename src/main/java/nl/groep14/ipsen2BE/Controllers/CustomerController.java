@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 
 /**
@@ -38,43 +37,42 @@ public class CustomerController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse updateCustomer(@RequestBody Customer customer) {
+    public ApiResponse<String> updateCustomer(@RequestBody Customer customer) {
         if(this.customerDAO.getCustomerByID(customer.getCustomerID()).isEmpty()){
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "customer does not exist!");
+        }else {
+            this.customerDAO.saveToDatabase(customer);
+            return new ApiResponse<>(HttpStatus.ACCEPTED, "customer updated");
         }
-
-        this.customerDAO.saveToDatabase(customer);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "customer updated");
     }
 
     /**
      * Adds the given Customer to the database using the saveToDataBase method in the CustomerDAO.
      *
      * @param customer The CustomerModel that is received in the POST-Request body.
-     * @return The newly added Customer.
+     * @return ApiResponse with a corresponding message.
      *
      * @see CustomerDAO#saveToDatabase(Customer)
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public Customer addCustomer(@RequestBody Customer customer) {
-
+    public ApiResponse<String> addCustomer(@RequestBody Customer customer) {
         this.customerDAO.saveToDatabase(customer);
-        return customer;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You've posted Customer with id " + customer.getCustomerID());
     }
 
     /**
      * Gets all Customers from the database using the getAll method from the CustomerDAO.
      * The customers are returned as an ArrayList.
      *
-     * @return An ArrayList with every Customer in the database.
+     * @return An ApiResponse containing an ArrayList with every Customer in the database.
      * @see CustomerDAO#getAll()
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Customer> customers(){
+    public ApiResponse<ArrayList<Customer>> customers(){
         ArrayList<Customer> customers = this.customerDAO.getAll();
-        return customers;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, customers);
     }
 
     /**
@@ -82,13 +80,16 @@ public class CustomerController {
      * method from the CategoryDAO.
      *
      * @param id The id acquired from the @RequestMapping annotation.
-     * @return The requested Customer.
+     * @return ApiResponse with a corresponding message.
      * @see CustomerDAO#getCustomerByID(String)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Optional<Customer> getCustomerByID(@PathVariable String id){
-        Optional<Customer> customer = this.customerDAO.getCustomerByID(id);
-        return customer;
+    public ApiResponse<Customer> getCustomerByID(@PathVariable String id){
+        if (this.customerDAO.getCustomerByID(id).isEmpty()){
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No customer found with id " + id);
+        }else{
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.customerDAO.getCustomerByID(id).get());
+        }
     }
 }
