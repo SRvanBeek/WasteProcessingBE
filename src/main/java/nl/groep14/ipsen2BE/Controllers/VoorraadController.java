@@ -40,26 +40,43 @@ public class VoorraadController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
     }
 
+    /**
+     * getVoorraadByIDByLeftoverID gets an voorraad by cutWastID
+     * @return ApiResponse of everything from voorraad.
+     */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Voorraad> getAllWaste(){
-        return this.voorraadDAO.getAll();
+    public ApiResponse getAllVoorraad(){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getAll());
     }
 
+    /**
+     * getVoorraadByIDByLeftoverID gets an voorraad by cutWastID
+     * @param id voorraad id.
+     * @return ApiResponse of Voorraad entity.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Voorraad getVoorraadByID(@PathVariable Long id){
-        return this.voorraadDAO.getVoorraadByID(id).get();
+    public ApiResponse getVoorraadByID(@PathVariable Long id){
+        if (this.voorraadDAO.getVoorraadByID(id).isPresent()) {
+            return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByID(id).get());
+        } else {
+            return new ApiResponse(HttpStatus.NOT_FOUND, "No voorraad found with this Id");
+        }
     }
 
     /**
      * getVoorraadByIDByLeftoverID gets an voorraad by cutWastID
      * @param id leftoverID.
-     * @return Voorraad entity.
+     * @return ApiResponse of Voorraad entity.
      */
     @RequestMapping(value = "/perLeftover/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Voorraad getVoorraadByIDByLeftoverID(@PathVariable Long id){
-        return this.voorraadDAO.getVoorraadByLeftoverId(id);
+    public ApiResponse getVoorraadByIDByLeftoverID(@PathVariable Long id){
+        if (this.voorraadDAO.getVoorraadByLeftoverId(id) != null) {
+            return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByLeftoverId(id));
+        } else {
+            return new ApiResponse(HttpStatus.NOT_FOUND, "No voorraad found with this leftoverId");
+        }
     }
 }
