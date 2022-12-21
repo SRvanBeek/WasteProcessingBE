@@ -3,7 +3,6 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Voorraad;
-import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +53,13 @@ public class VoorraadController {
     }
 
     /**
-     * getVoorraadByIDByCutWasteID gets an voorraad by cutWastID
-     * @param id cutWasteID.
+     * getVoorraadByIDByLeftoverID gets an voorraad by cutWastID
+     * @param id leftoverID.
      * @return Voorraad entity.
      */
-    @RequestMapping(value = "/perCutWaste/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perLeftover/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Voorraad getVoorraadByIDByCutWasteID(@PathVariable Long id){
-        return this.voorraadDAO.getVoorraadByCutWasteId(id);
+    public Voorraad getVoorraadByIDByLeftoverID(@PathVariable Long id){
+        return this.voorraadDAO.getVoorraadByLeftoverId(id);
     }
 }

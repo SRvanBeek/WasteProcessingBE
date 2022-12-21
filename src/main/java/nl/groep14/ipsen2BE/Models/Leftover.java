@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "cutwaste")
-public class Cutwaste {
+@Table(name = "leftover")
+public class Leftover {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class Cutwaste {
     @Column(name = "type")
     private String type;
 
-    public Cutwaste(String artikelnummer, boolean processed, long metrage, long gewicht, Date dateCut) {
+    public Leftover(String artikelnummer, boolean processed, long metrage, long gewicht, Date dateCut) {
         this.artikelnummer = artikelnummer;
         this.processed = processed;
         this.metrage = metrage;
@@ -44,7 +44,7 @@ public class Cutwaste {
         this.dateCut = dateCut;
     }
 
-    public Cutwaste() {
+    public Leftover() {
 
     }
 
@@ -106,7 +106,7 @@ public class Cutwaste {
 
     @Override
     public String toString() {
-        return "Cutwaste{" +
+        return "Leftover{" +
                 "id=" + id +
                 ", artikelnummer='" + artikelnummer + '\'' +
                 ", processed='" + processed + '\'' +

@@ -60,13 +60,13 @@ public class OrderController {
 
     /**
      * getOneOrderByArticleId returns one Order based on the Article id of the order from the database.
-     * @param cutWasteID is the id of the cutWaste linked to the Order
+     * @param leftoverID is the id of the leftover linked to the Order
      * @return An Order
      */
-    @RequestMapping(value = "/perCutWaste/{cutWasteID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perleftover/{leftoverID}", method = RequestMethod.GET)
     @ResponseBody
-    public Order getOneOrderByCutWasteId(@PathVariable Long cutWasteID){
-        return this.orderDAO.getOrdersByCutWasteId(cutWasteID).get();
+    public Order getOneOrderByLeftoverId(@PathVariable Long leftoverID){
+        return this.orderDAO.getOrdersByLeftoverId(leftoverID).get();
     }
 
     /**

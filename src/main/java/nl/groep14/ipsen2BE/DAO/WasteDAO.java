@@ -47,8 +47,8 @@ public class WasteDAO {
      * @param id The Article id that is used to find a specific Waste.
      * @return A Waste if a Waste with the Article id exists.
      */
-    public Optional<Waste> getWasteByCutWasteId(Long id){
-        return this.wasteRepository.getWasteByCutWasteId(id);
+    public Optional<Waste> getWasteByLeftoverId(Long id){
+        return this.wasteRepository.getWasteByLeftoverId(id);
     }
     /**
      * Attempts to return a List of Waste if at least one exists in the database with the given Category id.
