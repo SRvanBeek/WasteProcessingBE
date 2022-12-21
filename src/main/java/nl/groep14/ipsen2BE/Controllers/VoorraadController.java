@@ -23,6 +23,11 @@ public class VoorraadController {
         this.voorraadDAO = voorraadDAO;
     }
 
+    /**
+     * postVoorraad posts a Voorraad entity in the database.
+     * @param voorraad entity that needs to be posted.
+     * @return ApiResponse with response.
+     */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse<String> postVoorraad(@RequestBody Voorraad voorraad){
