@@ -6,7 +6,7 @@ import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 
 
 /**
@@ -38,35 +38,41 @@ public class OrderController {
     }
     /**
      * getAllOrders gets all orders from the database using the getAll method from the orderDAO.
-     * The Orders are returned as a List.
-     * @return a List with every Order in the database.
+     * The Orders are returned as a ApiResponse.
+     * @return a ApiRepsonse with every Order from the database.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Order> getAllOrders(){
-        return this.orderDAO.getAll();
+    public ApiResponse getAllOrders(){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getAll());
     }
 
     /**
      * getOneOrder returns one specific Order from the database.
      * @param id is the id of the Order
-     * @return An Order
+     * @return An ApiResponse
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Order getOneOrder(@PathVariable Long id){
-        return this.orderDAO.getOrderByID(id).get();
+    public ApiResponse getOneOrder(@PathVariable Long id){
+        if(this.orderDAO.getOrderByID(id).isEmpty()){
+            return new ApiResponse(HttpStatus.NOT_FOUND, "this Id doesn't exist");
+        }
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id).get());
     }
 
     /**
      * getOneOrderByArticleId returns one Order based on the Article id of the order from the database.
      * @param leftoverID is the id of the leftover linked to the Order
-     * @return An Order
+     * @return An ApiResponse
      */
     @RequestMapping(value = "/perleftover/{leftoverID}", method = RequestMethod.GET)
     @ResponseBody
-    public Order getOneOrderByLeftoverId(@PathVariable Long leftoverID){
-        return this.orderDAO.getOrdersByLeftoverId(leftoverID).get();
+    public ApiResponse getOneOrderByLeftoverId(@PathVariable Long leftoverID){
+        if(this.orderDAO.getOrdersByLeftoverId(leftoverID).isEmpty()){
+            return new ApiResponse(HttpStatus.NOT_FOUND, "this Id doesn't exist");
+        }
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrdersByLeftoverId(leftoverID));
     }
 
     /**
