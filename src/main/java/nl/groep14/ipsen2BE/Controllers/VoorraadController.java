@@ -3,10 +3,12 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Voorraad;
+import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +25,9 @@ public class VoorraadController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postVoorraad(@RequestBody Voorraad voorraad){
+    public ApiResponse<String> postVoorraad(@RequestBody Voorraad voorraad){
         this.voorraadDAO.saveToDatabase(voorraad);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
     /**
@@ -35,9 +37,9 @@ public class VoorraadController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse putVoorraad(@RequestBody Voorraad voorraad){
+    public ApiResponse<String> putVoorraad(@RequestBody Voorraad voorraad){
         this.voorraadDAO.saveToDatabase(voorraad);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You've put some data!");
     }
 
     /**
@@ -46,8 +48,8 @@ public class VoorraadController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getAllVoorraad(){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getAll());
+    public ApiResponse<ArrayList<Voorraad>> getAllVoorraad(){
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getAll());
     }
 
     /**
@@ -59,9 +61,9 @@ public class VoorraadController {
     @ResponseBody
     public ApiResponse getVoorraadByID(@PathVariable Long id){
         if (this.voorraadDAO.getVoorraadByID(id).isPresent()) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByID(id).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByID(id).get());
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "No voorraad found with this Id");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No voorraad found with this Id");
         }
     }
 
@@ -74,9 +76,9 @@ public class VoorraadController {
     @ResponseBody
     public ApiResponse getVoorraadByIDByLeftoverID(@PathVariable Long id){
         if (this.voorraadDAO.getVoorraadByLeftoverId(id) != null) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByLeftoverId(id));
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByLeftoverId(id));
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "No voorraad found with this leftoverId");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No voorraad found with this leftoverId");
         }
     }
 }

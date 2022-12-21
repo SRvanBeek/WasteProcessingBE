@@ -33,9 +33,9 @@ public class WasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postWaste(@RequestBody Waste waste){
+    public ApiResponse<String> postWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You posted some data!");
     }
     /**
      * putWaste puts a Waste into the database.
@@ -44,9 +44,9 @@ public class WasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse putWaste(@RequestBody Waste waste){
+    public ApiResponse<String> putWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You've put some data!");
     }
 
     /**
@@ -55,8 +55,8 @@ public class WasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getAllWaste(){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.wasteDAO.getAll());
+    public ApiResponse<ArrayList<Waste>> getAllWaste(){
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getAll());
     }
 
     /**
@@ -68,9 +68,9 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getOneWaste(@PathVariable Long id){
         if (this.wasteDAO.getWasteByID(id).isPresent()) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByID(id).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByID(id).get());
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "Given Id does not exist in the database");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given Id does not exist in the database");
         }
     }
 
@@ -83,9 +83,9 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getOneWasteByLeftoverId(@PathVariable Long leftoverId){
         if (this.wasteDAO.getWasteByLeftoverId(leftoverId).isPresent()) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByLeftoverId(leftoverId).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByLeftoverId(leftoverId).get());
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "Given leftoverId does not exist in the database");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given leftoverId does not exist in the database");
         }
     }
 
@@ -95,8 +95,8 @@ public class WasteController {
      */
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getTotalWasteDetails(){
-        return new ApiResponse(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWaste());
+    public ApiResponse<double[]> getTotalWasteDetails(){
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWaste());
     }
 
     /**
@@ -109,9 +109,9 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
         if (this.wasteFilterService.getTotalWastePerCategory(categoryName) != null) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWastePerCategory(categoryName));
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWastePerCategory(categoryName));
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "No waste details for given category");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No waste details for given category");
         }
     }
 
@@ -124,9 +124,9 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getCompositionPerCategory(@PathVariable String categoryName){
         if (!this.wasteFilterService.getImpureCompositionPerCategory(categoryName).isEmpty()) {
-            return new ApiResponse(HttpStatus.ACCEPTED, this.wasteFilterService.getImpureCompositionPerCategory(categoryName));
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getImpureCompositionPerCategory(categoryName));
         } else {
-            return new ApiResponse(HttpStatus.NOT_FOUND, "No compostions for given category");
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No compostions for given category");
         }
     }
 
