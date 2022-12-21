@@ -15,6 +15,7 @@ public class Ipsen2BeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(Ipsen2BeApplication.class, args);
 	}
+
 }
 
 
