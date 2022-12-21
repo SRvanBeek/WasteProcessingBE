@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -32,54 +33,33 @@ public class ArticleController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postArticle(@RequestBody Article article) {
+    public ApiResponse<String> postArticle(@RequestBody Article article) {
         this.articleDAO.saveToDatabase(article);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You added an article!");
     }
 
     /**
      * getAllArticles gets all Article entities in the database.
      *
-     * @return List of Article entities
+     * @return an ApiResponse which has a list of Article entities as payload.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Article> getAllArticles() {
+    public ApiResponse<List<Article>> getAllArticles() {
         List<Article> articles = this.articleDAO.getAll();
-        return articles;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, articles);
     }
 
     /**
-     * getOneArticle gets one specific Article entity based on the id
+     * getOneArticle gets one specific Article entity based on the id if one exists
      *
-     * @param id is the id of the Article entity
-     * @return Article entity
+     * @param id is the articlenumber of the Article entity.
+     * @return ApiResponse with the selected article as payload.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article getOneArticle(@PathVariable String id) {
-        return this.articleDAO.getArticleByArtikelNummer(id).get();
+    public ApiResponse<Article> getOneArticle(@PathVariable String id) {
+        Optional<Article> article = this.articleDAO.getArticleByArtikelNummer(id);
+        return article.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() -> new ApiResponse<>(HttpStatus.NOT_FOUND, "article does not exist"));
     }
-
-    /**
-     * putOneArticle checks if a specific Article exist in the database. Then it changes the old Article into the new
-     * Article and saves it to the database.
-     *
-     * @param id         is the id of the Article that needs to be changed
-     * @param newArticle is the Article model with changes.
-     * @return ApiResponse with a corresponding message
-     */
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-//    @ResponseBody
-//    public ApiResponse putOneArticle(@PathVariable Long id, @RequestBody Article newArticle) {
-//        if (this.articleDAO.getArticleByID(newArticle.getArtikelId()).isEmpty()) {
-//            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Article:" + newArticle.getArtikelId() + " does not exist!");
-//        }
-//        Article currentArticle = articleDAO.getArticleByID(id).get();
-//        Long currentID = currentArticle.getArtikelId();
-//        currentArticle = newArticle;
-//        currentArticle.setArtikelnummer(currentID);
-//        this.articleDAO.saveToDatabase(currentArticle);
-//        return new ApiResponse(HttpStatus.ACCEPTED, "You updated article " + currentID + "!");
-//    }
 }
