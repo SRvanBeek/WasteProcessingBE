@@ -50,7 +50,7 @@ public class UserController {
     /**
      * saves a user to the database
      * @param user the user to save
-     * @return returns the user
+     * @return returns the user, together with the API response
      */
     @PostMapping("/save")
     public ApiResponse<String> saveUser(@RequestBody User user) {
