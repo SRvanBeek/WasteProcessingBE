@@ -135,8 +135,8 @@ public class WasteController {
     }
     @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article getArticleByWasteId(@PathVariable Long id){
-        return this.wasteService.getArticleByWasteId(id);
+    public ApiResponse getArticleByWasteId(@PathVariable Long id){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.wasteService.getArticleByWasteId(id));
     }
 
 }

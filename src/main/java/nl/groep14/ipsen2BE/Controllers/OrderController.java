@@ -2,13 +2,12 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.OrderDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
-import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import nl.groep14.ipsen2BE.Services.OrderService;
-import java.util.List;
+
 
 
 /**
@@ -47,8 +46,8 @@ public class OrderController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Order> getAllOrders(){
-        return this.orderDAO.getAll();
+    public ApiResponse getAllOrders(){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getAll());
     }
 
     /**
@@ -58,19 +57,19 @@ public class OrderController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Order getOneOrder(@PathVariable Long id){
-        return this.orderDAO.getOrderByID(id).get();
+    public ApiResponse getOneOrder(@PathVariable Long id){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrderByID(id));
     }
 
     /**
      * getOneOrderByArticleId returns one Order based on the Article id of the order from the database.
-     * @param cutWasteID is the id of the cutWaste linked to the Order
+     * @param leftoverID is the id of the cutWaste linked to the Order
      * @return An Order
      */
-    @RequestMapping(value = "/perCutWaste/{cutWasteID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perCutWaste/{leftoverID}", method = RequestMethod.GET)
     @ResponseBody
-    public Order getOneOrderByCutWasteId(@PathVariable Long cutWasteID){
-        return this.orderDAO.getOrdersByCutWasteId(cutWasteID).get();
+    public ApiResponse getOneOrderByLeftoverId(@PathVariable Long leftoverID){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.orderDAO.getOrdersByLeftoverId(leftoverID));
     }
 
     /**
@@ -103,7 +102,7 @@ public class OrderController {
 
     @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article getArticleFromOrder(@PathVariable Long id){
-        return orderService.OrderToArticle(id);
+    public ApiResponse getArticleFromOrder(@PathVariable Long id){
+        return new ApiResponse(HttpStatus.ACCEPTED, orderService.OrderToArticle(id));
     }
 }
