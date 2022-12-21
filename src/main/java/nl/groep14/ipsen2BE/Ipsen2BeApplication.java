@@ -17,12 +17,3 @@ public class Ipsen2BeApplication {
 	}
 
 
-//	@Bean
-//	CommandLineRunner run(UserService userService){
-//		return args -> {
-//			userService.addRolAanGebruiker("admin", "ROLE_ADMIN");
-//			userService.addRolAanGebruiker("jandea", "ROLE_ADMIN");
-//			System.out.println(userService.getGebruiker("jandeman").getRoles());
-//		};
-//	}
-}
