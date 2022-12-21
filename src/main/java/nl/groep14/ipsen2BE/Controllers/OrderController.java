@@ -50,7 +50,7 @@ public class OrderController {
     /**
      * getOneOrder returns one specific Order from the database.
      * @param id is the id of the Order
-     * @return An ApiResponse
+     * @return An ApiResponse with the order that belongs to the given ID
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -64,7 +64,7 @@ public class OrderController {
     /**
      * getOneOrderByArticleId returns one Order based on the Article id of the order from the database.
      * @param leftoverID is the id of the leftover linked to the Order
-     * @return An ApiResponse
+     * @return An ApiResponse with the order in the payload from the given article ID
      */
     @RequestMapping(value = "/perleftover/{leftoverID}", method = RequestMethod.GET)
     @ResponseBody
