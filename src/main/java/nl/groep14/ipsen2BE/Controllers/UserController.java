@@ -42,9 +42,9 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+    public ApiResponse<User> getUserByUsername(@PathVariable String username) {
         User user = userService.getGebruiker(username);
-        return user;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, user);
     }
 
     /**
@@ -53,22 +53,22 @@ public class UserController {
      * @return returns the user
      */
     @PostMapping("/save")
-    public ApiResponse saveUser(@RequestBody User user) {
+    public ApiResponse<String> saveUser(@RequestBody User user) {
         this.userService.saveGebruiker(user);
         this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_USER");
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
 
     @GetMapping("/roles/{username}")
-    public Collection<Role> getRolesByUser(@PathVariable String username) {
-        return userService.getGebruiker(username).getRoles();
+    public ApiResponse getRolesByUser(@PathVariable String username) {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, userService.getGebruiker(username).getRoles());
     }
 
 
     @PostMapping("/roles/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+    public ApiResponse<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRol(role));
+        return new ApiResponse<>(HttpStatus.ACCEPTED, role);
     }
 
     /**
@@ -77,7 +77,7 @@ public class UserController {
      * @return ApiResponse with the response of the request
      */
     @PostMapping("/admins/save")
-    public ApiResponse saveAdmin(@RequestBody User user) {
+    public ApiResponse<String> saveAdmin(@RequestBody User user) {
         this.userService.saveGebruiker(user);
         this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_ADMIN");
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
