@@ -16,7 +16,7 @@ import java.util.Optional;
  * @author Dino Yang
  */
 @Controller
-@RequestMapping(value = "api/article")
+@RequestMapping(value = "api/articles")
 public class ArticleController {
 
     private final ArticleDAO articleDAO;
