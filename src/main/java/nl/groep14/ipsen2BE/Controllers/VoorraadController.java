@@ -61,7 +61,7 @@ public class VoorraadController {
     @ResponseBody
     public ApiResponse getVoorraadByID(@PathVariable Long id){
         if (this.voorraadDAO.getVoorraadByID(id).isPresent()) {
-            return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByID(id).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByID(id));
         } else {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "No voorraad found with this Id");
         }

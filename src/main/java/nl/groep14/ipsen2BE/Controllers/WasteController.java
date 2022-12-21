@@ -68,7 +68,7 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getOneWaste(@PathVariable Long id){
         if (this.wasteDAO.getWasteByID(id).isPresent()) {
-            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByID(id).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByID(id));
         } else {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given Id does not exist in the database");
         }
@@ -83,7 +83,7 @@ public class WasteController {
     @ResponseBody
     public ApiResponse getOneWasteByLeftoverId(@PathVariable Long leftoverId){
         if (this.wasteDAO.getWasteByLeftoverId(leftoverId).isPresent()) {
-            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByLeftoverId(leftoverId).get());
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByLeftoverId(leftoverId));
         } else {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given leftoverId does not exist in the database");
         }
