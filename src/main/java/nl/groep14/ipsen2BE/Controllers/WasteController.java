@@ -33,9 +33,9 @@ public class WasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postWaste(@RequestBody Waste waste){
+    public ApiResponse<String> postWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You posted some data!");
     }
     /**
      * putWaste puts a Waste into the database.
@@ -44,74 +44,90 @@ public class WasteController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse putWaste(@RequestBody Waste waste){
+    public ApiResponse<String> putWaste(@RequestBody Waste waste){
         this.wasteDAO.saveToDatabase(waste);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You've put some data!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You've put some data!");
     }
 
     /**
      * getAllWaste gets all waste entities in the database.
-     * @return List of Waste entities
+     * @return ApiResponse of Waste entities
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public List<Waste> getAllWaste(){
-        return this.wasteDAO.getAll();
+    public ApiResponse<ArrayList<Waste>> getAllWaste(){
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getAll());
     }
 
     /**
      * getOneWaste gets one specific Waste entity based on the id
      * @param id is the id of the Waste entity
-     * @return Waste entity
+     * @return ApiResponse of Waste entity
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneWaste(@PathVariable Long id){
-        return this.wasteDAO.getWasteByID(id).get();
+    public ApiResponse getOneWaste(@PathVariable Long id){
+        if (this.wasteDAO.getWasteByID(id).isPresent()) {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByID(id));
+        } else {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given Id does not exist in the database");
+        }
     }
 
     /**
      * getOneWasteByleftoverId returns one Waste entity based on the leftover id of the Waste entity from the database.
      * @param leftoverId is the id of the leftover linked to the Waste entity
-     * @return Waste entity
+     * @return ApiResponse of Waste entity
      */
     @RequestMapping(value = "/perleftover/{leftoverId}", method = RequestMethod.GET)
     @ResponseBody
-    public Waste getOneWasteByLeftoverId(@PathVariable Long leftoverId){
-        return this.wasteDAO.getWasteByLeftoverId(leftoverId).get();
+    public ApiResponse getOneWasteByLeftoverId(@PathVariable Long leftoverId){
+        if (this.wasteDAO.getWasteByLeftoverId(leftoverId).isPresent()) {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteDAO.getWasteByLeftoverId(leftoverId));
+        } else {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "Given leftoverId does not exist in the database");
+        }
     }
 
     /**
      * returns the total weight and metrage of all categorized waste.
-     * @return weight and metrage of all categorized waste.
+     * @return ApiResponse of weight and metrage of all categorized waste.
      */
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     @ResponseBody
-    public double[] getTotalWasteDetails(){
-        return this.wasteFilterService.getTotalWaste();
+    public ApiResponse<double[]> getTotalWasteDetails(){
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWaste());
     }
 
     /**
      * returns the total weight and metrage of all waste in the given category.
      *
      * @param categoryName the category to retrieve the details from.
-     * @return weight and metrage of all waste in a given category.
+     * @return ApiResponse of weight and metrage of all waste in a given category.
      */
     @RequestMapping(value = "/details/{categoryName}", method = RequestMethod.GET)
     @ResponseBody
-    public double[] getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
-        return this.wasteFilterService.getTotalWastePerCategory(categoryName);
+    public ApiResponse getTotalWasteDetailsPerCategory(@PathVariable String categoryName){
+        if (this.wasteFilterService.getTotalWastePerCategory(categoryName) != null) {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getTotalWastePerCategory(categoryName));
+        } else {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No waste details for given category");
+        }
     }
 
     /**
      * returns the composition and its weight of all waste in a given category
      * @param categoryName the category to retrieve the composition from.
-     * @return the composition of a given category.
+     * @return ApiResponse of the composition of a given category.
      */
     @RequestMapping(value = "/composition/{categoryName}", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<String> getCompositionPerCategory(@PathVariable String categoryName){
-        return this.wasteFilterService.getImpureCompositionPerCategory(categoryName);
+    public ApiResponse getCompositionPerCategory(@PathVariable String categoryName){
+        if (!this.wasteFilterService.getImpureCompositionPerCategory(categoryName).isEmpty()) {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getImpureCompositionPerCategory(categoryName));
+        } else {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "No compostions for given category");
+        }
     }
 
 }

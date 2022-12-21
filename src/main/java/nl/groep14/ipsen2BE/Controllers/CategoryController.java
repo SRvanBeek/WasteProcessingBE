@@ -25,10 +25,10 @@ public class CategoryController {
     private final WasteFilterService wasteFilterService;
 
     /**
-     * Class Constructer, initializes the CategoryDAO
+     * Class Constructer, initializes the CategoryDAO and WasteFilterService
      *
-     * @param categoryDAO        The CategoryDAO that will be initialized in this Controller
-     * @param wasteFilterService
+     * @param categoryDAO        The CategoryDAO that will be initialized in this Controller.
+     * @param wasteFilterService the WasteFilterService to be initialized.
      */
     public CategoryController(CategoryDAO categoryDAO, WasteFilterService wasteFilterService) {
         this.categoryDAO = categoryDAO;
@@ -45,8 +45,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse updateCategory(@RequestBody Category category) {
-        if(this.categoryDAO.getCategoryByID(category.getId()).isEmpty()){
+    public ApiResponse<String> updateCategory(@RequestBody Category category) {
+        if (this.categoryDAO.getCategoryByID(category.getId()).isEmpty()) {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");
         }
 
@@ -58,75 +58,82 @@ public class CategoryController {
      * Adds the given Customer to the database using the saveToDataBase method in the CustomerDAO.
      *
      * @param category The CategoryModel that is received in the POST-Request body.
-     * @return The newly added Category.
-     *
+     * @return ApiResponse with a corresponding message.
      * @see CustomerDAO#saveToDatabase(Customer)
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public Category addCategory(@RequestBody Category category) {
-
+    public ApiResponse<String> addCategory(@RequestBody Category category) {
         this.categoryDAO.saveToDatabase(category);
-        return category;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "category added to database!");
     }
 
     /**
      * Gets all Categories from the database using the getAll method from the CategoryDAO.
      * The categories are returned as an ArrayList.
      *
-     * @return An ArrayList with every Category in the database.
+     * @return An ApiResponse with an ArrayList with every Category in the database as payload.
      * @see CategoryDAO#getAll()
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Category> categories(){
+    public ApiResponse<ArrayList<Category>> categories() {
         ArrayList<Category> categories = this.categoryDAO.getAll();
-        return categories;
+        return new ApiResponse<>(HttpStatus.ACCEPTED, categories);
     }
 
     /**
      * Attempts to return a single Category that contains the given ID from the database using the getCategoryByID
-     * method from the CategoryDAO .
+     * method from the CategoryDAO.
      *
      * @param id The id used to find the specific Category.
-     * @return The requested Category.
+     * @return An ApiResponse with the requested Category as payload if it exists.
      * @see CategoryDAO#getCategoryByID(Long)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Optional<Category> getCategoryByID(@PathVariable long id){
+    public ApiResponse<Category> getCategoryByID(@PathVariable long id) {
         Optional<Category> category = this.categoryDAO.getCategoryByID(id);
-        return category;
+        return category.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() ->
+                new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!"));
     }
 
     /**
      * Attempts to delete a Category with the given id if this Category exists.
+     *
      * @param id The id used to find and delete the specific Category.
-     * @return ApiResponse with 200 OK and a message.
+     * @return ApiResponse with a corresponding message.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ApiResponse deleteCategoryByID(@PathVariable Long id){
+    public ApiResponse<String> deleteCategoryByID(@PathVariable Long id) {
         this.categoryDAO.deleteById(id);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted category "+id+"!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "You deleted category " + id + "!");
     }
 
     /**
      * returns a list with every category name that exists in the database.
-     * @return an Arraylist with category names.
+     *
+     * @return an ApiResponse with an Arraylist of category names as payload.
      */
     @RequestMapping(value = "/names", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<String> categoryNames(){
-        return this.wasteFilterService.getCategoryNames();
+    public ApiResponse<ArrayList<String>> categoryNames() {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.wasteFilterService.getCategoryNames());
     }
 
+    /**
+     * attempts to return the category name when a category-id is provided.
+     * @param id the id of the target category.
+     * @return an ApiResponse with the category name as payload if the target category exists.
+     */
     @RequestMapping(value = "/names/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCategoryNameByID(@PathVariable long id){
-        Category category = this.categoryDAO.getCategoryByID(id).get();
-        System.out.println(category.getName());
-        return category.getName();
+    public ApiResponse<String> getCategoryNameByID(@PathVariable long id) {
+        Optional<Category> category = this.categoryDAO.getCategoryByID(id);
+        if (category.isEmpty()) {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");
+        }
+        return new ApiResponse<>(HttpStatus.ACCEPTED, category.get().getName());
     }
-
 }
