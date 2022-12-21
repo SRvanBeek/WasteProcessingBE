@@ -3,9 +3,11 @@ package nl.groep14.ipsen2BE.Services;
 import nl.groep14.ipsen2BE.DAO.ArticleDAO;
 import nl.groep14.ipsen2BE.DAO.CutWasteDAO;
 import nl.groep14.ipsen2BE.DAO.OrderDAO;
+import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Cutwaste;
 import nl.groep14.ipsen2BE.Models.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,10 +22,11 @@ public class OrderService {
         this.articleDAO = articleDAO;
     }
 
-    public Article OrderToArticle(Long Id){
+    public ApiResponse OrderToArticle(Long Id){
         Order order = orderDAO.getOrderByID(Id).get();
         Cutwaste cutwaste = cutWasteDAO.getByID(order.getCutwasteID()).get();
-        return articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer()).get();
+        Article article = articleDAO.getArticleByArtikelNummer(cutwaste.getArtikelnummer()).get();
+        return new ApiResponse(HttpStatus.ACCEPTED, article);
 
     }
 
