@@ -103,6 +103,6 @@ public class OrderController {
     @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse getArticleFromOrder(@PathVariable Long id){
-        return new ApiResponse(HttpStatus.ACCEPTED, orderService.OrderToArticle(id));
+        return orderService.OrderToArticle(id);
     }
 }

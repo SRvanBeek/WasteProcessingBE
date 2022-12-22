@@ -92,7 +92,7 @@ public class VoorraadController {
     }
     @RequestMapping(value = "/artikel/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article getArticlebyVoorraadId(@PathVariable Long id){
-        return this.voorraadService.OrderToArticle(id);
+    public ApiResponse getArticlebyVoorraadId(@PathVariable Long id){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.voorraadService.OrderToArticle(id));
     }
 }
