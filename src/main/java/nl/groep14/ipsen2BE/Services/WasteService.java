@@ -26,11 +26,11 @@ public class WasteService {
     /**
      * createAndSave creates a waste entity using createWaste and saves it to the database.
      * @param chosenArticle The Article that needs to be checked
-     * @param catogories A list of all the categories in the database
+     * @param categories A list of all the categories in the database
      *
      */
-    public void createAndSave(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
-        Waste waste = createWaste(chosenArticle,catogories,cutwasteID);
+    public void createAndSave(Article chosenArticle, ArrayList<Category> categories, long cutwasteID){
+        Waste waste = createWaste(chosenArticle,categories,cutwasteID);
         this.wasteDAO.saveToDatabase(waste);
     }
 
@@ -40,14 +40,14 @@ public class WasteService {
      * We only want to send that category back, we do this using the variable 'this.hundredPercent'.
      * We create a new 'Waste' entity after checking all the Categories and return it.
      * @param chosenArticle The Article that needs to be checked
-     * @param catogories A list of all the categories in the database
+     * @param categories A list of all the categories in the database
      * @return created Waste entity
      */
-    public Waste createWaste(Article chosenArticle, ArrayList<Category> catogories, long cutwasteID){
+    public Waste createWaste(Article chosenArticle, ArrayList<Category> categories, long cutwasteID){
         ArrayList<Category> acceptedCategoriesList = new ArrayList<>();
         String samenstelling = chosenArticle.getSamenstelling();
         HashMap<String, Integer> samenstellingMap = samenstellingSplitter(samenstelling);
-        for (Category category : catogories) {
+        for (Category category : categories) {
             if (checkCondition(samenstellingMap,category)) {
                 acceptedCategoriesList.add(category);
                 if (this.hundredPercent){
@@ -70,13 +70,17 @@ public class WasteService {
     private HashMap<String, Integer> samenstellingSplitter(String samenstelling) {
         HashMap<String, Integer> samenstellingMap = new HashMap<>();
         samenstelling = samenstelling.replace("/", " ");
+        samenstelling = samenstelling.replace("%", "% ");
+        samenstelling = samenstelling.replace("  ", " ");
+        samenstelling = samenstelling.replace("   ", " ");
         String[] str = samenstelling.split(" ");
-
+        System.out.println(Arrays.toString(str));
         for (int i = 0; i < str.length; i++) {
             if (str[i].contains("%")) {
                 samenstellingMap.put(str[i + 1], parseStringToInt(str[i]));
             }
         }
+        System.out.println(samenstellingMap);
         return samenstellingMap;
     }
 
@@ -154,12 +158,12 @@ public class WasteService {
                         String valueString = conditionPartsSplit[i].substring(0, conditionPartsSplit[i].length() - 1);
                         if (valueString.contains(">")) {
                             int value = Integer.parseInt(valueString.replace(">", ""));
-                            if (samenstellingMap.get(conditionKey) > value) {
+                            if (samenstellingMap.get(conditionKey) >= value) {
                                 return true;
                             }
                         } else if (valueString.contains("<")) {
                             int value = Integer.parseInt(valueString.replace("<", ""));
-                            if (samenstellingMap.get(conditionKey) < value) {
+                            if (samenstellingMap.get(conditionKey) <= value) {
                                 return true;
                             }
                         } else {

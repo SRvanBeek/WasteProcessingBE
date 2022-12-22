@@ -30,7 +30,7 @@ public class LeftoverController {
     }
 
     /**
-     *getOneLeftover gets one Leftover entity from the database if it exist in the database. otherwise will return an 404.
+     *getOneLeftover gets one Leftover entity from the database if it exists in the database. otherwise will return an 404.
      * @param id of the Leftover entity.
      * @return an ApiResponse from the leftover with the given ID.
      */

@@ -2,11 +2,9 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Services.SnijService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -17,7 +15,7 @@ import java.util.Map;
  * @author Dino Yang
  */
 @Controller
-@RequestMapping(value = "/api/snij")
+@RequestMapping(value = "/api/generateLeftovers")
 public class SnijController {
     private final SnijService snijService;
     public SnijController(SnijService snijService) {
@@ -25,16 +23,20 @@ public class SnijController {
     }
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse snijApplicatie(@RequestBody Map<String, Object> payload){
+    public ApiResponse snijApplicatie(@RequestBody Map<String, String> payload){
         System.out.println(payload);
-        return snijService.snijApplication((String) payload.get("articleNumber"), (double) payload.get("metrage"));
+        return snijService.addLeftover((String) payload.get("articleNumber"), payload.get("metrage"));
     }
-//    @RequestMapping(value = "/setup", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String snijSetup(){
-//        for (int i = 0; i < 100; i++) {
-//            snijService.snijApplication();
-//        }
-//        return "Setup complete";
-//    }
+    @RequestMapping(value = "/random/{amount}", method = RequestMethod.POST)
+    @ResponseBody
+    public ApiResponse<String> snijSetup(@PathVariable int amount){
+        int actualAmount = snijService.addRandomLeftovers(amount);
+
+        if (actualAmount == amount) {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, (amount + " leftovers added!"));
+        }
+        else {
+            return new ApiResponse<>(HttpStatus.CONFLICT, "only " + actualAmount + " leftovers added before something went wrong");
+        }
+    }
 }
