@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 
 /**
  * @author Dino Yang
@@ -22,23 +21,26 @@ public class LeftoverController {
 
     /**
      * getAllLeftover gets all the Leftover in the database.
-     * @return ArrayList containing every Leftover entity in the database.
+     * @return an ApiResponse containing every Leftover entity in the database.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Leftover> getAllLeftovers(){
-        return this.leftoverDAO.getAll();
+    public ApiResponse getAllLeftovers(){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAll());
     }
 
     /**
-     *getOneLeftover gets one Leftover entity from the database.
+     *getOneLeftover gets one Leftover entity from the database if it exist in the database. otherwise will return an 404.
      * @param id of the Leftover entity.
-     * @return Leftover.
+     * @return an ApiResponse from the leftover with the given ID.
      */
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Leftover getOneLeftover(@PathVariable long id){
-        return this.leftoverDAO.getById(id);
+    public ApiResponse getOneLeftover(@PathVariable long id){
+        if(this.leftoverDAO.getById(id) == null){
+            return new ApiResponse(HttpStatus.NOT_FOUND, "ID does not exist");
+        }
+        return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getById(id));
     }
 
     /**
@@ -66,13 +68,16 @@ public class LeftoverController {
     }
 
     /**
-     *getLeftoverByType gets every Leftover with a specified type.
+     *getLeftoverByType gets every Leftover with a specified type. if the type doesn't exist it returns a 404
      * @param type of Leftover.
-     * @return ArrayList with Leftover.
+     * @return ApiResponse with the Leftovers.
      */
     @RequestMapping(value = "/{type}", method = RequestMethod.GET)
     @ResponseBody
-    public ArrayList<Leftover> getLeftoverByType(@PathVariable String type){
-        return this.leftoverDAO.getByType(type);
+    public ApiResponse getLeftoverByType(@PathVariable String type){
+        if (this.leftoverDAO.getByType(type).isEmpty()){
+            return new ApiResponse(HttpStatus.NOT_FOUND, "Type does not exist");
+        }
+        return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getByType(type));
     }
 }
