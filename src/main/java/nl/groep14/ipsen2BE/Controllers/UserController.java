@@ -34,23 +34,23 @@ public class UserController {
     /**@author Roy van Delft
      * gets all users from the database with the /users endpoint
      *
-     * @return returns all users
+     * @return returns a list with all the users, along with the API response
      */
     @GetMapping("")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getGebruikers());
+    public ApiResponse<List<User>> getUsers() {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, userService.getGebruikers());
     }
 
     @GetMapping("/{username}")
     public ApiResponse<User> getUserByUsername(@PathVariable String username) {
         User user = userService.getGebruiker(username);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, user);
+        return new ApiResponse<>(HttpStatus.ACCEPTED, username);
     }
 
     /**
      * saves a user to the database
      * @param user the user to save
-     * @return returns the user, together with the API response
+     * @return returnsa confirmation message, together with the API response
      */
     @PostMapping("/save")
     public ApiResponse<String> saveUser(@RequestBody User user) {
@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/roles/{username}")
-    public ApiResponse getRolesByUser(@PathVariable String username) {
+    public ApiResponse<Collection<Role>> getRolesByUser(@PathVariable String username) {
         return new ApiResponse<>(HttpStatus.ACCEPTED, userService.getGebruiker(username).getRoles());
     }
 
@@ -74,7 +74,7 @@ public class UserController {
     /**
      * saveAdmin saves a user to the database with the admin role.
      * @param user model of the user that needs to be saved
-     * @return ApiResponse with the response of the request
+     * @return ApiResponse with the response of the request, together with a confirmation message
      */
     @PostMapping("/admins/save")
     public ApiResponse<String> saveAdmin(@RequestBody User user) {
@@ -84,8 +84,9 @@ public class UserController {
     }
 
     @PostMapping("/checkUsername")
-    public boolean checkUsername(@RequestBody String username) {
-        return this.userService.getUsernameDuplicate(username);
+    public ApiResponse<Boolean> checkUsername(@RequestBody String username) {
+        boolean usernameExists = this.userService.getUsernameDuplicate(username);
+        return new ApiResponse<>(HttpStatus.ACCEPTED, usernameExists);
     }
 
     @Data
