@@ -38,14 +38,12 @@ public class SnijService {
         this.categoryDAO = categoryDAO;
     }
 
+
     /**
-     * snijApplication is used to simulate the snijApplication.
-     * First we choose a random Article who's userId is null. Then we randomly generate a 'metrage', we do
-     * this to simulate the snijApplicatie.
-     * After generating the 'metrage', we check in which category the article fits. This depends on the min
-     * and max meter of the Customer linked to the Article.
-     * @return String containing 'type, articleID' type is here the either an order, voorraad or waste
-     * depending on the min and max settings of the customer and articleID is the id of the article.
+     * attempts to add a leftover to the database when an article and metrage are given.
+     * @param articleNumber the articlenumber used to generate leftovers.
+     * @param metrageJSON the metrage value in String format.
+     * @return an ApiResponse with a corresponding status code and message.
      */
     public ApiResponse<String> addLeftover(String articleNumber, String metrageJSON){
         if (this.articleDAO.getArticleByArtikelNummer(articleNumber).isEmpty()) {
@@ -112,10 +110,10 @@ public class SnijService {
 
 
     /**
-     * creates a new leftover in the database based on the given article, the square metres of the leftover and the customer
-     * @param metrage the square metres of the leftover. this will be used to calculate the weight.
-     * @param article
-     * @param customer
+     * creates a new leftover in the database based on the given article, the square metres of the leftover and the customer-settings
+     * @param metrage the square metres of the leftover. This will be used to calculate the weight.
+     * @param article the article used to generate the leftover
+     * @param customer the customer from which the customer-settings are received
      */
     private void createLeftover(double metrage, Article article, Customer customer) {
         double minMeter = customer.getMin_meter();

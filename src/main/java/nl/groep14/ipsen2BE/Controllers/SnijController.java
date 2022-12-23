@@ -21,15 +21,31 @@ public class SnijController {
     public SnijController(SnijService snijService) {
         this.snijService = snijService;
     }
+
+    /**
+     *
+     * @param payload the body of the request. This method will attempt to get the articlenumber and the metrage from this payload.
+     * @return an ApiResponse with the corresponding message and status code received from the service.
+     */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse snijApplicatie(@RequestBody Map<String, String> payload){
+    public ApiResponse<String> snijApplicatie(@RequestBody Map<String, String> payload){
         System.out.println(payload);
-        return snijService.addLeftover((String) payload.get("articleNumber"), payload.get("metrage"));
+        return snijService.addLeftover(payload.get("articleNumber"), payload.get("metrage"));
     }
+
+    /**
+     * generates a given amount of random leftovers with a max of 100 at a time.
+     * @param amount the amount of random leftovers to be generated.
+     * @return an ApiResponse with the amount of random leftovers that have been added.
+     */
     @RequestMapping(value = "/random/{amount}", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse<String> snijSetup(@PathVariable int amount){
+        if (amount > 100) {
+            return new ApiResponse<>(HttpStatus.FORBIDDEN, "amount cannot be greater that 100!");
+        }
+
         int actualAmount = snijService.addRandomLeftovers(amount);
 
         if (actualAmount == amount) {
