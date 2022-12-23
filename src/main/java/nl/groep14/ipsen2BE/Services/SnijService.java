@@ -55,13 +55,13 @@ public class SnijService {
              metrage = Double.parseDouble(metrageJSON);
         }
         catch (NumberFormatException nfe) {
-            return new ApiResponse<>(HttpStatus.BAD_REQUEST, "Please use a valid metrage value! (example: 25, 30.5");
+            return new ApiResponse<>(HttpStatus.BAD_REQUEST, "Please use a valid metrage value! (example: 25, 30.5)");
         }
 
         try {
             Article article = this.articleDAO.getArticleByArtikelNummer(articleNumber).get();
             createLeftover((long) metrage, article, getCustomer(article));
-            return new ApiResponse<>(HttpStatus.ACCEPTED, "Cut data loaded");
+            return new ApiResponse<>(HttpStatus.ACCEPTED, "Leftover has been successfully added!");
         }
         catch (NotFoundException nfe) {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, nfe.getMessage());
