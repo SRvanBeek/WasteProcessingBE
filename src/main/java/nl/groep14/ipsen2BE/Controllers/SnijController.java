@@ -40,7 +40,7 @@ public class SnijController {
     @ResponseBody
     public ApiResponse<String> snijSetup(@PathVariable int amount){
         if (amount > 100) {
-            return new ApiResponse<>(HttpStatus.FORBIDDEN, "amount cannot be greater that 100!");
+            return new ApiResponse<>(HttpStatus.FORBIDDEN, "amount cannot be greater than 100!");
         }
 
         int actualAmount = snijService.addRandomLeftovers(amount);
