@@ -74,13 +74,11 @@ public class WasteService {
         samenstelling = samenstelling.replace("  ", " ");
         samenstelling = samenstelling.replace("   ", " ");
         String[] str = samenstelling.split(" ");
-        System.out.println(Arrays.toString(str));
         for (int i = 0; i < str.length; i++) {
             if (str[i].contains("%")) {
                 samenstellingMap.put(str[i + 1], parseStringToInt(str[i]));
             }
         }
-        System.out.println(samenstellingMap);
         return samenstellingMap;
     }
 

@@ -28,7 +28,6 @@ public class SnijController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse<String> snijApplicatie(@RequestBody Map<String, String> payload){
-        System.out.println(payload);
         return snijService.addLeftover(payload.get("articleNumber"), payload.get("metrage"));
     }
 
