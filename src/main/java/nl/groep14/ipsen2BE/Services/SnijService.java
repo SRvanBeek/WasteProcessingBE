@@ -6,7 +6,6 @@ import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -118,7 +117,9 @@ public class SnijService {
     private void createLeftover(double metrage, Article article, Customer customer) {
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
+        System.out.println("bruh 1");
         Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date());
+
         if (metrage > maxMeter) {
             leftover.setType("storage");
             this.leftoverDAO.saveToDatabase(leftover);
@@ -142,12 +143,11 @@ public class SnijService {
      * @return the weight of the leftover rounded to 2 decimals.
      */
     public double calculateWeight(Article article, double metrage) {
-        DecimalFormat decfor = new DecimalFormat("0.00");
-
         double articleWeightPerMeter = article.getGewicht();
         double articleWidthInMeter = (double) article.getStofbreedte() / 100;
         double articleLengthInMeter = metrage / articleWidthInMeter;
+        double roundedWeight = Math.round(articleWeightPerMeter * articleLengthInMeter * 100);
 
-        return Double.parseDouble(decfor.format(articleWeightPerMeter * articleLengthInMeter));
+        return roundedWeight / 100;
     }
 }
