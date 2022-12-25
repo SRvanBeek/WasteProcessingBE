@@ -60,22 +60,7 @@ public class ArticleDAO {
      * @return Article
      */
     public Article getRandomArticle() {
-        while (true) {
-            boolean artikelExists = false;
-            ArrayList<Article> qty = this.getAll();
-            Random rand = new Random();
-            long id2 = rand.nextLong(qty.size());
-            Article chosenArticle = qty.get((int) id2);
-            ArrayList<Leftover> leftover = this.leftoverDAO.getAll();
-            for (Leftover value : leftover) {
-                if (Objects.equals(chosenArticle.getArtikelnummer(), value.getArtikelnummer())) {
-                    artikelExists = true;
-                    break;
-                }
-            }
-            if (!artikelExists) {
-                return chosenArticle;
-            }
-        }
+        ArrayList<Article> articles = this.getAll();
+        return articles.get(new Random().nextInt(articles.size()) - 1);
     }
 }

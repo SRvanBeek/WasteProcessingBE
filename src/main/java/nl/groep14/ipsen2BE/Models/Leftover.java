@@ -22,11 +22,11 @@ public class Leftover {
 
    @Basic
    @Column(name = "metrage")
-   private long metrage;
+   private double metrage;
 
    @Basic
    @Column(name = "gewicht")
-   private long gewicht;
+   private double gewicht;
 
    @Basic
    @Column(name = "date_cut")
@@ -36,7 +36,7 @@ public class Leftover {
     @Column(name = "type")
     private String type;
 
-    public Leftover(String artikelnummer, boolean processed, long metrage, long gewicht, Date dateCut) {
+    public Leftover(String artikelnummer, boolean processed, double metrage, double gewicht, Date dateCut) {
         this.artikelnummer = artikelnummer;
         this.processed = processed;
         this.metrage = metrage;
@@ -80,19 +80,19 @@ public class Leftover {
         this.processed = processed;
     }
 
-    public long getMetrage() {
+    public double getMetrage() {
         return metrage;
     }
 
-    public void setMetrage(long metrage) {
+    public void setMetrage(double metrage) {
         this.metrage = metrage;
     }
 
-    public long getGewicht() {
+    public double getGewicht() {
         return gewicht;
     }
 
-    public void setGewicht(long gewicht) {
+    public void setGewicht(double gewicht) {
         this.gewicht = gewicht;
     }
 

@@ -48,7 +48,7 @@ public class Voorraad {
         return leftoverId;
     }
 
-    public void setLeftoverId(long cutwasteID) {
+    public void setLeftoverId(long leftoverId) {
         this.leftoverId = leftoverId;
     }
 
