@@ -28,7 +28,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     private final UserRepository gebruikerRepository;
     private final RoleRepository rolRepository;
-
     private final UserDAO userDAO;
 
 
@@ -64,7 +63,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = gebruikerRepository.findByUsername(username);
         if(user == null) throw new UsernameNotFoundException("Gebruiker niet gevonden");
-        else log.info("Gebruiker aanwezig in database");
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -78,7 +76,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      */
     @Override
     public void saveGebruiker(User user) {
-        log.info("Slaat een nieuwe gebruiker {} op naar de database", user.getName());//Logs om te checken of de methodes werken naar behoren
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setRoles(new ArrayList<>());
         this.userDAO.saveUserToDatabase(user);
@@ -86,9 +83,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public boolean getUsernameDuplicate(String username){
         List<User> users = getGebruikers();
-        for (User user:users){
-            System.out.println(user.getUsername());
-        }
         return containsName(users, username);
     }
 
@@ -103,7 +97,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      */
     @Override
     public Role saveRol(Role role) {
-        log.info("Slaat een nieuwe rol  {} op naar de database", role.getName()); //Logs om te checken of de methodes werken naar behoren
         return userDAO.saveRoleToDatabase(role);
     }
 
@@ -113,7 +106,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      * @param roleName takes the rolename
      */
     @Override
-    //Voegt rol toe aan een gebruiker
     public void addRolAanGebruiker(String username, String roleName) {
         User user = gebruikerRepository.findByUsername(username);
         Role role = rolRepository.findByName(roleName);
@@ -127,7 +119,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      */
     @Override
     public User getGebruiker(String username) {
-        log.info("Haalt gebruiker {} op uit de database", username); //Logs om te checken of de methodes werken naar behoren
         return gebruikerRepository.findByUsername(username);
     }
 
@@ -137,9 +128,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      */
     @Override
     public List<User> getGebruikers() {
-        log.info("Haalt alle gemaakte gebruikers op uit de database"); //Logs om te checken of de methodes werken naar behoren
         return gebruikerRepository.findAll();
     }
-
-
 }
