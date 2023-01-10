@@ -3,6 +3,7 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.OrderDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Order;
+import nl.groep14.ipsen2BE.Services.OrderToCustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderDAO orderDAO;
+    private final OrderToCustomerService orderToCustomerService;
 
 
-    public OrderController(OrderDAO orderDAO) {
+    public OrderController(OrderDAO orderDAO, OrderToCustomerService orderToCustomerService) {
         this.orderDAO = orderDAO;
+        this.orderToCustomerService = orderToCustomerService;
     }
 
 
@@ -102,4 +105,11 @@ public class OrderController {
         this.orderDAO.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
+
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getOrdersByCustomer(@PathVariable Long id){
+        return orderToCustomerService.getOrderToCustomer(id);
+    }
+
 }
