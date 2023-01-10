@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"nl.groep14.ipsen2BE.Services","l":"UserServiceImplement"}];updateSearchResults();
