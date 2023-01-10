@@ -26,7 +26,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users" )
-
 public class UserController {
     private final UserServiceImplement userService;
     private final RoleRepository roleRepository;
@@ -37,8 +36,16 @@ public class UserController {
      * @return returns all users
      */
     @GetMapping("")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getGebruikers());
+    public ApiResponse getAllUsers() {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.userService.getGebruikers());
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse putUser(@RequestBody User user){
+        this.userService.saveGebruiker(user);
+        this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_USER");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "User password changed!");
     }
 
     @GetMapping("/{username}")

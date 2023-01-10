@@ -28,7 +28,6 @@ public class UserDAO {
      */
     public User saveUserToDatabase(User user){
         this.userRepository.save(user);
-
         return user;
     }
 

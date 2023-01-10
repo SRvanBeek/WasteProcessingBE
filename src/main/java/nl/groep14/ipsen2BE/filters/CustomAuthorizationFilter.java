@@ -68,7 +68,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
             else{
-                filterChain.doFilter(request, response);  //als er geen token is, dan wordt de request gewoon doorgegeven
+                filterChain.doFilter(request, response);
             }
         }
     }
