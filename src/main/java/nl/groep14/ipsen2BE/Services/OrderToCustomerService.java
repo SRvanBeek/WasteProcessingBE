@@ -25,9 +25,9 @@ public class OrderToCustomerService {
         }
 
         public ApiResponse getOrderToCustomer(Long Id) {
-            Order order = orderDAO.getOrderByID(Id).get();
-            Leftover leftover = leftoverDAO.getById(order.getLeftoverId());
-            Article article = articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer()).get();
+            Order order = orderDAO.getOrdersByLeftoverId(Id).get();
+            Leftover leftOver = leftoverDAO.getById(order.getLeftoverId());
+            Article article = articleDAO.getArticleByArtikelNummer(leftOver.getArtikelnummer()).get();
 
             return new ApiResponse(HttpStatus.ACCEPTED, customerDAO.getCustomerByID(article.getLeverancier()));
         }
