@@ -56,8 +56,8 @@ public class Voorraad {
         return userId;
     }
 
-    public void setUserId(Integer userID) {
-        this.userId = userID;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public boolean isEnabled() {
@@ -81,7 +81,7 @@ public class Voorraad {
         return "Voorraad{" +
                 "id=" + id +
                 ", leftoverId=" + leftoverId +
-                ", userID=" + userId +
+                ", userId=" + userId +
                 ", enabled=" + enabled +
                 ", dateProcessed='" + dateProcessed + '\'' +
                 '}';
