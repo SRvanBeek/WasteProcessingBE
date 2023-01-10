@@ -25,7 +25,6 @@ public class OrderService {
     public ApiResponse OrderToArticle(Long Id){
         Order order = orderDAO.getOrderByID(Id).get();
         Leftover leftover = leftoverDAO.getById(order.getLeftoverId());
-        articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer());
         return new ApiResponse(HttpStatus.ACCEPTED, articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer()));
 
     }
