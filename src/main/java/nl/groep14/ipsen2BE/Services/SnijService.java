@@ -1,80 +1,151 @@
 package nl.groep14.ipsen2BE.Services;
 
-import nl.groep14.ipsen2BE.Controllers.CutWasteController;
 import nl.groep14.ipsen2BE.DAO.*;
+import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Random;
 
 /**
  * SnijService is the service for the SnijController
- * @author Dino Yang
+ * @author Dino Yang, Stijn van Beek
  */
 @Service
 public class SnijService {
 
     private final ArticleDAO articleDAO;
     private final CustomerDAO customerDAO;
-    private final CutWasteDAO cutWasteDAO;
+    private final LeftoverDAO leftoverDAO;
     private final OrderDAO orderDAO;
     private final VoorraadDAO voorraadDAO;
     private final CategoryDAO categoryDAO;
-    private final CutWasteController cw;
 
     private final WasteService wasteService;
     private final Random rand = new Random();
-    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, CutWasteDAO cutWasteDAO,
-                       CutWasteController cw, VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
+    public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, LeftoverDAO leftoverDAO,
+                       VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
         this.articleDAO = articleDAO;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
-        this.cutWasteDAO = cutWasteDAO;
-        this.cw = cw;
+        this.leftoverDAO = leftoverDAO;
         this.voorraadDAO = voorraadDAO;
         this.wasteService = wasteService;
         this.categoryDAO = categoryDAO;
     }
 
+
     /**
-     * snijApplication is used to simulate the snijApplication.
-     * First we choose a random Article who's userId is null. Then we randomly generate a 'metrage', we do
-     * this to simulate the snijApplicatie.
-     * After generating the 'metrage', we check in which category the article fits. This depends on the min
-     * and max meter of the Customer linked to the Article.
-     * @return String containing 'type, articleID' type is here the either an order, voorraad or waste
-     * depending on the min and max settings of the customer and articleID is the id of the article.
+     * attempts to add a leftover to the database when an article and metrage are given.
+     * @param articleNumber the articlenumber used to generate leftovers.
+     * @param metrageJSON the metrage value in String format.
+     * @return an ApiResponse with a corresponding status code and message.
      */
-    public ApiResponse snijApplication(){
-        Article chosenArticle = this.articleDAO.getRandomArticle();
-        String customerId = chosenArticle.getLeverancier();
-        Customer customer = this.customerDAO.getCustomerByID(customerId).get();
-        int articleBreedte = chosenArticle.getStofbreedte();
-        long articleGewicht = (long) chosenArticle.getGewicht();
-        long metrage = this.rand.nextLong((articleBreedte / 3));
-        long gewicht = (long) (articleGewicht / 100.0 * (100.0 / articleBreedte * metrage));
-        double minMeter = customer.getMin_meter();
-        double maxMeter = customer.getMax_meter();
-        Cutwaste cutwaste = new Cutwaste(chosenArticle.getArtikelnummer(), false, metrage, gewicht, new Date());
-        if (metrage > maxMeter) {
-            cutwaste.setType("storage");
-            this.cw.postCutWaste(cutwaste);
-            this.voorraadDAO.saveToDatabase(new Voorraad(cutwaste.getId(), null,false, null));
-        } else if (metrage >= minMeter && metrage <= maxMeter) {
-            cutwaste.setType("order");
-            this.cw.postCutWaste(cutwaste);
-            this.orderDAO.saveToDatabase(new Order(cutwaste.getId(), null,false, null));
-        } else {
-            ArrayList<Category> catogories = this.categoryDAO.getAll();
-            cutwaste.setType("catWaste");
-            this.cw.postCutWaste(cutwaste);
-            wasteService.createAndSave(chosenArticle,catogories, cutwaste.getId() );
+    public ApiResponse<String> addLeftover(String articleNumber, String metrageJSON){
+        if (this.articleDAO.getArticleByArtikelNummer(articleNumber).isEmpty()) {
+            return new ApiResponse<>(HttpStatus.FORBIDDEN, "Article not in database");
         }
 
-        return new ApiResponse(HttpStatus.ACCEPTED, "Gesneden");
+        double metrage;
+        try {
+             metrage = Double.parseDouble(metrageJSON);
+        }
+        catch (NumberFormatException nfe) {
+            return new ApiResponse<>(HttpStatus.BAD_REQUEST, "Please use a valid metrage value! (example: 25, 30.5)");
+        }
+
+        try {
+            Article article = this.articleDAO.getArticleByArtikelNummer(articleNumber).get();
+            createLeftover((long) metrage, article, getCustomer(article));
+            return new ApiResponse<>(HttpStatus.ACCEPTED, "Leftover has been successfully added!");
+        }
+        catch (NotFoundException nfe) {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, nfe.getMessage());
+        }
+    }
+
+    /**
+     * attempts to add a given amount of random leftovers to the database.
+     * It will return the actual amount of leftovers that have been added.
+     * @param amount the amount of leftovers to be added.
+     * @return the actual amount of leftovers that have been added.
+     */
+    public int addRandomLeftovers(int amount) {
+        ArrayList<Article> articles = articleDAO.getAll();
+        for (int i = 0; i < amount; i++) {
+            Article article = articles.get(new Random().nextInt(articles.size()));
+            double min = (double) article.getStofbreedte() / 10 * 0.1;
+            double max = (double) article.getStofbreedte() / 10 * 0.5;
+            int randomMetrage = (int) ((Math.random() * (max - min)) + min);
+            try {
+                createLeftover(randomMetrage, article, getCustomer(article));
+            }
+            catch (NotFoundException nfe) {
+                return i;
+            }
+        }
+        return amount;
+    }
+
+    /**
+     * attempts to return the customer assigned to the given article, will throw a NotFoundException when no
+     * customer exists in the database.
+     * @param article the article to receive the customer from.
+     * @return a Customer model when one exists.
+     * @throws NotFoundException when the requested customer does not yet exist.
+     */
+    private Customer getCustomer(Article article) throws NotFoundException {
+        String customerId = article.getLeverancier();
+
+        if (this.customerDAO.getCustomerByID(customerId).isEmpty()) {
+            throw new NotFoundException("No customer exists on the selected article!");
+        }
+
+        return this.customerDAO.getCustomerByID(customerId).get();
+    }
+
+
+    /**
+     * creates a new leftover in the database based on the given article, the square metres of the leftover and the customer-settings
+     * @param metrage the square metres of the leftover. This will be used to calculate the weight.
+     * @param article the article used to generate the leftover
+     * @param customer the customer from which the customer-settings are received
+     */
+    private void createLeftover(double metrage, Article article, Customer customer) {
+        double minMeter = customer.getMin_meter();
+        double maxMeter = customer.getMax_meter();
+        Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date());
+        if (metrage > maxMeter) {
+            leftover.setType("storage");
+            this.leftoverDAO.saveToDatabase(leftover);
+            this.voorraadDAO.saveToDatabase(new Voorraad(leftover.getId(), null,false, null));
+        } else if (metrage >= minMeter && metrage <= maxMeter) {
+            leftover.setType("order");
+            this.leftoverDAO.saveToDatabase(leftover);
+            this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
+        } else {
+            ArrayList<Category> categories = this.categoryDAO.getAll();
+            leftover.setType("catWaste");
+            this.leftoverDAO.saveToDatabase(leftover);
+            wasteService.createAndSave(article, categories, leftover.getId());
+        }
+    }
+
+    /**
+     * calculates the waste of a leftover based on the given article and the given metrage (square metres)
+     * @param article the article which is used to calculate the weight.
+     * @param metrage the amount of square meters of which the leftover consists.
+     * @return the weight of the leftover rounded to 2 decimals.
+     */
+    public double calculateWeight(Article article, double metrage) {
+        double articleWeightPerMeter = article.getGewicht();
+        double articleWidthInMeter = (double) article.getStofbreedte() / 100;
+        double articleLengthInMeter = metrage / articleWidthInMeter;
+        double roundedWeight = Math.round(articleWeightPerMeter * articleLengthInMeter * 100);
+
+        return roundedWeight / 100;
     }
 }

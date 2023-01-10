@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "cutwaste")
-public class Cutwaste {
+@Table(name = "leftover")
+public class Leftover {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,11 @@ public class Cutwaste {
 
    @Basic
    @Column(name = "metrage")
-   private long metrage;
+   private double metrage;
 
    @Basic
    @Column(name = "gewicht")
-   private long gewicht;
+   private double gewicht;
 
    @Basic
    @Column(name = "date_cut")
@@ -36,7 +36,7 @@ public class Cutwaste {
     @Column(name = "type")
     private String type;
 
-    public Cutwaste(String artikelnummer, boolean processed, long metrage, long gewicht, Date dateCut) {
+    public Leftover(String artikelnummer, boolean processed, double metrage, double gewicht, Date dateCut) {
         this.artikelnummer = artikelnummer;
         this.processed = processed;
         this.metrage = metrage;
@@ -44,7 +44,7 @@ public class Cutwaste {
         this.dateCut = dateCut;
     }
 
-    public Cutwaste() {
+    public Leftover() {
 
     }
 
@@ -80,19 +80,19 @@ public class Cutwaste {
         this.processed = processed;
     }
 
-    public long getMetrage() {
+    public double getMetrage() {
         return metrage;
     }
 
-    public void setMetrage(long metrage) {
+    public void setMetrage(double metrage) {
         this.metrage = metrage;
     }
 
-    public long getGewicht() {
+    public double getGewicht() {
         return gewicht;
     }
 
-    public void setGewicht(long gewicht) {
+    public void setGewicht(double gewicht) {
         this.gewicht = gewicht;
     }
 
@@ -106,7 +106,7 @@ public class Cutwaste {
 
     @Override
     public String toString() {
-        return "Cutwaste{" +
+        return "Leftover{" +
                 "id=" + id +
                 ", artikelnummer='" + artikelnummer + '\'' +
                 ", processed='" + processed + '\'' +
