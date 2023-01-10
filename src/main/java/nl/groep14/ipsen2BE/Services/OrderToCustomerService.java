@@ -32,4 +32,3 @@ public class OrderToCustomerService {
             return new ApiResponse(HttpStatus.ACCEPTED, customerDAO.getCustomerByID(article.getLeverancier()));
         }
     }
-
