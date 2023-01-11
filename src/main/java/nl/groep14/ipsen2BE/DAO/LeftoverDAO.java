@@ -54,4 +54,8 @@ public class LeftoverDAO {
     public Optional<Leftover> getByArtikelNummer(String artikelnummer) {
         return this.leftoverRepository.getLeftoversByArtikelnummer(artikelnummer);
     }
+
+    public ArrayList<Leftover> getAllProcessed(boolean processed) {
+        return this.leftoverRepository.getAllByProcessed(processed);
+    }
 }

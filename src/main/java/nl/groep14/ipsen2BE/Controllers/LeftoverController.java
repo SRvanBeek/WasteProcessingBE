@@ -29,6 +29,12 @@ public class LeftoverController {
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAll());
     }
 
+    @RequestMapping(value = "/byProcessed/{processed}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getAllLeftoversByProcessed(@PathVariable boolean processed){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAllProcessed(processed));
+    }
+
     /**
      *getOneLeftover gets one Leftover entity from the database if it exists in the database. otherwise will return an 404.
      * @param id of the Leftover entity.

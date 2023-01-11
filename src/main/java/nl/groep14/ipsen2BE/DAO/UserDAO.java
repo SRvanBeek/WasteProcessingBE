@@ -1,10 +1,13 @@
 package nl.groep14.ipsen2BE.DAO;
 
+import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UserDAO {
@@ -40,6 +43,14 @@ public class UserDAO {
         this.roleRepository.save(role);
 
         return role;
+    }
+
+    public String getUserNameById(long id) throws NotFoundException {
+        Optional<User> user = this.userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("user does not exist!");
+        }
+        return user.get().getName();
     }
 
     public User getUserByUsername(String username) {
