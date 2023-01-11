@@ -21,6 +21,15 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
+    @Column (name = "country")
+    private String country;
+
+    @Column (name = "postal_code")
+    private String postal_code;
+
+    @Column (name = "city")
+    private String city;
+
     @Column(name = "enabled")
     private boolean enabled;
 
@@ -57,6 +66,30 @@ public class Customer {
         this.address = address;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPostalCode() {
+        return postal_code;
+    }
+
+    public void setPostalCode(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -72,6 +105,9 @@ public class Customer {
                 ", min_meter=" + min_meter +
                 ", max_meter=" + max_meter +
                 ", address='" + address + '\'' +
+                ", country='" + country + '\'' +
+                ", postal_code='" + postal_code + '\'' +
+                ", city='" + city + '\'' +
                 ", enabled=" + enabled +
                 '}';
     }
