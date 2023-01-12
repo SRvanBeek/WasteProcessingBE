@@ -1,5 +1,6 @@
 package nl.groep14.ipsen2BE.DAO;
 
+import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.Article;
 import nl.groep14.ipsen2BE.Models.Leftover;
 import org.springframework.stereotype.Component;
@@ -62,5 +63,13 @@ public class ArticleDAO {
     public Article getRandomArticle() {
         ArrayList<Article> articles = this.getAll();
         return articles.get(new Random().nextInt(articles.size()) - 1);
+    }
+
+    public String getCustomerById(String id) throws NotFoundException {
+        Optional<Article> article = this.articleRepository.getArticleByArtikelnummer(id);
+        if (article.isEmpty()) {
+            throw new NotFoundException("user does not exist!");
+        }
+        return article.get().getLeverancier();
     }
 }

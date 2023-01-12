@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.Controllers;
 
 
 import nl.groep14.ipsen2BE.DAO.ArticleDAO;
+import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Article;
 import org.springframework.http.HttpStatus;
@@ -61,5 +62,16 @@ public class ArticleController {
     public ApiResponse<Article> getOneArticle(@PathVariable String id) {
         Optional<Article> article = this.articleDAO.getArticleByArtikelNummer(id);
         return article.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() -> new ApiResponse<>(HttpStatus.NOT_FOUND, "article does not exist"));
+    }
+
+    @RequestMapping(value = "byarticleId/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<String> getcustomerById(@PathVariable String id){
+        try {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, articleDAO.getCustomerById(id));
+        }
+        catch (NotFoundException e) {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }
