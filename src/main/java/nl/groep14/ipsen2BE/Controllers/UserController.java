@@ -2,6 +2,8 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import nl.groep14.ipsen2BE.DAO.UserDAO;
+import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ import java.util.List;
 public class UserController {
     private final UserServiceImplement userService;
     private final RoleRepository roleRepository;
+    private final UserDAO userDAO;
 
     /**@author Roy van Delft
      * gets all users from the database with the /users endpoint
@@ -47,6 +50,23 @@ public class UserController {
         this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_USER");
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User password changed!");
     }
+
+    /**
+     * getemployeeNameById gets the Employee with the given UserId
+     * @param id is the given UserID
+     * @return an ApiResponse with in the payload the given employee name otherwise return a 404 error
+     */
+    @RequestMapping(value = "byId/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<String> getEmployeeNameById(@PathVariable long id){
+        try {
+            return new ApiResponse<>(HttpStatus.ACCEPTED, this.userDAO.getUserNameById(id));
+        }
+        catch (NotFoundException e) {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
 
     @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {

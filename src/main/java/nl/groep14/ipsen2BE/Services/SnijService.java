@@ -77,8 +77,14 @@ public class SnijService {
         ArrayList<Article> articles = articleDAO.getAll();
         for (int i = 0; i < amount; i++) {
             Article article = articles.get(new Random().nextInt(articles.size()));
-            double min = (double) article.getStofbreedte() / 10 * 0.1;
-            double max = (double) article.getStofbreedte() / 10 * 0.5;
+            Customer customer = customerDAO.getCustomerByID(article.getLeverancier()).get();
+            double min = (double) customer.getMin_meter() - 10;
+            if (min < 0) {
+                min = 1;
+            }
+            double max = (double) customer.getMax_meter() + 10;
+//            double min = (double) article.getStofbreedte() / 10 * 0.1;
+//            double max = (double) article.getStofbreedte() / 10 * 0.5;
             int randomMetrage = (int) ((Math.random() * (max - min)) + min);
             try {
                 createLeftover(randomMetrage, article, getCustomer(article));
@@ -145,7 +151,7 @@ public class SnijService {
         double articleWidthInMeter = (double) article.getStofbreedte() / 100;
         double articleLengthInMeter = metrage / articleWidthInMeter;
         double roundedWeight = Math.round(articleWeightPerMeter * articleLengthInMeter * 100);
-
+        System.out.println(roundedWeight / 100);
         return roundedWeight / 100;
     }
 }

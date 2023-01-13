@@ -79,7 +79,7 @@ public class VoorraadController {
      */
     @RequestMapping(value = "/perLeftover/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getVoorraadByIDByLeftoverID(@PathVariable Long id){
+    public ApiResponse getVoorraadByLeftoverID(@PathVariable Long id){
         if (this.voorraadDAO.getVoorraadByLeftoverId(id) != null) {
             return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByLeftoverId(id));
         } else {
