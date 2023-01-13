@@ -45,6 +45,12 @@ public class UserDAO {
         return role;
     }
 
+    /**
+     * get the username by the given userID
+     * @param id the given userID
+     * @return an APIResponse with a string of the name of the user in it otherwise throws an exception
+     * @throws NotFoundException
+     */
     public String getUserNameById(long id) throws NotFoundException {
         Optional<User> user = this.userRepository.findById(id);
         if (user.isEmpty()) {
@@ -53,6 +59,11 @@ public class UserDAO {
         return user.get().getName();
     }
 
+    /**
+     * get all the details of one user with the given username
+     * @param username the given username
+     * @return an array of the details of the user you where searching for
+     */
     public User getUserByUsername(String username) {
         return this.userRepository.findByUsername(username);
     }
