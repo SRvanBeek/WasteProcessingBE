@@ -69,7 +69,7 @@ public class ArticleController {
      * @param id is the ArticleId of the Article entity
      * @return an ApiResponse with the selected Customer as payload otherwise returns an errorMessage
      */
-    @RequestMapping(value = "byarticleId/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "byArticleId/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse<String> getCustomerById(@PathVariable String id){
         try {

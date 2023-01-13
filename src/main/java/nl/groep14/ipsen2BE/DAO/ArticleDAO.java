@@ -74,7 +74,7 @@ public class ArticleDAO {
     public String getCustomerById(String id) throws NotFoundException {
         Optional<Article> article = this.articleRepository.getArticleByArtikelnummer(id);
         if (article.isEmpty()) {
-            throw new NotFoundException("user does not exist!");
+            throw new NotFoundException("customer does not exist!");
         }
         return article.get().getLeverancier();
     }
