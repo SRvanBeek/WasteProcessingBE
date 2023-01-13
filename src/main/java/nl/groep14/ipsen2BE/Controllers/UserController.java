@@ -51,6 +51,11 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User password changed!");
     }
 
+    /**
+     * getemployeeNameById gets the Employee with the given UserId
+     * @param id is the given UserID
+     * @return an ApiResponse with in the payload the given employee name otherwise return a 404 error
+     */
     @RequestMapping(value = "byId/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse<String> getEmployeeNameById(@PathVariable long id){

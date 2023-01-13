@@ -64,9 +64,14 @@ public class ArticleController {
         return article.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() -> new ApiResponse<>(HttpStatus.NOT_FOUND, "article does not exist"));
     }
 
+    /**
+     * getCustomerById gets the customer by the given articleId
+     * @param id is the ArticleId of the Article entity
+     * @return an ApiResponse with the selected Customer as payload otherwise returns an errorMessage
+     */
     @RequestMapping(value = "byarticleId/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<String> getcustomerById(@PathVariable String id){
+    public ApiResponse<String> getCustomerById(@PathVariable String id){
         try {
             return new ApiResponse<>(HttpStatus.ACCEPTED, articleDAO.getCustomerById(id));
         }
