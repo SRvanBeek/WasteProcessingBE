@@ -4,7 +4,9 @@ import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
+import nl.groep14.ipsen2BE.Models.CategoryJson;
 import nl.groep14.ipsen2BE.Models.Customer;
+import nl.groep14.ipsen2BE.Services.CategoryService;
 import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,16 +24,19 @@ import java.util.Optional;
 @RequestMapping(value = "/api/categories")
 public class CategoryController {
     private final CategoryDAO categoryDAO;
+    private final CategoryService categoryService;
     private final WasteFilterService wasteFilterService;
 
     /**
      * Class Constructer, initializes the CategoryDAO and WasteFilterService
      *
      * @param categoryDAO        The CategoryDAO that will be initialized in this Controller.
+     * @param categoryService
      * @param wasteFilterService the WasteFilterService to be initialized.
      */
-    public CategoryController(CategoryDAO categoryDAO, WasteFilterService wasteFilterService) {
+    public CategoryController(CategoryDAO categoryDAO, CategoryService categoryService, WasteFilterService wasteFilterService) {
         this.categoryDAO = categoryDAO;
+        this.categoryService = categoryService;
         this.wasteFilterService = wasteFilterService;
     }
 
@@ -92,10 +97,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<Category> getCategoryByID(@PathVariable long id) {
-        Optional<Category> category = this.categoryDAO.getCategoryByID(id);
-        return category.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() ->
-                new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!"));
+    public ApiResponse getCategoryByID(@PathVariable long id) {
+        return this.categoryService.getCategoryByID(id);
     }
 
     /**
