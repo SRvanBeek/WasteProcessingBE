@@ -52,6 +52,11 @@ public class CategoryService {
         return new ApiResponse<>(HttpStatus.ACCEPTED, "category added: " + categoryJson.getName());
     }
 
+    /**
+     * tries to update an existing category in the database.
+     * @param categoryJson
+     * @return an ApiResponse with the corresponding statusCode and message.
+     */
     public ApiResponse<String> updateCategory(CategoryJson categoryJson) {
         Optional<Category> category = this.categoryDAO.getCategoryByID(categoryJson.getId());
         if (category.isEmpty()) {
@@ -70,9 +75,9 @@ public class CategoryService {
     }
 
     /**
-     * combines
-     * @param conditions
-     * @return
+     * combines a hashmap of conditions into a single string which so that the conditions can be added to the database..
+     * @param conditions hashmap of conditions of a CategoryJson object.
+     * @return a String with the conditions according to the given data-set.
      */
     public String combineSeparateConditions(HashMap<String, ArrayList<String>> conditions) {
         StringBuilder conditionStringBuilder = new StringBuilder();
