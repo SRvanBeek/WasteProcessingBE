@@ -18,6 +18,23 @@ public class Category {
     private boolean enabled;
 
 
+    public Category(String name, String voorwaarde, boolean enabled) {
+        this.name = name;
+        this.voorwaarde = voorwaarde;
+        this.enabled = enabled;
+    }
+
+    public Category(long id, String name, String voorwaarde, boolean enabled) {
+        this.id = id;
+        this.name = name;
+        this.voorwaarde = voorwaarde;
+        this.enabled = enabled;
+    }
+
+    public Category() {
+
+    }
+
     public long getId() {
         return id;
     }

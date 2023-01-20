@@ -7,11 +7,17 @@ public class CategoryJson {
     long id;
     String name;
     HashMap<String, ArrayList<String>> conditions;
+    boolean enabled;
 
-    public CategoryJson(long id, String name, HashMap<String, ArrayList<String>> conditions) {
+    public CategoryJson(long id, String name, HashMap<String, ArrayList<String>> conditions, boolean enabled) {
         this.id = id;
         this.name = name;
         this.conditions = conditions;
+        this.enabled = enabled;
+    }
+
+    public CategoryJson() {
+
     }
 
     public long getId() {
@@ -38,12 +44,21 @@ public class CategoryJson {
         this.conditions = conditions;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "CategoryJson{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", Conditions=" + conditions +
+                ", conditions=" + conditions +
+                ", enabled=" + enabled +
                 '}';
     }
 }

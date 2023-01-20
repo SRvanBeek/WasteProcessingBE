@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
+import nl.groep14.ipsen2BE.Exceptions.CategoryOverlapException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.CategoryJson;
@@ -50,13 +51,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse<String> updateCategory(@RequestBody Category category) {
-        if (this.categoryDAO.getCategoryByID(category.getId()).isEmpty()) {
-            return new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");
-        }
-
-        this.categoryDAO.saveToDatabase(category);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "category updated");
+    public ApiResponse<String> updateCategory(@RequestBody CategoryJson category) {
+        return this.categoryService.updateCategory(category);
     }
 
     /**
@@ -68,9 +64,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse<String> addCategory(@RequestBody Category category) {
-        this.categoryDAO.saveToDatabase(category);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "category added to database!");
+    public ApiResponse<String> addCategory(@RequestBody CategoryJson category) {
+        return this.categoryService.saveCategory(category);
     }
 
     /**
