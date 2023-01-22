@@ -220,7 +220,8 @@ public class CategoryService {
                         throw new CategoryOverlapException(category.getName());
                     }
 
-                    if (!hundredPercent &&!newHundredPercent && !((newValueMin <= max) && (newValueMax <= min))) {
+                    if (!hundredPercent &&!newHundredPercent && (!((newValueMin <= max) && (newValueMax <= min)) && !((newValueMin >= max) && (newValueMax >= max)))) {
+                        System.out.println("OVERLAP");
                         throw new CategoryOverlapException(category.getName());
                     }
                 }
