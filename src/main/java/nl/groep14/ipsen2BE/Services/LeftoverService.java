@@ -21,6 +21,11 @@ public class LeftoverService {
         this.articleDAO = articleDAO;
     }
 
+    /**
+     * this function returns an apirespose with the leftovers from the given customer id
+     * @param id the given customer id
+     * @return an api repsonse with the leftovers in it
+     */
     public ApiResponse getLeftoverByCustomerId(String id){
         ArrayList<Article> article = articleDAO.getArticlesByCustomerId(id);
         ArrayList<Leftover> leftovers = new ArrayList<>();

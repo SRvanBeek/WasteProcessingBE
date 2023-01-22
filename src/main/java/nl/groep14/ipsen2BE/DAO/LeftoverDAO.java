@@ -51,6 +51,11 @@ public class LeftoverDAO {
         return leftover.orElse(null);
     }
 
+    /**
+     * get all the leftovers with the given articlenumber
+     * @param artikelnummer the given articlenumber
+     * @return a leftover model
+     */
     public ArrayList<Leftover> getByArtikelNummer(String artikelnummer) {
         ArrayList<Leftover> leftover = this.leftoverRepository.findAllByArtikelnummer(artikelnummer);
         return leftover;
