@@ -51,8 +51,9 @@ public class LeftoverDAO {
         return leftover.orElse(null);
     }
 
-    public Optional<Leftover> getByArtikelNummer(String artikelnummer) {
-        return this.leftoverRepository.getLeftoversByArtikelnummer(artikelnummer);
+    public ArrayList<Leftover> getByArtikelNummer(String artikelnummer) {
+        ArrayList<Leftover> leftover = this.leftoverRepository.findAllByArtikelnummer(artikelnummer);
+        return leftover;
     }
 
     public ArrayList<Leftover> getAllProcessed(boolean processed) {

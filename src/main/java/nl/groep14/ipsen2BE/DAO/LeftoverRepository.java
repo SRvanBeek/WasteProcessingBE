@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface LeftoverRepository extends JpaRepository<Leftover, Long> {
     List<Leftover> findByType(String type);
-    Optional<Leftover> getLeftoversByArtikelnummer(String artikelnummer);
+    Optional<Leftover> getLeftoverByArtikelnummer(String artikelnummer);
     ArrayList<Leftover> getAllByProcessed(boolean processed);
+    ArrayList<Leftover> findAllByArtikelnummer(String artikelnummer);
 }

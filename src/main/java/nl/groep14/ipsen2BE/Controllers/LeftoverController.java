@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.LeftoverDAO;
 import nl.groep14.ipsen2BE.Models.*;
+import nl.groep14.ipsen2BE.Services.LeftoverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/leftover")
 public class LeftoverController {
     private final LeftoverDAO leftoverDAO;
+    private final LeftoverService leftoverService;
 
-    public LeftoverController(LeftoverDAO leftoverDAO) {
+    public LeftoverController(LeftoverDAO leftoverDAO, LeftoverService leftoverService) {
         this.leftoverDAO = leftoverDAO;
+        this.leftoverService = leftoverService;
     }
 
     /**
@@ -85,5 +88,11 @@ public class LeftoverController {
             return new ApiResponse(HttpStatus.NOT_FOUND, "Type does not exist");
         }
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getByType(type));
+    }
+
+    @RequestMapping(value = "/customer/{customer}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getLeftoverByCustomer(@PathVariable String customer){
+        return leftoverService.getLeftoverByCustomerId(customer);
     }
 }
