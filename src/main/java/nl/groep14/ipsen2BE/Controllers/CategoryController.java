@@ -92,7 +92,7 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getCategoryByID(@PathVariable long id) {
+    public ApiResponse<CategoryJson> getCategoryByID(@PathVariable long id) {
         return this.categoryService.getCategoryByID(id);
     }
 
