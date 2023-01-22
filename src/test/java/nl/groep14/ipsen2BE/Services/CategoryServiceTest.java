@@ -6,7 +6,6 @@ import nl.groep14.ipsen2BE.Exceptions.CategoryOverlapException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.CategoryJson;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,7 +19,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 class CategoryServiceTest {
     private CategoryService categoryService;

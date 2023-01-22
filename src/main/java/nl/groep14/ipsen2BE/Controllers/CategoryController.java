@@ -2,7 +2,6 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
-import nl.groep14.ipsen2BE.Exceptions.CategoryOverlapException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
 import nl.groep14.ipsen2BE.Models.CategoryJson;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-
 import java.util.Optional;
 
 /**
