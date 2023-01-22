@@ -31,8 +31,8 @@ public class CategoryController {
     /**
      * Class Constructer, initializes the CategoryDAO and WasteFilterService
      *
-     * @param categoryDAO        The CategoryDAO that will be initialized in this Controller.
-     * @param categoryService
+     * @param categoryDAO The CategoryDAO that will be initialized in this Controller.
+     * @param categoryService The categoryService to be used for adding and updating categories.
      * @param wasteFilterService the WasteFilterService to be initialized.
      */
     public CategoryController(CategoryDAO categoryDAO, CategoryService categoryService, WasteFilterService wasteFilterService) {
