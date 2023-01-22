@@ -1,7 +1,6 @@
 package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
-import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Customer;
 import org.springframework.http.HttpStatus;
@@ -74,6 +73,16 @@ public class CustomerController {
     public ApiResponse<ArrayList<Customer>> customers(){
         ArrayList<Customer> customers = this.customerDAO.getAll();
         return new ApiResponse<>(HttpStatus.ACCEPTED, customers);
+    }
+
+    @RequestMapping(value = "/exist/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<ArrayList<Customer>> nameExist(@PathVariable String id){
+       if (this.customerDAO.customerExists(id)){
+           return new ApiResponse<>(HttpStatus.ACCEPTED,"exist");
+       }else{
+           return new ApiResponse<>(HttpStatus.NOT_FOUND,"Doesn't exist");
+       }
     }
 
     /**
