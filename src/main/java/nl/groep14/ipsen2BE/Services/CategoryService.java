@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.Services;
 
 import nl.groep14.ipsen2BE.DAO.CategoryDAO;
+import nl.groep14.ipsen2BE.Exceptions.CategoryOutOfBoundsException;
 import nl.groep14.ipsen2BE.Exceptions.CategoryOverlapException;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -40,21 +40,28 @@ public class CategoryService {
         return new ApiResponse<>(HttpStatus.ACCEPTED, new CategoryJson(category.get().getId(), category.get().getName(), map, category.get().isEnabled()));
     }
 
+    /**
+     * attempts to save a new category to the database. will fail if overlap is detected with other categories,
+     * or when the submitted values are below 0 or above 100.
+     * @param categoryJson the category Json object to be converted into a category entity and saved.
+     * @return an ApiResponse with the corresponding statusCode and message
+     */
     public ApiResponse<String> saveCategory(CategoryJson categoryJson) {
         try {
             if (noOverlap(categoryJson, false)) {
                 this.categoryDAO.saveToDatabase(new Category(categoryJson.getName(), combineSeparateConditions(categoryJson.getConditions()), categoryJson.isEnabled()));
             }
         }
-        catch (CategoryOverlapException e) {
+        catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return new ApiResponse<>(HttpStatus.ACCEPTED, "category added: " + categoryJson.getName());
     }
 
     /**
-     * tries to update an existing category in the database.
-     * @param categoryJson
+     * attempts to update an existing category in the database. will fail if overlap is detected with other categories,
+     * or when the submitted values are below 0 or above 100.
+     * @param categoryJson the category Json object to be converted into a category entity and updated.
      * @return an ApiResponse with the corresponding statusCode and message.
      */
     public ApiResponse<String> updateCategory(CategoryJson categoryJson) {
@@ -68,7 +75,7 @@ public class CategoryService {
                 this.categoryDAO.saveToDatabase(new Category(categoryJson.getId(), categoryJson.getName(), combineSeparateConditions(categoryJson.getConditions()), categoryJson.isEnabled()));
             }
         }
-        catch (CategoryOverlapException e) {
+        catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return new ApiResponse<>(HttpStatus.ACCEPTED, "category updated: " + categoryJson.getName());
@@ -210,8 +217,13 @@ public class CategoryService {
                         }
                     }
                     System.out.println("min: " + newValueMin + ", max: " + newValueMax);
+
                     if (!hundredPercent &&!newHundredPercent && !((newValueMin <= max) && (newValueMax <= min))) {
                         throw new CategoryOverlapException(category.getName());
+                    }
+
+                    if (!hundredPercent && (newValueMin > 100 || newValueMin < 0 || newValueMax > 100 || newValueMax < 0)) {
+                        throw new CategoryOutOfBoundsException();
                     }
                 }
             }
