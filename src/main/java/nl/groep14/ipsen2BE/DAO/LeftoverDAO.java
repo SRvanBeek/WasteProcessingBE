@@ -1,6 +1,7 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Leftover;
+import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -63,5 +64,10 @@ public class LeftoverDAO {
 
     public ArrayList<Leftover> getAllProcessed(boolean processed) {
         return this.leftoverRepository.getAllByProcessed(processed);
+    }
+
+    public void setLeftoverVisibilitytrueByID(Leftover leftover){
+        leftover.setDisable(true);
+        this.leftoverRepository.save(leftover);
     }
 }

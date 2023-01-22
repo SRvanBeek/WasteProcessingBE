@@ -123,7 +123,7 @@ public class SnijService {
     private void createLeftover(double metrage, Article article, Customer customer) {
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-        Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date());
+        Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date(), false);
         if (metrage > maxMeter) {
             leftover.setType("storage");
             this.leftoverDAO.saveToDatabase(leftover);

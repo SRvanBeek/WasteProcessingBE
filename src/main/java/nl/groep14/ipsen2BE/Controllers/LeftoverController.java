@@ -95,4 +95,18 @@ public class LeftoverController {
     public ApiResponse getLeftoverByCustomer(@PathVariable String customer){
         return leftoverService.getLeftoverByCustomerId(customer);
     }
+
+    /**
+     * this functions disable an leftover with the given leftover model
+     * @param leftover a model of leftover
+     * @return an apiresponse that it worked
+     */
+    @RequestMapping(value = "/disable", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse disableOneLeftover(@RequestBody Leftover leftover) {
+        this.leftoverDAO.setLeftoverVisibilitytrueByID(leftover);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You disabled order " + leftover + "!");
+    }
+
 }
+
