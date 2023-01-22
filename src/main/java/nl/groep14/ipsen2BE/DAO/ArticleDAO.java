@@ -78,4 +78,9 @@ public class ArticleDAO {
         }
         return article.get().getLeverancier();
     }
+
+//    public ArrayList<Article> getArticleByCustomerId(String id){
+//        return this.articleRepository.getArticlesByLeverancier(id);
+//
+//    }
 }

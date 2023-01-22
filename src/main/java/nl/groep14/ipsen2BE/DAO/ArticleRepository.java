@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,5 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
     long count();
 
     Optional<Article> getArticleByArtikelnummer(String id);
+    ArrayList<Article> getArticlesByLeverancier(String id);
 }
