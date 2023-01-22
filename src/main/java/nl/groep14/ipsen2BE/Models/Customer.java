@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "customerID")
     private String customerID;
     @Column(name = "min_meter")

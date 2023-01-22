@@ -1,8 +1,6 @@
 package nl.groep14.ipsen2BE.DAO;
 
-import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.Customer;
-import nl.groep14.ipsen2BE.Models.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -49,6 +47,10 @@ public class CustomerDAO {
      */
     public Optional<Customer> getCustomerByID(String id){
         return this.customerRepository.getCustomersByCustomerID(id);
+    }
+
+    public boolean customerExists(String id){
+        return this.customerRepository.existsCustomerByCustomerID(id);
     }
 
 
