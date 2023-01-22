@@ -167,13 +167,11 @@ public class CategoryService {
 
         for (Category category : categories) {
             HashMap<String, ArrayList<String>> conditions = getSeparateConditions(category);
-            if (putRequest && categoryJson.getId() == category.getId()) {
-                continue;
-            }
 
             for (String key : conditions.keySet()
             ) {
                 if (!categoryJson.getConditions().containsKey(key)) {
+                    System.out.println("ha");
                     break;
                 } else {
                     System.out.println(conditions.get(key));
@@ -199,31 +197,31 @@ public class CategoryService {
                     boolean newHundredPercent = false;
 
                     for (String value : categoryJson.getConditions().get(key)) {
-                        if (value.contains("Overig")) {
-                            continue;
-                        } else if (!hundredPercent && value.contains(">")) {
+                        int numericVal = Integer.parseInt(value.replaceAll("[> <]", ""));
+                        if (numericVal > 100 || numericVal < 0) {
+                            throw new CategoryOutOfBoundsException();
+                        }
+                        else if (!hundredPercent && value.contains(">")) {
                             newValueMin = Integer.parseInt(value.replace(">", "").trim());
                         } else if (!hundredPercent && value.contains("<")) {
                             newValueMax = Integer.parseInt(value.replace("<", "").trim());
                         } else {
                             try {
                                 newHundredPercent = (Integer.parseInt(value.trim()) == 100);
-                                if (hundredPercent && newHundredPercent) {
-                                    throw new CategoryOverlapException(category.getName());
-                                }
-                            } catch (NumberFormatException ignored) {
-
-                            }
+                            } catch (NumberFormatException ignored) {}
                         }
                     }
                     System.out.println("min: " + newValueMin + ", max: " + newValueMax);
+                    if (putRequest && categoryJson.getId() == category.getId()) {
+                        break;
+                    }
 
-                    if (!hundredPercent &&!newHundredPercent && !((newValueMin <= max) && (newValueMax <= min))) {
+                    if (hundredPercent && newHundredPercent) {
                         throw new CategoryOverlapException(category.getName());
                     }
 
-                    if (!hundredPercent && (newValueMin > 100 || newValueMin < 0 || newValueMax > 100 || newValueMax < 0)) {
-                        throw new CategoryOutOfBoundsException();
+                    if (!hundredPercent &&!newHundredPercent && !((newValueMin <= max) && (newValueMax <= min))) {
+                        throw new CategoryOverlapException(category.getName());
                     }
                 }
             }
