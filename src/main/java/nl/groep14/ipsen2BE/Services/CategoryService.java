@@ -172,7 +172,6 @@ public class CategoryService {
                 if (!categoryJson.getConditions().containsKey(key)) {
                     break;
                 } else {
-                    System.out.println(conditions.get(key));
                     int min = Integer.MIN_VALUE;
                     int max = Integer.MAX_VALUE;
                     boolean hundredPercent = false;
