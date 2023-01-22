@@ -26,6 +26,7 @@ public class CategoryService {
     /**
      * returns a Category JSON object, which is the same as a normal category Entity,
      * but the conditions are seperated into its own values.
+     *
      * @param id the id of the category to be received.
      * @return an ApiResponse with a Category with separate conditions.
      */
@@ -43,6 +44,7 @@ public class CategoryService {
     /**
      * attempts to save a new category to the database. will fail if overlap is detected with other categories,
      * or when the submitted values are below 0 or above 100.
+     *
      * @param categoryJson the category Json object to be converted into a category entity and saved.
      * @return an ApiResponse with the corresponding statusCode and message
      */
@@ -51,8 +53,7 @@ public class CategoryService {
             if (noOverlap(categoryJson, false)) {
                 this.categoryDAO.saveToDatabase(new Category(categoryJson.getName(), combineSeparateConditions(categoryJson.getConditions()), categoryJson.isEnabled()));
             }
-        }
-        catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
+        } catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return new ApiResponse<>(HttpStatus.ACCEPTED, "category added: " + categoryJson.getName());
@@ -61,6 +62,7 @@ public class CategoryService {
     /**
      * attempts to update an existing category in the database. will fail if overlap is detected with other categories,
      * or when the submitted values are below 0 or above 100.
+     *
      * @param categoryJson the category Json object to be converted into a category entity and updated.
      * @return an ApiResponse with the corresponding statusCode and message.
      */
@@ -69,13 +71,11 @@ public class CategoryService {
         if (category.isEmpty()) {
             return new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");
         }
-
         try {
             if (noOverlap(categoryJson, true)) {
                 this.categoryDAO.saveToDatabase(new Category(categoryJson.getId(), categoryJson.getName(), combineSeparateConditions(categoryJson.getConditions()), categoryJson.isEnabled()));
             }
-        }
-        catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
+        } catch (CategoryOverlapException | CategoryOutOfBoundsException e) {
             return new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return new ApiResponse<>(HttpStatus.ACCEPTED, "category updated: " + categoryJson.getName());
@@ -83,13 +83,14 @@ public class CategoryService {
 
     /**
      * combines a hashmap of conditions into a single string which so that the conditions can be added to the database..
+     *
      * @param conditions hashmap of conditions of a CategoryJson object.
      * @return a String with the conditions according to the given data-set.
      */
     public String combineSeparateConditions(HashMap<String, ArrayList<String>> conditions) {
         StringBuilder conditionStringBuilder = new StringBuilder();
 
-        for (String key: conditions.keySet()) {
+        for (String key : conditions.keySet()) {
             for (int i = 0; i < conditions.get(key).size(); i++) {
 
                 conditionStringBuilder.append(conditions.get(key).get(i)).append("% ").append(key);
@@ -99,10 +100,7 @@ public class CategoryService {
             }
             conditionStringBuilder.append(" || ");
         }
-
-        String condtitionString = conditionStringBuilder.substring(0, conditionStringBuilder.length()-4);
-        System.out.println(condtitionString);
-        return condtitionString;
+        return conditionStringBuilder.substring(0, conditionStringBuilder.length() - 4);
     }
 
 
@@ -156,9 +154,10 @@ public class CategoryService {
     /**
      * returns true if no overlap is detected on existing categories or throws CategoryOverlapException when there is
      * overlap
+     *
      * @param categoryJson the Category Json object to check for overlapping methods
-     * @param putRequest boolean value which checks if the request method is put or not, if it is PUT,
-     *                   then the overlap for the given category id is ignored
+     * @param putRequest   boolean value which checks if the request method is put or not, if it is PUT,
+     *                     then the overlap for the given category id is ignored
      * @return true if no overlap is detected
      * @throws CategoryOverlapException with the category-name where overlap is detected
      */
@@ -171,7 +170,6 @@ public class CategoryService {
             for (String key : conditions.keySet()
             ) {
                 if (!categoryJson.getConditions().containsKey(key)) {
-                    System.out.println("ha");
                     break;
                 } else {
                     System.out.println(conditions.get(key));
@@ -190,7 +188,6 @@ public class CategoryService {
                             hundredPercent = true;
                         }
                     }
-                    System.out.println("min: " + min + ", max: " + max + ", 100%: " + hundredPercent);
 
                     int newValueMin = Integer.MIN_VALUE;
                     int newValueMax = Integer.MAX_VALUE;
@@ -200,18 +197,18 @@ public class CategoryService {
                         int numericVal = Integer.parseInt(value.replaceAll("[> <]", ""));
                         if (numericVal > 100 || numericVal < 0) {
                             throw new CategoryOutOfBoundsException();
-                        }
-                        else if (!hundredPercent && value.contains(">")) {
+                        } else if (!hundredPercent && value.contains(">")) {
                             newValueMin = Integer.parseInt(value.replace(">", "").trim());
                         } else if (!hundredPercent && value.contains("<")) {
                             newValueMax = Integer.parseInt(value.replace("<", "").trim());
                         } else {
                             try {
                                 newHundredPercent = (Integer.parseInt(value.trim()) == 100);
-                            } catch (NumberFormatException ignored) {}
+                            } catch (NumberFormatException ignored) {
+                            }
                         }
                     }
-                    System.out.println("min: " + newValueMin + ", max: " + newValueMax);
+
                     if (putRequest && categoryJson.getId() == category.getId()) {
                         break;
                     }
@@ -220,8 +217,7 @@ public class CategoryService {
                         throw new CategoryOverlapException(category.getName());
                     }
 
-                    if (!hundredPercent &&!newHundredPercent && (!((newValueMin <= max) && (newValueMax <= min)) && !((newValueMin >= max) && (newValueMax >= max)))) {
-                        System.out.println("OVERLAP");
+                    if (!hundredPercent && !newHundredPercent && (!((newValueMin <= max) && (newValueMax <= min)) && !((newValueMin >= max) && (newValueMax >= max)))) {
                         throw new CategoryOverlapException(category.getName());
                     }
                 }
