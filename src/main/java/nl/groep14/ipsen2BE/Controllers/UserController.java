@@ -67,7 +67,11 @@ public class UserController {
         }
     }
 
-
+    /**
+     * gets the user by the username
+     * @param username an string wih the username
+     * @return a string with the user in it
+     */
     @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {
         User user = userService.getGebruiker(username);

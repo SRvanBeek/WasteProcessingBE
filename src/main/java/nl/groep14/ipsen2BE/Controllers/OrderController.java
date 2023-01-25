@@ -106,6 +106,11 @@ public class OrderController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
+    /**
+     * get al the orders that belong to a customer
+     * @param id the customer Id
+     * @return an Apiresponse with all the Orders in it
+     */
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse getOrdersByCustomer(@PathVariable Long id){

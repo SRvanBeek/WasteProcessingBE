@@ -1,7 +1,6 @@
 package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Models.Leftover;
-import nl.groep14.ipsen2BE.Models.Order;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Optional;

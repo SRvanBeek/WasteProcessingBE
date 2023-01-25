@@ -65,43 +65,6 @@ public class WasteFilterService {
         return categoryNames;
     }
 
-    /**
-     * returns the pure composition based on a given category. The pure composition is calculated
-     * by the leftover weight divided by the percentage of a material in the composition in an article.
-     * @param categoryName the given category to retrieve the composition from.
-     * @return an ArrayList with every pure material in the given category and its weight as a string.
-     */
-    public ArrayList<String> getPureCompositionPerCategory(String categoryName) {
-        ArrayList<Leftover> leftoverPerCategory = getCategorizedLeftovers(categoryName);
-        HashMap<String, Double> totalWeightPerMaterial = new HashMap<>();
-        ArrayList<String> materialWeightList = new ArrayList<>();
-
-        for (Leftover leftover : leftoverPerCategory
-             ) {
-            Optional<Article> article = articleDAO.getArticleByArtikelNummer(leftover.getArtikelnummer());
-            if (article.isPresent()) {
-                ArrayList<String[]> compositionValues = getCompositionValues(article.get());
-                for (String[] values : compositionValues
-                ) {
-                    double percentage = Double.parseDouble(values[1]);
-                    double weight = leftover.getGewicht() * percentage / 100;
-
-                    if (totalWeightPerMaterial.containsKey(values[0])) {
-                        totalWeightPerMaterial.put(values[0], (totalWeightPerMaterial.get(values[0]) + weight));
-                    }
-                    else {
-                        totalWeightPerMaterial.put(values[0], weight);
-                    }
-                }
-            }
-        }
-        for (String key: totalWeightPerMaterial.keySet()
-             ) {
-            String materialValueString = key + ": " + totalWeightPerMaterial.get(key);
-            materialWeightList.add(materialValueString);
-        }
-        return materialWeightList;
-    }
 
     /**
      * returns the impure composition based on a given category. An impure material is for example: '50% PL/50% PES'
