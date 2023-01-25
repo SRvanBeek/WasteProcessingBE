@@ -5,7 +5,7 @@ import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import nl.groep14.ipsen2BE.constants.Constant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -23,9 +23,7 @@ public class SnijService {
     private final OrderDAO orderDAO;
     private final VoorraadDAO voorraadDAO;
     private final CategoryDAO categoryDAO;
-
     private final WasteService wasteService;
-    private final Random rand = new Random();
     public SnijService(ArticleDAO articleDAO, CustomerDAO customerDAO, OrderDAO orderDAO, LeftoverDAO leftoverDAO,
                        VoorraadDAO voorraadDAO, WasteService wasteService, CategoryDAO categoryDAO) {
         this.articleDAO = articleDAO;
@@ -77,8 +75,12 @@ public class SnijService {
         ArrayList<Article> articles = articleDAO.getAll();
         for (int i = 0; i < amount; i++) {
             Article article = articles.get(new Random().nextInt(articles.size()));
-            double min = (double) article.getStofbreedte() / 10 * 0.1;
-            double max = (double) article.getStofbreedte() / 10 * 0.5;
+            Customer customer = customerDAO.getCustomerByID(article.getLeverancier()).get();
+            double min = customer.getMin_meter() - 10;
+            if (min < 0) {
+                min = 1;
+            }
+            double max = customer.getMax_meter() + 10;
             int randomMetrage = (int) ((Math.random() * (max - min)) + min);
             try {
                 createLeftover(randomMetrage, article, getCustomer(article));
@@ -117,18 +119,18 @@ public class SnijService {
     private void createLeftover(double metrage, Article article, Customer customer) {
         double minMeter = customer.getMin_meter();
         double maxMeter = customer.getMax_meter();
-        Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date());
+        Leftover leftover = new Leftover(article.getArtikelnummer(), false, metrage, calculateWeight(article, metrage), new Date(), false);
         if (metrage > maxMeter) {
-            leftover.setType("storage");
+            leftover.setType(Constant.storage.toString());
             this.leftoverDAO.saveToDatabase(leftover);
             this.voorraadDAO.saveToDatabase(new Voorraad(leftover.getId(), null,false, null));
         } else if (metrage >= minMeter && metrage <= maxMeter) {
-            leftover.setType("order");
+            leftover.setType(Constant.order.toString());
             this.leftoverDAO.saveToDatabase(leftover);
             this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
         } else {
             ArrayList<Category> categories = this.categoryDAO.getAll();
-            leftover.setType("catWaste");
+            leftover.setType(Constant.catWaste.toString());
             this.leftoverDAO.saveToDatabase(leftover);
             wasteService.createAndSave(article, categories, leftover.getId());
         }
@@ -145,7 +147,7 @@ public class SnijService {
         double articleWidthInMeter = (double) article.getStofbreedte() / 100;
         double articleLengthInMeter = metrage / articleWidthInMeter;
         double roundedWeight = Math.round(articleWeightPerMeter * articleLengthInMeter * 100);
-
+        System.out.println(roundedWeight / 100);
         return roundedWeight / 100;
     }
 }

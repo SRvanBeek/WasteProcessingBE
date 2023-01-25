@@ -2,6 +2,7 @@ package nl.groep14.ipsen2BE.Controllers;
 
 import nl.groep14.ipsen2BE.DAO.LeftoverDAO;
 import nl.groep14.ipsen2BE.Models.*;
+import nl.groep14.ipsen2BE.Services.LeftoverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/leftover")
 public class LeftoverController {
     private final LeftoverDAO leftoverDAO;
+    private final LeftoverService leftoverService;
 
-    public LeftoverController(LeftoverDAO leftoverDAO) {
+    public LeftoverController(LeftoverDAO leftoverDAO, LeftoverService leftoverService) {
         this.leftoverDAO = leftoverDAO;
+        this.leftoverService = leftoverService;
     }
 
     /**
@@ -27,6 +30,17 @@ public class LeftoverController {
     @ResponseBody
     public ApiResponse getAllLeftovers(){
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAll());
+    }
+
+    /**
+     * gets all leftovers which are processed
+     * @param processed a boolean that has true or false
+     * @return an Apiresponse with all the leftovers that are processed
+     */
+    @RequestMapping(value = "/byProcessed/{processed}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getAllLeftoversByProcessed(@PathVariable boolean processed){
+        return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAllProcessed(processed));
     }
 
     /**
@@ -80,4 +94,29 @@ public class LeftoverController {
         }
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getByType(type));
     }
+
+    /**
+     * gets the leftovers that belong to a specific customer
+     * @param customer an string with the customername in it
+     * @return an Apiresponse with the leftovers in it
+     */
+    @RequestMapping(value = "/customer/{customer}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getLeftoverByCustomer(@PathVariable String customer){
+        return leftoverService.getLeftoverByCustomerId(customer);
+    }
+
+    /**
+     * this functions disable an leftover with the given leftover model
+     * @param leftover a model of leftover
+     * @return an apiresponse that it worked
+     */
+    @RequestMapping(value = "/disable", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse disableOneLeftover(@RequestBody Leftover leftover) {
+        this.leftoverDAO.setLeftoverVisibilitytrueByID(leftover);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You disabled order " + leftover + "!");
+    }
+
 }
+

@@ -51,7 +51,22 @@ public class LeftoverDAO {
         return leftover.orElse(null);
     }
 
-    public Optional<Leftover> getByArtikelNummer(String artikelnummer) {
-        return this.leftoverRepository.getLeftoversByArtikelnummer(artikelnummer);
+    /**
+     * get all the leftovers with the given articlenumber
+     * @param artikelnummer the given articlenumber
+     * @return a leftover model
+     */
+    public ArrayList<Leftover> getByArtikelNummer(String artikelnummer) {
+        ArrayList<Leftover> leftover = this.leftoverRepository.findAllByArtikelnummer(artikelnummer);
+        return leftover;
+    }
+
+    public ArrayList<Leftover> getAllProcessed(boolean processed) {
+        return this.leftoverRepository.getAllByProcessed(processed);
+    }
+
+    public void setLeftoverVisibilitytrueByID(Leftover leftover){
+        leftover.setDisable(true);
+        this.leftoverRepository.save(leftover);
     }
 }

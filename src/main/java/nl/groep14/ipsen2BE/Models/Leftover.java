@@ -36,12 +36,17 @@ public class Leftover {
     @Column(name = "type")
     private String type;
 
-    public Leftover(String artikelnummer, boolean processed, double metrage, double gewicht, Date dateCut) {
+    @Basic
+    @Column(name = "disable")
+    private boolean disable;
+
+    public Leftover(String artikelnummer, boolean processed, double metrage, double gewicht, Date dateCut, boolean disable) {
         this.artikelnummer = artikelnummer;
         this.processed = processed;
         this.metrage = metrage;
         this.gewicht = gewicht;
         this.dateCut = dateCut;
+        this.disable = disable;
     }
 
     public Leftover() {
@@ -102,6 +107,14 @@ public class Leftover {
 
     public void setDateCut(Date dateCut) {
         this.dateCut = dateCut;
+    }
+
+    public boolean isDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
     }
 
     @Override

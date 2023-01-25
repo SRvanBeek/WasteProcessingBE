@@ -4,14 +4,15 @@ import nl.groep14.ipsen2BE.DAO.CategoryDAO;
 import nl.groep14.ipsen2BE.DAO.CustomerDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Category;
+import nl.groep14.ipsen2BE.Models.CategoryJson;
 import nl.groep14.ipsen2BE.Models.Customer;
+import nl.groep14.ipsen2BE.Services.CategoryService;
 import nl.groep14.ipsen2BE.Services.WasteFilterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-
 import java.util.Optional;
 
 /**
@@ -22,16 +23,19 @@ import java.util.Optional;
 @RequestMapping(value = "/api/categories")
 public class CategoryController {
     private final CategoryDAO categoryDAO;
+    private final CategoryService categoryService;
     private final WasteFilterService wasteFilterService;
 
     /**
      * Class Constructer, initializes the CategoryDAO and WasteFilterService
      *
-     * @param categoryDAO        The CategoryDAO that will be initialized in this Controller.
+     * @param categoryDAO The CategoryDAO that will be initialized in this Controller.
+     * @param categoryService The categoryService to be used for adding and updating categories.
      * @param wasteFilterService the WasteFilterService to be initialized.
      */
-    public CategoryController(CategoryDAO categoryDAO, WasteFilterService wasteFilterService) {
+    public CategoryController(CategoryDAO categoryDAO, CategoryService categoryService, WasteFilterService wasteFilterService) {
         this.categoryDAO = categoryDAO;
+        this.categoryService = categoryService;
         this.wasteFilterService = wasteFilterService;
     }
 
@@ -45,13 +49,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse<String> updateCategory(@RequestBody Category category) {
-        if (this.categoryDAO.getCategoryByID(category.getId()).isEmpty()) {
-            return new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!");
-        }
-
-        this.categoryDAO.saveToDatabase(category);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "category updated");
+    public ApiResponse<String> updateCategory(@RequestBody CategoryJson category) {
+        return this.categoryService.updateCategory(category);
     }
 
     /**
@@ -63,9 +62,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse<String> addCategory(@RequestBody Category category) {
-        this.categoryDAO.saveToDatabase(category);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "category added to database!");
+    public ApiResponse<String> addCategory(@RequestBody CategoryJson category) {
+        return this.categoryService.saveCategory(category);
     }
 
     /**
@@ -92,10 +90,8 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<Category> getCategoryByID(@PathVariable long id) {
-        Optional<Category> category = this.categoryDAO.getCategoryByID(id);
-        return category.map(value -> new ApiResponse<>(HttpStatus.ACCEPTED, value)).orElseGet(() ->
-                new ApiResponse<>(HttpStatus.NOT_FOUND, "category does not exist!"));
+    public ApiResponse<CategoryJson> getCategoryByID(@PathVariable long id) {
+        return this.categoryService.getCategoryByID(id);
     }
 
     /**

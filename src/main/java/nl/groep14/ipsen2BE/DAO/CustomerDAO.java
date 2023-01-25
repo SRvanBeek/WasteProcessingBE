@@ -48,5 +48,11 @@ public class CustomerDAO {
     public Optional<Customer> getCustomerByID(String id){
         return this.customerRepository.getCustomersByCustomerID(id);
     }
+
+    public boolean customerExists(String id){
+        return this.customerRepository.existsCustomerByCustomerID(id);
+    }
+
+
 }
 

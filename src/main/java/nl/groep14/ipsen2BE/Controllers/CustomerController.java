@@ -76,6 +76,21 @@ public class CustomerController {
     }
 
     /**
+     * nameExist checks whether the customer name exists or not.
+     * @param id of the customer
+     * @return ApiResponse with a string containing 'exist' or Doesn't exist
+     */
+    @RequestMapping(value = "/exist/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<String> nameExist(@PathVariable String id){
+        if (this.customerDAO.customerExists(id)){
+            return new ApiResponse<>(HttpStatus.ACCEPTED,"exist");
+        }else{
+            return new ApiResponse<>(HttpStatus.NOT_FOUND,"Doesn't exist");
+        }
+    }
+
+    /**
      * Attempts to return a single Customer that contains the given ID from the database using the getCustomerByID
      * method from the CategoryDAO.
      *

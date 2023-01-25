@@ -3,13 +3,12 @@ package nl.groep14.ipsen2BE.Controllers;
 import nl.groep14.ipsen2BE.DAO.VoorraadDAO;
 import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Voorraad;
-import nl.groep14.ipsen2BE.Models.Waste;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * @author Noah Elstgeest && Dino Yang
@@ -79,7 +78,7 @@ public class VoorraadController {
      */
     @RequestMapping(value = "/perLeftover/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getVoorraadByIDByLeftoverID(@PathVariable Long id){
+    public ApiResponse getVoorraadByLeftoverID(@PathVariable Long id){
         if (this.voorraadDAO.getVoorraadByLeftoverId(id) != null) {
             return new ApiResponse<>(HttpStatus.ACCEPTED, this.voorraadDAO.getVoorraadByLeftoverId(id));
         } else {

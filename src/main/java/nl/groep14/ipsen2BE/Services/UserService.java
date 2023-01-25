@@ -3,10 +3,8 @@ package nl.groep14.ipsen2BE.Services;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public interface UserService {
