@@ -9,6 +9,7 @@ import nl.groep14.ipsen2BE.repository.RoleRepository;
 import nl.groep14.ipsen2BE.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -60,9 +61,10 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      * @throws UsernameNotFoundException when the user is not found
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
         User user = gebruikerRepository.findByUsername(username);
         if(user == null) throw new UsernameNotFoundException("Gebruiker niet gevonden");
+        if (!user.isEnabled()) throw new UsernameNotFoundException("User is disabled");
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
