@@ -32,6 +32,11 @@ public class LeftoverController {
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getAll());
     }
 
+    /**
+     * gets all leftovers which are processed
+     * @param processed a boolean that has true or false
+     * @return an Apiresponse with all the leftovers that are processed
+     */
     @RequestMapping(value = "/byProcessed/{processed}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse getAllLeftoversByProcessed(@PathVariable boolean processed){
@@ -90,6 +95,11 @@ public class LeftoverController {
         return new ApiResponse(HttpStatus.ACCEPTED, this.leftoverDAO.getByType(type));
     }
 
+    /**
+     * gets the leftovers that belong to a specific customer
+     * @param customer an string with the customername in it
+     * @return an Apiresponse with the leftovers in it
+     */
     @RequestMapping(value = "/customer/{customer}", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse getLeftoverByCustomer(@PathVariable String customer){
