@@ -9,11 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * WasteController is the controller for the Waste Entity
- * @author Dino Yang
+ * @author Dino Yang, Stijn van Beek
  */
 @Controller
 @RequestMapping(value = "/api/waste")

@@ -2,7 +2,7 @@ package nl.groep14.ipsen2BE.Models;
 
 import org.springframework.http.HttpStatus;
 
-import java.lang.reflect.Type;
+
 
 public class ApiResponse<Type> {
     private HttpStatus code;

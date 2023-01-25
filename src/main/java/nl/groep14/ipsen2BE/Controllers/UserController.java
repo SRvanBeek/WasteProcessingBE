@@ -4,22 +4,17 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import nl.groep14.ipsen2BE.DAO.UserDAO;
 import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
+import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.Models.Role;
 import nl.groep14.ipsen2BE.Models.User;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import nl.groep14.ipsen2BE.Services.UserServiceImplement;
-import nl.groep14.ipsen2BE.Models.ApiResponse;
 import nl.groep14.ipsen2BE.repository.RoleRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * UserController is the controller for the User entity.
@@ -43,6 +38,11 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, this.userService.getGebruikers());
     }
 
+    /**
+     * Changes the password of a specific user
+     * @param user takes the User object from the request body
+     * @return the ApiResponse with a confirmation message
+     */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putUser(@RequestBody User user){
@@ -67,11 +67,14 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Finds an user by a given username
+     * @param username the username to filter on
+     * @return an API response, together with the found user
+     */
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable String username) {
-        User user = userService.getGebruiker(username);
-        return user;
+    public ApiResponse<User> getUserByUsername(@PathVariable String username) {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, this.userService.getGebruiker(username));
     }
 
     /**
@@ -86,16 +89,25 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
 
+    /**
+     * Finds all roles for a given user
+     * @param username the username to find the roles by
+     * @return an API response, together with the found roles
+     */
     @GetMapping("/roles/{username}")
-    public Collection<Role> getRolesByUser(@PathVariable String username) {
-        return userService.getGebruiker(username).getRoles();
+    public ApiResponse<Collection<Role>> getRolesByUser(@PathVariable String username) {
+        return new ApiResponse<>(HttpStatus.ACCEPTED, userService.getGebruiker(username).getRoles());
     }
 
-
+    /**
+     * saves a role to the database
+     * @param role the role to save
+     * @return an API response, together with the role that was saved
+     */
     @PostMapping("/roles/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+    public ApiResponse<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRol(role));
+        return new ApiResponse<>(HttpStatus.ACCEPTED, userService.saveRol(role));
     }
 
     /**
@@ -110,6 +122,11 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User created!");
     }
 
+    /**
+     * Checks if the username already exists
+     * @param username the username to check
+     * @return the duplicate username
+     */
     @PostMapping("/checkUsername")
     public boolean checkUsername(@RequestBody String username) {
         return this.userService.getUsernameDuplicate(username);
