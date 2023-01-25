@@ -80,6 +80,25 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         user.setRoles(new ArrayList<>());
         this.userDAO.saveUserToDatabase(user);
     }
+
+    /**
+     * updateUser updates a user in the database
+     * @param user to be updated
+     */
+    public void updateUser(User user){
+        User userOld = this.userDAO.getUserByUsername(user.getUsername());
+
+        if (user.getPassword() == null) {
+            user.setPassword(userOld.getPassword());
+        }
+        else {
+            user.setPassword(passwordEncoder().encode(user.getPassword()));
+        }
+        user.setRoles(userOld.getRoles());
+
+        this.userDAO.saveUserToDatabase(user);
+    }
+
     @Override
     public boolean getUsernameDuplicate(String username){
         List<User> users = getGebruikers();

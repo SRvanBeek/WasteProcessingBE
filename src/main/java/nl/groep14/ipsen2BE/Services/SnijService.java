@@ -130,7 +130,7 @@ public class SnijService {
             this.orderDAO.saveToDatabase(new Order(leftover.getId(), null,false, null));
         } else {
             ArrayList<Category> categories = this.categoryDAO.getAll();
-            leftover.setType(Constant.order.toString());
+            leftover.setType(Constant.catWaste.toString());
             this.leftoverDAO.saveToDatabase(leftover);
             wasteService.createAndSave(article, categories, leftover.getId());
         }

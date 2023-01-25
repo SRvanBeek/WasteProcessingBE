@@ -46,8 +46,7 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putUser(@RequestBody User user){
-        this.userService.saveGebruiker(user);
-        this.userService.addRolAanGebruiker(user.getUsername(), "ROLE_USER");
+        this.userService.updateUser(user);
         return new ApiResponse<>(HttpStatus.ACCEPTED, "User password changed!");
     }
 
