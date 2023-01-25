@@ -86,6 +86,16 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      * @param user to be updated
      */
     public void updateUser(User user){
+        User userOld = this.userDAO.getUserByUsername(user.getUsername());
+
+        if (user.getPassword() == null) {
+            user.setPassword(userOld.getPassword());
+        }
+        else {
+            user.setPassword(passwordEncoder().encode(user.getPassword()));
+        }
+        user.setRoles(userOld.getRoles());
+
         this.userDAO.saveUserToDatabase(user);
     }
 
