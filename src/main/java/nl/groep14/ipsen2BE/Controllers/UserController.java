@@ -16,10 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * UserController is the controller for the User entity.
@@ -43,6 +41,11 @@ public class UserController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, this.userService.getGebruikers());
     }
 
+    /**
+     * putUser puts a User into the database
+     * @param user to be put
+     * @return ApiResponse with a string
+     */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     public ApiResponse putUser(@RequestBody User user){
