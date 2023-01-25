@@ -2,11 +2,8 @@ package nl.groep14.ipsen2BE.DAO;
 
 import nl.groep14.ipsen2BE.Exceptions.NotFoundException;
 import nl.groep14.ipsen2BE.Models.Article;
-import nl.groep14.ipsen2BE.Models.Leftover;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
