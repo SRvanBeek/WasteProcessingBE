@@ -75,9 +75,14 @@ public class CustomerController {
         return new ApiResponse<>(HttpStatus.ACCEPTED, customers);
     }
 
+    /**
+     * nameExist checks whether the customer name exists or not.
+     * @param id of the customer
+     * @return ApiResponse with a string containing 'exist' or Doesn't exist
+     */
     @RequestMapping(value = "/exist/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<ArrayList<Customer>> nameExist(@PathVariable String id){
+    public ApiResponse<String> nameExist(@PathVariable String id){
        if (this.customerDAO.customerExists(id)){
            return new ApiResponse<>(HttpStatus.ACCEPTED,"exist");
        }else{
