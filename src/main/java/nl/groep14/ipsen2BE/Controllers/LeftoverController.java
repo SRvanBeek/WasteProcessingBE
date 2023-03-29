@@ -118,5 +118,12 @@ public class LeftoverController {
         return new ApiResponse(HttpStatus.ACCEPTED, "You disabled order " + leftover + "!");
     }
 
+    @RequestMapping(value = "/enable", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse enableOneLeftover(@RequestBody Leftover leftover) {
+        this.leftoverDAO.setLeftoverVisibilityfalseByID(leftover);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You enabled order " + leftover + "!");
+    }
+
 }
 
