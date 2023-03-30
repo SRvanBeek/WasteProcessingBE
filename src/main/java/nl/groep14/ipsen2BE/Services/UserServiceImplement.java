@@ -89,10 +89,8 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      */
     public void updateUser(User user){
         user.setRoles(new ArrayList<>());
-        System.out.println(user.getRoles());
         Role role = rolRepository.findByName("ROLE_USER");
         user.getRoles().add(role);
-        System.out.println(user.getRoles());
         this.userDAO.saveUserToDatabase(user);
     }
 
