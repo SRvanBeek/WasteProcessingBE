@@ -88,9 +88,11 @@ public class UserServiceImplement implements UserService, UserDetailsService {
      * @param user to be updated
      */
     public void updateUser(User user){
-        User userOld = this.userDAO.getUserByUsername(user.getUsername());
-        user.setRoles(userOld.getRoles());
-
+        user.setRoles(new ArrayList<>());
+        System.out.println(user.getRoles());
+        Role role = rolRepository.findByName("ROLE_USER");
+        user.getRoles().add(role);
+        System.out.println(user.getRoles());
         this.userDAO.saveUserToDatabase(user);
     }
 
