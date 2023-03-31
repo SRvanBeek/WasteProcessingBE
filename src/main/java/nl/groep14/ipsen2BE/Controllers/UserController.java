@@ -47,7 +47,7 @@ public class UserController {
     @ResponseBody
     public ApiResponse putUser(@RequestBody User user){
         this.userService.updateUser(user);
-        return new ApiResponse<>(HttpStatus.ACCEPTED, "User password changed!");
+        return new ApiResponse<>(HttpStatus.ACCEPTED, "User information changed!");
     }
 
     /**

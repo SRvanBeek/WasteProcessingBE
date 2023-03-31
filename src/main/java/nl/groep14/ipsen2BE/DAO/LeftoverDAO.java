@@ -69,4 +69,8 @@ public class LeftoverDAO {
         leftover.setDisable(true);
         this.leftoverRepository.save(leftover);
     }
+    public void setLeftoverVisibilityfalseByID(Leftover leftover){
+        leftover.setDisable(false);
+        this.leftoverRepository.save(leftover);
+    }
 }
