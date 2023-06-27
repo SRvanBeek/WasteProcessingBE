@@ -22,5 +22,4 @@ Van deze repository: https://github.com/Dino-Yang/VDLBE wordt een kopie aangelev
 
 Alle endpoints staan in de code, als het eventueel nodig is om een nieuwe endpoint toe te voegen, alle Controllers, Services en DAO’s staan allemaal gescheiden in een aparte map, onder Controllers, Services, DAO’s, Models, en Repositories. Iedere functie bevat documentatie, om te beschrijven hoe de functies werken. 
 
-In de application.properties, bij de lines username en password, verander deze naar de eigen ingestelde gebruikersnaam en wachtwoord. De url moet gelijk zijn aan de database connection url in het format: jdbc:mysql://[url] 
-![chrome_7ZqBApJDZ0](https://user-images.githubusercontent.com/30380030/215520022-7e250b04-6461-41a3-b728-232cee78a869.png)
+In de application.properties, bij de lines username en password, verander deze naar de eigen ingestelde gebruikersnaam en wachtwoord. De url moet gelijk zijn aan de database connection.
